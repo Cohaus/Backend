@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Config ###
+src/main/resources/secret.yml
+
+### IDE or Dev Environment Specific ###
+.DS_Store
