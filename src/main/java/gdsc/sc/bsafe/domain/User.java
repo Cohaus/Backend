@@ -1,5 +1,6 @@
 package gdsc.sc.bsafe.domain;
 
+import gdsc.sc.bsafe.global.common.BaseTimeEntity;
 import gdsc.sc.bsafe.global.security.Password;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -12,7 +13,7 @@ import static gdsc.sc.bsafe.domain.Authority.ROLE_USER;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user")
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
