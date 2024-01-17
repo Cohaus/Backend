@@ -1,5 +1,6 @@
 package gdsc.sc.bsafe.domain;
 
+import gdsc.sc.bsafe.global.security.Password;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,8 +22,8 @@ public class User {
     @Column(nullable = false, unique = true)
     private String id;
 
-    @Column(nullable = false)
-    private String password;
+    @Embedded
+    private Password password;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -33,7 +34,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Authority authority = ROLE_USER;
 
-    public User(String id, String password, String email, String name) {
+    public User(String id, Password password, String email, String name) {
         this.id = id;
         this.password = password;
         this.email = email;
