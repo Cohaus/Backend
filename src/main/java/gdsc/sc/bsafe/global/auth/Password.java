@@ -1,4 +1,4 @@
-package gdsc.sc.bsafe.global.security;
+package gdsc.sc.bsafe.global.auth;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

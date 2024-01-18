@@ -1,4 +1,4 @@
-package gdsc.sc.bsafe.global.security;
+package gdsc.sc.bsafe.global.auth;
 
 import gdsc.sc.bsafe.domain.User;
 import lombok.RequiredArgsConstructor;

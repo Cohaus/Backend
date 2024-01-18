@@ -1,9 +1,9 @@
 package gdsc.sc.bsafe.dto.request;
 
 import gdsc.sc.bsafe.domain.User;
-import gdsc.sc.bsafe.global.security.Password;
+import gdsc.sc.bsafe.global.auth.Password;
 
-import static gdsc.sc.bsafe.global.security.Password.ENCODER;
+import static gdsc.sc.bsafe.global.auth.Password.ENCODER;
 
 public record SignUpRequest(
         String id,

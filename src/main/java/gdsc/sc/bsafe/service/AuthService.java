@@ -7,14 +7,14 @@ import gdsc.sc.bsafe.dto.request.SignUpRequest;
 import gdsc.sc.bsafe.dto.response.LoginResponse;
 import gdsc.sc.bsafe.global.exception.CustomException;
 import gdsc.sc.bsafe.global.exception.ErrorCode;
-import gdsc.sc.bsafe.global.security.AuthTokenGenerator;
-import gdsc.sc.bsafe.global.security.Password;
+import gdsc.sc.bsafe.global.auth.AuthTokenGenerator;
+import gdsc.sc.bsafe.global.auth.Password;
 import gdsc.sc.bsafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static gdsc.sc.bsafe.global.security.Password.ENCODER;
+import static gdsc.sc.bsafe.global.auth.Password.ENCODER;
 
 @Service
 @Transactional(readOnly = true)
