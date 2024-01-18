@@ -1,5 +1,6 @@
 package gdsc.sc.bsafe.controller;
 
+import gdsc.sc.bsafe.dto.request.LoginRequest;
 import gdsc.sc.bsafe.dto.request.SignUpRequest;
 import gdsc.sc.bsafe.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -22,5 +23,12 @@ public class AuthApiController {
         authService.signUp(signUpRequest);
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Long> login(@RequestBody LoginRequest loginRequest) {
+        Long userId = authService.login(loginRequest);
+
+        return ResponseEntity.status(HttpStatus.OK).body(userId);
     }
 }
