@@ -1,10 +1,13 @@
 package gdsc.sc.bsafe.service;
 
+import gdsc.sc.bsafe.domain.AuthToken;
 import gdsc.sc.bsafe.domain.User;
 import gdsc.sc.bsafe.dto.request.LoginRequest;
 import gdsc.sc.bsafe.dto.request.SignUpRequest;
+import gdsc.sc.bsafe.dto.response.LoginResponse;
 import gdsc.sc.bsafe.global.exception.CustomException;
 import gdsc.sc.bsafe.global.exception.ErrorCode;
+import gdsc.sc.bsafe.global.security.AuthTokenGenerator;
 import gdsc.sc.bsafe.global.security.Password;
 import gdsc.sc.bsafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import static gdsc.sc.bsafe.global.security.Password.ENCODER;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final AuthTokenGenerator authTokenGenerator;
 
     @Transactional
     public void signUp(SignUpRequest signUpRequest) {
@@ -26,13 +30,19 @@ public class AuthService {
     }
 
     @Transactional
-    public Long login(LoginRequest loginRequest) {
+    public LoginResponse login(LoginRequest loginRequest) {
         User user = userRepository.findById(loginRequest.id())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
         comparePassword(loginRequest.password(), user.getPassword());
 
-        return user.getUserId();
+        AuthToken generatedToken = authTokenGenerator.generate(user.getUserId(), user.getId());
+
+        return new LoginResponse(
+                user.getUserId(),
+                generatedToken.getAccessToken(),
+                generatedToken.getRefreshToken()
+        );
     }
 
     private void comparePassword(String password, Password savedPassword) {

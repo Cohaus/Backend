@@ -2,6 +2,7 @@ package gdsc.sc.bsafe.controller;
 
 import gdsc.sc.bsafe.dto.request.LoginRequest;
 import gdsc.sc.bsafe.dto.request.SignUpRequest;
+import gdsc.sc.bsafe.dto.response.LoginResponse;
 import gdsc.sc.bsafe.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,9 +27,9 @@ public class AuthApiController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Long> login(@RequestBody LoginRequest loginRequest) {
-        Long userId = authService.login(loginRequest);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        LoginResponse response = authService.login(loginRequest);
 
-        return ResponseEntity.status(HttpStatus.OK).body(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
