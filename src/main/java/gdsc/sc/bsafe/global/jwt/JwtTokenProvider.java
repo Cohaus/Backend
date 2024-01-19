@@ -1,8 +1,8 @@
 package gdsc.sc.bsafe.global.jwt;
 
-import gdsc.sc.bsafe.domain.Authority;
+import gdsc.sc.bsafe.domain.enums.Authority;
 import gdsc.sc.bsafe.global.exception.CustomException;
-import gdsc.sc.bsafe.global.exception.ErrorCode;
+import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

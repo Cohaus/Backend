@@ -1,4 +1,4 @@
-package gdsc.sc.bsafe.global.exception;
+package gdsc.sc.bsafe.global.exception.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

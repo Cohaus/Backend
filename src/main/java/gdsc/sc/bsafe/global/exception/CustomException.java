@@ -1,5 +1,6 @@
 package gdsc.sc.bsafe.global.exception;
 
+import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
 import lombok.Getter;
 
 @Getter

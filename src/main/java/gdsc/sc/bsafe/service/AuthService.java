@@ -1,6 +1,6 @@
 package gdsc.sc.bsafe.service;
 
-import gdsc.sc.bsafe.dto.request.SignUpRequest;
+import gdsc.sc.bsafe.web.dto.request.SignUpRequest;
 import gdsc.sc.bsafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,13 +1,14 @@
 package gdsc.sc.bsafe.domain;
 
-import gdsc.sc.bsafe.global.common.BaseTimeEntity;
+import gdsc.sc.bsafe.domain.common.BaseTimeEntity;
+import gdsc.sc.bsafe.domain.enums.Authority;
 import gdsc.sc.bsafe.global.security.Password;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static gdsc.sc.bsafe.domain.Authority.ROLE_USER;
+import static gdsc.sc.bsafe.domain.enums.Authority.ROLE_USER;
 
 @Entity
 @Getter
