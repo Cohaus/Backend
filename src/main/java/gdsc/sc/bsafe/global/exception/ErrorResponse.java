@@ -2,6 +2,7 @@ package gdsc.sc.bsafe.global.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
