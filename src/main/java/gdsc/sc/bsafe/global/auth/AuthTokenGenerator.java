@@ -6,7 +6,6 @@ import gdsc.sc.bsafe.dto.response.AccessTokenResponse;
 import gdsc.sc.bsafe.global.exception.CustomException;
 import gdsc.sc.bsafe.global.exception.ErrorCode;
 import gdsc.sc.bsafe.global.jwt.JwtTokenProvider;
-import gdsc.sc.bsafe.repository.AuthTokenRepository;
 import gdsc.sc.bsafe.repository.UserRepository;
 import gdsc.sc.bsafe.service.AuthTokenService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,6 @@ public class AuthTokenGenerator {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthTokenService authTokenService;
     private final UserRepository userRepository;
-    private final AuthTokenRepository authTokenRepository;
 
     public AuthToken generate(Long userId, String id) {
         long now = (new Date()).getTime();
@@ -47,7 +45,7 @@ public class AuthTokenGenerator {
                 ACCESS_TOKEN_EXPIRE_TIME / 1000L
         );
 
-        authTokenRepository.save(authToken);
+        authTokenService.handleAuthTokenUpsert(userId, authToken);
 
         return authToken;
     }

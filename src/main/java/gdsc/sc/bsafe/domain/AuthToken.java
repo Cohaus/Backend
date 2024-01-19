@@ -37,4 +37,9 @@ public class AuthToken {
     public static AuthToken of(Long userId, String accessToken, String refreshToken, String grantType, Long expiresIn) {
         return new AuthToken(userId, accessToken, refreshToken, grantType, expiresIn);
     }
+
+    public void updateAuthToken(String accessToken, String refreshToken) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+    }
 }
