@@ -3,7 +3,7 @@ package gdsc.sc.bsafe.service;
 import gdsc.sc.bsafe.domain.AuthToken;
 import gdsc.sc.bsafe.domain.User;
 import gdsc.sc.bsafe.web.dto.request.LoginRequest;
-import gdsc.sc.bsafe.dto.response.LoginResponse;
+import gdsc.sc.bsafe.web.dto.response.LoginResponse;
 import gdsc.sc.bsafe.global.auth.AuthTokenGenerator;
 import gdsc.sc.bsafe.global.auth.Password;
 import gdsc.sc.bsafe.global.exception.CustomException;

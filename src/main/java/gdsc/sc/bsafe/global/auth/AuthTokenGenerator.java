@@ -2,7 +2,7 @@ package gdsc.sc.bsafe.global.auth;
 
 import gdsc.sc.bsafe.domain.AuthToken;
 import gdsc.sc.bsafe.domain.User;
-import gdsc.sc.bsafe.dto.response.AccessTokenResponse;
+import gdsc.sc.bsafe.web.dto.response.AccessTokenResponse;
 import gdsc.sc.bsafe.global.exception.CustomException;
 import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
 import gdsc.sc.bsafe.global.jwt.JwtTokenProvider;

@@ -1,6 +1,6 @@
 package gdsc.sc.bsafe.web.controller;
 
-import gdsc.sc.bsafe.dto.response.LoginResponse;
+import gdsc.sc.bsafe.web.dto.response.LoginResponse;
 import gdsc.sc.bsafe.web.dto.request.LoginRequest;
 import gdsc.sc.bsafe.web.dto.request.SignUpRequest;
 import gdsc.sc.bsafe.service.AuthService;

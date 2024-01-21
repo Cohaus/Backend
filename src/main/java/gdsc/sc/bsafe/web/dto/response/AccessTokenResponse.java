@@ -1,4 +1,4 @@
-package gdsc.sc.bsafe.dto.response;
+package gdsc.sc.bsafe.web.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
