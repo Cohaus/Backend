@@ -41,7 +41,7 @@ jobs:
       - name: Docker build and push
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t gces_backend .
+          docker build --build-arg SPRING_PROFILES_ACTIVE=prod -t gces_backend .
           docker tag gces_backend gces/gces_backend:${GITHUB_SHA::7}
           docker push gces/gces_backend:${GITHUB_SHA::7}
 
