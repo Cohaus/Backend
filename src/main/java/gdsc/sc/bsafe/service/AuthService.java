@@ -23,10 +23,12 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final AuthTokenGenerator authTokenGenerator;
+    private final AuthTokenService authTokenService;
 
     @Transactional
-    public void signUp(SignUpRequest signUpRequest) {
-        userRepository.save(signUpRequest.toUser());
+    public Long signUp(SignUpRequest signUpRequest) {
+        User user = userRepository.save(signUpRequest.toUser());
+        return user.getUserId();
     }
 
     @Transactional
@@ -43,6 +45,11 @@ public class AuthService {
                 generatedToken.getAccessToken(),
                 generatedToken.getRefreshToken()
         );
+    }
+
+    @Transactional
+    public void logout(Long userId) {
+        authTokenService.deleteToken(userId);
     }
 
     private void comparePassword(String password, Password savedPassword) {

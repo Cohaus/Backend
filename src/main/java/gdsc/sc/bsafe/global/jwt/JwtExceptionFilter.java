@@ -42,10 +42,9 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
         ErrorResponse jwtExceptionResponse = ErrorResponse.builder()
                 .status(HttpStatus.UNAUTHORIZED.value())
                 .error(HttpStatus.UNAUTHORIZED.name())
-                .code("TOKEN")
-                .detail(throwable.getMessage())
+                .detail("TOKEN")
+                .message(throwable.getMessage())
                 .build();
-        jwtExceptionResponse.setDateNull();
 
         httpServletResponse.getWriter().write(jwtExceptionResponse.convertToJson());
     }

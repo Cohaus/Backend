@@ -9,17 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Builder
 public class ErrorResponse {
 
-    private  LocalDateTime timestamp = LocalDateTime.now();
     private final int status;
     private final String error;
-    private final String code;
     private final String detail;
+    private final String message;
 
     public static ResponseEntity<ErrorResponse> toResponseEntity(CustomException e) {
         ErrorCode errorCode = e.getErrorCode();
@@ -30,8 +27,8 @@ public class ErrorResponse {
                         ErrorResponse.builder()
                                 .status(errorCode.getHttpStatus().value()) // httpStatus code
                                 .error(errorCode.getHttpStatus().name()) // httpStatus name
-                                .code(errorCode.name()) // errorCode name
-                                .detail(errorCode.getDetail()) // errorCode details
+                                .detail(errorCode.name()) // errorCode details
+                                .message(errorCode.getMessage()) // errorCode message
                                 .build()
                 );
     }
@@ -43,8 +40,8 @@ public class ErrorResponse {
                         ErrorResponse.builder()
                                 .status(httpStatus.value()) // httpStatus code
                                 .error(httpStatus.name()) // httpStatus name
-                                .code(fieldError.getCode()) // errorCode name
-                                .detail(fieldError.getDefaultMessage()) // errorCode details
+                                .detail(fieldError.getCode()) // errorCode details
+                                .message(fieldError.getDefaultMessage()) // errorCode message
                                 .build()
                 );
     }
@@ -65,6 +62,4 @@ public class ErrorResponse {
 
         return  mapper.writeValueAsString(this);
     }
-
-    public void setDateNull(){ this.timestamp = null;}
 }
