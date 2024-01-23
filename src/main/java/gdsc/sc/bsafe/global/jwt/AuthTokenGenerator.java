@@ -1,13 +1,12 @@
-package gdsc.sc.bsafe.global.auth;
+package gdsc.sc.bsafe.global.jwt;
 
 import gdsc.sc.bsafe.domain.AuthToken;
 import gdsc.sc.bsafe.domain.User;
-import gdsc.sc.bsafe.web.dto.response.AccessTokenResponse;
 import gdsc.sc.bsafe.global.exception.CustomException;
 import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
-import gdsc.sc.bsafe.global.jwt.JwtTokenProvider;
 import gdsc.sc.bsafe.repository.UserRepository;
 import gdsc.sc.bsafe.service.AuthTokenService;
+import gdsc.sc.bsafe.web.dto.response.AccessTokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -25,17 +24,16 @@ public class AuthTokenGenerator {
     private final AuthTokenService authTokenService;
     private final UserRepository userRepository;
 
-    public AuthToken generate(Long userId, String id) {
+    public AuthToken generate(Long userId, String email) {
         long now = (new Date()).getTime();
         Date accessTokenExpiredAt = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         Date refreshTokenExpiredAt = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
 
-        String subject = userId.toString();
-        User user = userRepository.findById(Long.valueOf(userId))
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
-        String accessToken = jwtTokenProvider.generate(subject, id, user.getAuthority(), accessTokenExpiredAt);
-        String refreshToken = jwtTokenProvider.generate(subject, id, user.getAuthority(), refreshTokenExpiredAt);
+        String accessToken = jwtTokenProvider.generate(email, userId, user.getAuthority(), accessTokenExpiredAt);
+        String refreshToken = jwtTokenProvider.generate(email, userId, user.getAuthority(), refreshTokenExpiredAt);
 
         AuthToken authToken = AuthToken.of(
                 userId,
@@ -51,7 +49,7 @@ public class AuthTokenGenerator {
     }
 
     public Long extractUserId(String token) {
-        return Long.valueOf(jwtTokenProvider.extractSubject(token));
+        return jwtTokenProvider.getUserId(token);
     }
 
     public AccessTokenResponse accessTokenByRefreshToken(String refreshToken) {
@@ -64,10 +62,10 @@ public class AuthTokenGenerator {
 
         long now = (new Date()).getTime();
         Date accessTokenExpiredAt = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
-        User user = userRepository.findById(Long.valueOf(userId))
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
-        String newAccessToken = jwtTokenProvider.generate(userId.toString(), user.getId(), user.getAuthority(), accessTokenExpiredAt);
+        String newAccessToken = jwtTokenProvider.generate(user.getEmail(), userId, user.getAuthority(), accessTokenExpiredAt);
 
         return AccessTokenResponse.of(newAccessToken, BEARER_TYPE, ACCESS_TOKEN_EXPIRE_TIME / 1000L);
     }

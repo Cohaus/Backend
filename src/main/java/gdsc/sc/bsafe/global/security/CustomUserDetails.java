@@ -1,4 +1,4 @@
-package gdsc.sc.bsafe.global.auth;
+package gdsc.sc.bsafe.global.security;
 
 import gdsc.sc.bsafe.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return String.valueOf(user.getUserId());
+        return user.getUserId().toString();
     }
 
     @Override
