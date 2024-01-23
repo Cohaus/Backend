@@ -1,5 +1,7 @@
 package gdsc.sc.bsafe.web.controller;
 
+import gdsc.sc.bsafe.domain.User;
+import gdsc.sc.bsafe.global.annotation.AuthenticationUser;
 import gdsc.sc.bsafe.service.AuthService;
 import gdsc.sc.bsafe.web.dto.request.LoginRequest;
 import gdsc.sc.bsafe.web.dto.request.SignUpRequest;
@@ -45,5 +47,16 @@ public class AuthApiController {
         LoginResponse response = authService.login(loginRequest);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @Operation(summary = "로그아웃 API", description = "")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
+    })
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@AuthenticationUser User user) {
+        authService.logout(user.getUserId());
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
