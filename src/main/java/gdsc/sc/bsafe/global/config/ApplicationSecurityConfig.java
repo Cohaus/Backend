@@ -1,5 +1,6 @@
 package gdsc.sc.bsafe.global.config;
 
+import gdsc.sc.bsafe.global.security.ApplicationAuditAware;
 import gdsc.sc.bsafe.global.security.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

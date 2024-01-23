@@ -1,4 +1,4 @@
-package gdsc.sc.bsafe.global.config;
+package gdsc.sc.bsafe.global.security;
 
 import gdsc.sc.bsafe.domain.User;
 import org.springframework.data.domain.AuditorAware;
