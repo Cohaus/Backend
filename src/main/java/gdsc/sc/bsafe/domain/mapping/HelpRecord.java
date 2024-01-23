@@ -19,8 +19,8 @@ import java.util.Date;
 public class HelpRecord extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "report_id")
-    private Long reportId;
+    @Column(name = "help_id")
+    private Long helpId;
 
     @ManyToOne
     @JoinColumn(name = "record_id", nullable = false)
@@ -46,8 +46,7 @@ public class HelpRecord extends BaseTimeEntity {
     private String address;
 
     @Builder
-    public HelpRecord(Long reportId, Record record, User helper, RequestStatus status, Date date, String placeId, String district, String address) {
-        this.reportId = reportId;
+    public HelpRecord(Record record, User helper, RequestStatus status, Date date, String placeId, String district, String address) {
         this.record = record;
         this.helper = helper;
         this.status = status;
