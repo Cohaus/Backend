@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gdsc.sc.bsafe.domain.enums.Authority.ROLE_USER;
-
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -42,7 +40,7 @@ public class User extends BaseTimeEntity {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private Authority authority = ROLE_USER;
+    private Authority authority = Authority.USER;
 
     @OneToMany(mappedBy = "helper")
     private List<HelpRecord> helpedRecords = new ArrayList<>();
@@ -54,6 +52,6 @@ public class User extends BaseTimeEntity {
         this.email = email;
         this.tel = tel;
         this.name = name;
-        this.authority = ROLE_USER;
+        this.authority = Authority.USER;
     }
 }
