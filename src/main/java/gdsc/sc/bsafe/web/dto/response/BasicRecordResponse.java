@@ -9,14 +9,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class BasicRecordResponse {
-    private Long recordId;
+    private Long record_id;
 
     @Enumerated(value = EnumType.STRING)
     private RecordType type = RecordType.BASIC;
 
-    private Long userId;
+    private Long user_id;
 
     private String image;
 
@@ -26,4 +25,12 @@ public class BasicRecordResponse {
 
     private String category;
 
+    public BasicRecordResponse(Long recordId, Long userId, String image, String title, String detail, String category) {
+        this.record_id = recordId;
+        this.user_id = userId;
+        this.image = image;
+        this.title = title;
+        this.detail = detail;
+        this.category = category;
+    }
 }

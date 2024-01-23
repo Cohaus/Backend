@@ -11,5 +11,7 @@ public interface RecordRepository<T extends Record> extends JpaRepository<T, Lon
 
     @Override
     Optional<T> findById(Long recordId);
+
+
 }
 
