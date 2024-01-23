@@ -12,12 +12,15 @@ public record SignUpRequest(
 
         String email,
 
+        String tel,
+
         String name
 ) {
     public User toUser() {
         return new User(
                 id,
                 Password.encrypt(password, ENCODER),
+                tel,
                 email,
                 name
         );
