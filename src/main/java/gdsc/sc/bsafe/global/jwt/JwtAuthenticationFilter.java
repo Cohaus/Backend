@@ -37,15 +37,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         if (request.getServletPath().contains("/api/auth")
-            || request.getServletPath().contains("/swagger-ui")
-            || request.getServletPath().contains("/swagger-resources")
-            || request.getServletPath().contains("v3/api-docs")
+                || request.getServletPath().contains("/swagger-ui")
+                || request.getServletPath().contains("/swagger-resources")
+                || request.getServletPath().contains("v3/api-docs")
         ) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String jwt = resolveToken(request);
+        String jwt = extractToken(request);
         Long userId = jwtTokenProvider.getUserId(jwt);
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
@@ -71,8 +71,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String resolveToken(HttpServletRequest request) {
+    public static String resolveToken(HttpServletRequest request) {
+        return extractToken(request);
+    }
+
+    private static String extractToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }
