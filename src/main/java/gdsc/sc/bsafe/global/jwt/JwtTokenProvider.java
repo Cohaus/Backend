@@ -3,64 +3,67 @@ package gdsc.sc.bsafe.global.jwt;
 import gdsc.sc.bsafe.domain.enums.Authority;
 import gdsc.sc.bsafe.global.exception.CustomException;
 import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
+import gdsc.sc.bsafe.global.security.CustomUserDetailService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
+import java.time.ZonedDateTime;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
-    private final Key key;
+    private static final String USER_ID_KEY = "id";
 
-    public JwtTokenProvider(@Value("${application.jwt.secret}") String secretKey) {
+    private final Key key;
+    private final CustomUserDetailService customUserDetailService;
+
+    public JwtTokenProvider(@Value("${application.jwt.secret}") String secretKey,
+                            CustomUserDetailService customUserDetailService) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.customUserDetailService = customUserDetailService;
     }
 
     /**
      * JWT
-     * payload "sub" : "userId"
-     * payload "id" : "loginId"
+     * payload "sub" : "email"
+     * payload "id" : "userId"
      * payload "auth" : "ROLE_USER"
+     * payload "iat" : "123456789"
      * payload "exp" : "123456789"
      * header "alg" : "HS512"
      */
-    public String generate(String subject, String id, Authority authority, Date expiredAt) {
+    public String generate(String email, Long userId, Authority authority, Date expiredAt) {
         return Jwts.builder()
-                .setSubject(subject)
-                .claim("id", id)
+                .setSubject(email)
+                .claim(USER_ID_KEY, userId)
                 .claim(AUTHORITIES_KEY, authority)
+                .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
                 .setExpiration(expiredAt)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }
 
-    public String extractSubject(String accessToken) {
-        Claims claims = parseClaims(accessToken);
-        return claims.getSubject();
+    public Long getUserId(String token) {
+        return parseClaims(token)
+                .get(USER_ID_KEY, Long.class);
     }
 
-    public Claims parseClaims(String accessToken) {
+    public Claims parseClaims(String token) {
         try {
             return Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
-                    .parseClaimsJws(accessToken)
+                    .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException e) {
             throw new CustomException(ErrorCode.TOKEN_EXPIRED);
@@ -82,20 +85,14 @@ public class JwtTokenProvider {
         }
     }
 
-    public Authentication getAuthentication(String accessToken) {
-        Claims claims = parseClaims(accessToken);
-
-        if (claims.get(AUTHORITIES_KEY) == null) {
+    public Authentication getAuthentication(String token) {
+        Claims claims = parseClaims(token);
+        if (claims.get(USER_ID_KEY, Long.class) == null) {
             throw new JwtException("권한 정보가 없는 토큰입니다.");
         }
 
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get("id").toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
+        UserDetails userDetails = customUserDetailService.loadUserByUsername(claims.get(USER_ID_KEY, Long.class).toString());
 
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
-
-        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 }

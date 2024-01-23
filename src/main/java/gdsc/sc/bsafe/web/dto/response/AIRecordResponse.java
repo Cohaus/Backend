@@ -9,8 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class AIRecordResponse {
     private Long recordId;
 
@@ -28,4 +28,8 @@ public class AIRecordResponse {
     private String category;
 
     private Integer grade;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/develop
 }
