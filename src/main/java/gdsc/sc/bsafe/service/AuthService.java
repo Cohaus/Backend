@@ -26,8 +26,9 @@ public class AuthService {
     private final AuthTokenService authTokenService;
 
     @Transactional
-    public void signUp(SignUpRequest signUpRequest) {
-        userRepository.save(signUpRequest.toUser());
+    public Long signUp(SignUpRequest signUpRequest) {
+        User user = userRepository.save(signUpRequest.toUser());
+        return user.getUserId();
     }
 
     @Transactional

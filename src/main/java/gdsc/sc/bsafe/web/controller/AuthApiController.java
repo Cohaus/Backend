@@ -2,6 +2,7 @@ package gdsc.sc.bsafe.web.controller;
 
 import gdsc.sc.bsafe.domain.User;
 import gdsc.sc.bsafe.global.annotation.AuthenticationUser;
+import gdsc.sc.bsafe.global.common.SuccessResponse;
 import gdsc.sc.bsafe.service.AuthService;
 import gdsc.sc.bsafe.web.dto.request.LoginRequest;
 import gdsc.sc.bsafe.web.dto.request.SignUpRequest;
@@ -12,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,10 +32,10 @@ public class AuthApiController {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
     })
     @PostMapping("/sign-up")
-    public ResponseEntity<Void> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
-        authService.signUp(signUpRequest);
+    public ResponseEntity<SuccessResponse<?>> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
+        Long userId = authService.signUp(signUpRequest);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return SuccessResponse.created(userId);
     }
 
     @Operation(summary = "로그인 API", description = "로그인 필드 값을 받습니다. 요청 성공 시 user의 pk와 발급된 token을 반환합니다.")
@@ -43,20 +43,20 @@ public class AuthApiController {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
     })
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-        LoginResponse response = authService.login(loginRequest);
+    public ResponseEntity<SuccessResponse<?>> login(@Valid @RequestBody LoginRequest loginRequest) {
+        LoginResponse loginResponse = authService.login(loginRequest);
 
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return SuccessResponse.ok(loginResponse);
     }
 
-    @Operation(summary = "로그아웃 API", description = "")
+    @Operation(summary = "로그아웃 API", description = "요청 성공 시 token이 폐기됩니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
     })
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@AuthenticationUser User user) {
+    public ResponseEntity<SuccessResponse<?>> logout(@AuthenticationUser User user) {
         authService.logout(user.getUserId());
 
-        return new ResponseEntity(HttpStatus.OK);
+        return SuccessResponse.ok(null);
     }
 }
