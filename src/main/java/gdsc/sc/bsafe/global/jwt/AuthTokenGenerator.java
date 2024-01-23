@@ -1,4 +1,4 @@
-package gdsc.sc.bsafe.global.auth;
+package gdsc.sc.bsafe.global.jwt;
 
 import gdsc.sc.bsafe.domain.AuthToken;
 import gdsc.sc.bsafe.domain.User;

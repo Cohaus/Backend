@@ -4,8 +4,8 @@ import gdsc.sc.bsafe.domain.AuthToken;
 import gdsc.sc.bsafe.domain.User;
 import gdsc.sc.bsafe.web.dto.request.LoginRequest;
 import gdsc.sc.bsafe.web.dto.response.LoginResponse;
-import gdsc.sc.bsafe.global.auth.AuthTokenGenerator;
-import gdsc.sc.bsafe.global.auth.Password;
+import gdsc.sc.bsafe.global.jwt.AuthTokenGenerator;
+import gdsc.sc.bsafe.global.security.Password;
 import gdsc.sc.bsafe.global.exception.CustomException;
 import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
 import gdsc.sc.bsafe.repository.UserRepository;
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static gdsc.sc.bsafe.global.auth.Password.ENCODER;
+import static gdsc.sc.bsafe.global.security.Password.ENCODER;
 
 @Service
 @Transactional(readOnly = true)

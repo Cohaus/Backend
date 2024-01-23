@@ -1,7 +1,6 @@
 package gdsc.sc.bsafe.global.security;
 
 import gdsc.sc.bsafe.domain.User;
-import gdsc.sc.bsafe.global.auth.CustomUserDetails;
 import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
 import gdsc.sc.bsafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
