@@ -6,6 +6,7 @@ import gdsc.sc.bsafe.domain.mapping.HelpRecord;
 import gdsc.sc.bsafe.global.auth.Password;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -46,10 +47,12 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "helper")
     private List<HelpRecord> helpedRecords = new ArrayList<>();
 
-    public User(String id, Password password, String email, String name) {
+    @Builder
+    public User(String id, Password password, String email, String tel, String name) {
         this.id = id;
         this.password = password;
         this.email = email;
+        this.tel = tel;
         this.name = name;
         this.authority = ROLE_USER;
     }

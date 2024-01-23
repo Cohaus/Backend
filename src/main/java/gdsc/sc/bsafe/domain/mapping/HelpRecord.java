@@ -6,6 +6,7 @@ import gdsc.sc.bsafe.domain.common.BaseTimeEntity;
 import gdsc.sc.bsafe.domain.enums.RequestStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -44,4 +45,15 @@ public class HelpRecord extends BaseTimeEntity {
     @Column(nullable = false)
     private String address;
 
+    @Builder
+    public HelpRecord(Long reportId, Record record, User helper, RequestStatus status, Date date, String placeId, String district, String address) {
+        this.reportId = reportId;
+        this.record = record;
+        this.helper = helper;
+        this.status = status;
+        this.date = date;
+        this.placeId = placeId;
+        this.district = district;
+        this.address = address;
+    }
 }
