@@ -19,6 +19,8 @@ public enum ErrorCode {
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다."),
     INVALID_PERMISSION(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
 
+    // Record exception
+    NOT_FOUND_RECORD(HttpStatus.NOT_FOUND, "해당 기록을 찾을 수 없습니다."),
     ;
 
     private final HttpStatus httpStatus;

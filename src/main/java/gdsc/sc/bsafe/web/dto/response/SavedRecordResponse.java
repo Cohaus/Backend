@@ -1,5 +1,7 @@
 package gdsc.sc.bsafe.web.dto.response;
 
+import gdsc.sc.bsafe.domain.AIRecord;
+import gdsc.sc.bsafe.domain.Record;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,4 +24,13 @@ public class SavedRecordResponse {
 
     private Integer grade;
 
+    public SavedRecordResponse(AIRecord aiRecord) {
+        this.record_id = aiRecord.getRecordId();
+        this.user_id = aiRecord.getUser().getUserId();
+        this.image = aiRecord.getImage();
+        this.title = aiRecord.getTitle();
+        this.detail = aiRecord.getDetail();
+        this.category = aiRecord.getCategory();
+        this.grade = getGrade();
+    }
 }
