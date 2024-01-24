@@ -5,6 +5,14 @@ spring:
       prod: production
     active: dev
 
+  cloud:
+    gcp:
+      storage:
+        credentials:
+          location: classpath:gcp-credentials.json
+        project-id: feisty-ward-411905
+        bucket: gces_bucket
+
 default:
   string: default property
 
