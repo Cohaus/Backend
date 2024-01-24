@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -34,7 +35,7 @@ public class Repair extends BaseTimeEntity {
     private RepairStatus status;
 
     @Column(nullable = false)
-    private Date date;
+    private LocalDate date;
 
     @Column(nullable = false)
     private String placeId;
@@ -46,7 +47,7 @@ public class Repair extends BaseTimeEntity {
     private String address;
 
     @Builder
-    public Repair(Record record, User volunteer, RepairStatus status, Date date, String placeId, String district, String address) {
+    public Repair(Record record, User volunteer, RepairStatus status, LocalDate date, String placeId, String district, String address) {
         this.record = record;
         this.volunteer = volunteer;
         this.status = status;
