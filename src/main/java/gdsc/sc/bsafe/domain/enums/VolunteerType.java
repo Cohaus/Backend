@@ -5,11 +5,11 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum HelperType {
+public enum VolunteerType {
 
     SINGLE("개인 봉사자"),
-    GROUP("기관 봉사자");
+    ORGANIZATION("기관 봉사자");
 
     private String description;
-    HelperType(String description){this.description=description;}
+    VolunteerType(String description){this.description=description;}
 }

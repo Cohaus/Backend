@@ -3,7 +3,7 @@ package gdsc.sc.bsafe.domain.mapping;
 import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.User;
 import gdsc.sc.bsafe.domain.common.BaseTimeEntity;
-import gdsc.sc.bsafe.domain.enums.RequestStatus;
+import gdsc.sc.bsafe.domain.enums.RepairStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,23 +15,23 @@ import java.util.Date;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "help_record")
-public class HelpRecord extends BaseTimeEntity {
+@Table(name = "repair")
+public class Repair extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "help_record_id")
-    private Long helpRecordId;
+    @Column(name = "repair_id")
+    private Long repairId;
 
     @ManyToOne
     @JoinColumn(name = "record_id", nullable = false)
     private Record record;
 
     @ManyToOne
-    @JoinColumn(name = "helper_id", nullable = false)
-    private User helper;
+    @JoinColumn(name = "volunteer_id", nullable = false)
+    private User volunteer;
 
     @Column(nullable = false)
-    private RequestStatus status;
+    private RepairStatus status;
 
     @Column(nullable = false)
     private Date date;
@@ -46,9 +46,9 @@ public class HelpRecord extends BaseTimeEntity {
     private String address;
 
     @Builder
-    public HelpRecord(Record record, User helper, RequestStatus status, Date date, String placeId, String district, String address) {
+    public Repair(Record record, User volunteer, RepairStatus status, Date date, String placeId, String district, String address) {
         this.record = record;
-        this.helper = helper;
+        this.volunteer = volunteer;
         this.status = status;
         this.date = date;
         this.placeId = placeId;
