@@ -18,8 +18,8 @@ public class AIRecord extends Record {
     private Integer grade;
 
     @Builder
-    public AIRecord(User user, String image, String title, String detail, Integer grade){
-        super(user, image, title, detail);
+    public AIRecord(User user, String image, String title, String detail,String category, Integer grade){
+        super(user, image, title, detail,category);
         this.grade = grade;
     }
 
