@@ -1,7 +1,7 @@
 FROM openjdk:17-jdk as builder
 WORKDIR application
-COPY ./build/libs/bsafe-0.0.1-SNAPSHOT.jar application.jar
 COPY ./src/main/resources/gcp-credentials.json src/main/resources/gcp-credentials.json
+COPY ./build/libs/bsafe-0.0.1-SNAPSHOT.jar application.jar
 RUN java -Djarmode=layertools -jar application.jar extract
 
 FROM openjdk:17-jdk
