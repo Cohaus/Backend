@@ -69,15 +69,4 @@ public class AuthTokenGenerator {
 
         return AccessTokenResponse.of(newAccessToken, BEARER_TYPE, ACCESS_TOKEN_EXPIRE_TIME / 1000L);
     }
-
-    public void deleteRefreshToken(String accessToken) {
-        Long userId = extractUserId(accessToken);
-        String token = authTokenService.getToken(userId);
-
-        if (token == null) {
-            throw new CustomException(ErrorCode.NOT_FOUND_REFRESH_TOKEN);
-        }
-
-        authTokenService.deleteToken(userId);
-    }
 }

@@ -33,6 +33,9 @@ public class AuthTokenService {
 
     @Transactional
     public void deleteToken(Long userId) {
+        authTokenRepository.findByUserId(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TOKEN_DATA));
+
         authTokenRepository.deleteByUserId(userId);
     }
 }
