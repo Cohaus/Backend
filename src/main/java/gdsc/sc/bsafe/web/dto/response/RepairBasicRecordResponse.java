@@ -1,6 +1,9 @@
 package gdsc.sc.bsafe.web.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import gdsc.sc.bsafe.domain.enums.RecordType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +17,9 @@ public class RepairBasicRecordResponse {
     private Long record_id;
 
     private String user_id;
+
+    @Enumerated(EnumType.STRING)
+    private RecordType type = RecordType.BASIC;
 
     private String image;
 

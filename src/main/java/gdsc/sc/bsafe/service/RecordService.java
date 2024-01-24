@@ -61,11 +61,11 @@ public class RecordService {
         SliceResponse<RecordResponse> savedRecords =  new SliceResponse<>(savedRecordList.map(RecordResponse::new));
 
         Slice<Record> repairRecordList = repairRepository.findAllByRecord_User(user).map(Repair::getRecord);
-        SliceResponse<RecordResponse> repairRecords = new SliceResponse<>(repairRecordList.map(RecordResponse::new));
+        SliceResponse<RecordResponse> repairRecords  = new SliceResponse<>(repairRecordList.map(RecordResponse::new)) ;
 
         UserRecordListResponse response= new UserRecordListResponse();
-        response.setSavedRecord(savedRecords);
-        response.setRepairRecord(repairRecords);
+        response.setSaved_record(savedRecords);
+        response.setRepair_record(repairRecords);
         return response;
     }
     public SavedRecordResponse updateRecord(AIRecord aiRecord, UpdateSavedRecordRequest request){
