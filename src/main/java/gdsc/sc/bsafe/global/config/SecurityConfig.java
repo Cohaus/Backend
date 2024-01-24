@@ -26,7 +26,11 @@ public class SecurityConfig {
             // application
             "/api/auth/sign-up",
             "/api/auth/login",
+            "/api/images",
             "/", "/error",
+
+            // gcs
+            "/storage.googleapis.com/**",
 
             // swagger
             "v3/api-docs/**",

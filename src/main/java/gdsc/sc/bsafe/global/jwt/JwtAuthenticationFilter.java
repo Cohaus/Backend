@@ -38,6 +38,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         if (request.getServletPath().contains("/api/auth/login")
                 || request.getServletPath().contains("/api/auth/sign-up")
+                || request.getServletPath().contains("/api/images")
+                || request.getServletPath().contains("/storage.googleapis.com")
                 || request.getServletPath().contains("/swagger-ui")
                 || request.getServletPath().contains("/swagger-resources")
                 || request.getServletPath().contains("v3/api-docs")
