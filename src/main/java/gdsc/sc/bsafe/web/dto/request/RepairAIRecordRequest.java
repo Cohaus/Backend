@@ -17,8 +17,6 @@ public class RepairAIRecordRequest {
 
     String detail;
 
-    String image;
-
     String category;
 
     Long grade;

@@ -1,9 +1,12 @@
 package gdsc.sc.bsafe.web.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import gdsc.sc.bsafe.domain.enums.RepairStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -28,4 +31,10 @@ public class RepairAIRecordResponse {
     private RepairStatus status;
 
     private String tel;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime created_at;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime updated_at;
 }

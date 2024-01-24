@@ -16,8 +16,6 @@ public class RepairBasicRecordRequest {
 
     String detail;
 
-    String image;
-
     String category;
 
     String place_id;

@@ -5,17 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SaveRecordRequest {
+public class UpdateRecordRequest {
 
     String title;
 
     String detail;
 
-    Integer grade;
-
     String category;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    LocalDate date;
 
 }

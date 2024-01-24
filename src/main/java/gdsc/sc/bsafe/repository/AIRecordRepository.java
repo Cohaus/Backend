@@ -10,4 +10,7 @@ import java.util.Optional;
 public interface AIRecordRepository  extends JpaRepository<AIRecord, Long> {
     @Override
     Optional<AIRecord> findById(Long recordId);
+
+    @Override
+    void deleteById(Long recordId);
 }

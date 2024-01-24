@@ -1,10 +1,13 @@
 package gdsc.sc.bsafe.web.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import gdsc.sc.bsafe.domain.AIRecord;
 import gdsc.sc.bsafe.domain.Record;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -24,6 +27,12 @@ public class SavedRecordResponse {
 
     private Integer grade;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime created_at;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime updated_at;
+
     public SavedRecordResponse(AIRecord aiRecord) {
         this.record_id = aiRecord.getRecordId();
         this.user_id = aiRecord.getUser().getUserId();
@@ -31,6 +40,6 @@ public class SavedRecordResponse {
         this.title = aiRecord.getTitle();
         this.detail = aiRecord.getDetail();
         this.category = aiRecord.getCategory();
-        this.grade = getGrade();
+        this.grade = aiRecord.getGrade();
     }
 }

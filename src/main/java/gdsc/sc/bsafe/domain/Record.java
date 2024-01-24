@@ -1,5 +1,6 @@
 package gdsc.sc.bsafe.domain;
 
+import gdsc.sc.bsafe.domain.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "DTYPE")
 @Table(name = "record")
-public class Record {
+public class Record extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +40,12 @@ public class Record {
     public Record(User user, String image, String title, String detail, String category) {
         this.user = user;
         this.image = image;
+        this.title = title;
+        this.detail = detail;
+        this.category = category;
+    }
+
+    public void updateSavedRecord(String title, String detail, String category) {
         this.title = title;
         this.detail = detail;
         this.category = category;
