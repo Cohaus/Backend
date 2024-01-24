@@ -33,15 +33,14 @@ public class Record {
 
     /*
     ENUM 타입으로 변경하기
-    private String category;
      */
+    private String category;
 
-    public Record(User user, String image, String title, String detail){
+    public Record(User user, String image, String title, String detail, String category) {
         this.user = user;
         this.image = image;
         this.title = title;
         this.detail = detail;
+        this.category = category;
     }
-
-
 }
