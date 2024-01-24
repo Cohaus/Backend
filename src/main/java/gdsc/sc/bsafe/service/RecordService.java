@@ -11,7 +11,7 @@ import gdsc.sc.bsafe.repository.RecordRepository;
 import gdsc.sc.bsafe.repository.RepairRepository;
 import gdsc.sc.bsafe.repository.UserRepository;
 import gdsc.sc.bsafe.web.dto.request.SaveRecordRequest;
-import gdsc.sc.bsafe.web.dto.request.UpdateRecordRequest;
+import gdsc.sc.bsafe.web.dto.request.UpdateSavedRecordRequest;
 import gdsc.sc.bsafe.web.dto.response.SavedRecordResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -52,7 +52,7 @@ public class RecordService {
         return new SavedRecordResponse(record);
     }
 
-    public SavedRecordResponse updateRecord(AIRecord aiRecord, UpdateRecordRequest request){
+    public SavedRecordResponse updateRecord(AIRecord aiRecord, UpdateSavedRecordRequest request){
         aiRecord.updateSavedRecord(request.getTitle(), request.getDetail(), request.getCategory());
         AIRecord updatedRecord = aiRecordRepository.save(aiRecord);
         return new SavedRecordResponse(updatedRecord);

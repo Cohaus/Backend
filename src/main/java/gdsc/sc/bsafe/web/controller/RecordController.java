@@ -10,7 +10,7 @@ import gdsc.sc.bsafe.global.exception.ErrorResponse;
 import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
 import gdsc.sc.bsafe.service.RecordService;
 import gdsc.sc.bsafe.web.dto.request.SaveRecordRequest;
-import gdsc.sc.bsafe.web.dto.request.UpdateRecordRequest;
+import gdsc.sc.bsafe.web.dto.request.UpdateSavedRecordRequest;
 import gdsc.sc.bsafe.web.dto.response.SavedRecordResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -49,11 +49,11 @@ public class RecordController {
      */
     @PatchMapping(value = "/{recordId}")
     public ResponseEntity<?> updateSavedRecord(@PathVariable Long recordId,
-                                               @RequestBody UpdateRecordRequest updateRecordRequest,
+                                               @RequestBody UpdateSavedRecordRequest updateSavedRecordRequest,
                                                @AuthenticationUser User user){
         AIRecord aiRecord = (AIRecord) recordService.findById(recordId);
         if (aiRecord.getUser() == user) {
-            SavedRecordResponse savedRecordResponse = recordService.updateRecord(aiRecord, updateRecordRequest);
+            SavedRecordResponse savedRecordResponse = recordService.updateRecord(aiRecord, updateSavedRecordRequest);
             return SuccessResponse.ok(savedRecordResponse);
         }
         else return ErrorResponse.toResponseEntity(new CustomException(ErrorCode.INVALID_PERMISSION));
