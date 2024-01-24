@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 public class RepairBasicRecordResponse {
     private Long record_id;
 
+    private String user_id;
+
     private String image;
 
     private String title;

@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class SavedRecordResponse {
     private Long record_id;
 
-    private Long user_id;
+    private String user_id;
 
     private String image;
 
@@ -35,11 +35,13 @@ public class SavedRecordResponse {
 
     public SavedRecordResponse(AIRecord aiRecord) {
         this.record_id = aiRecord.getRecordId();
-        this.user_id = aiRecord.getUser().getUserId();
+        this.user_id = aiRecord.getUser().getId();
         this.image = aiRecord.getImage();
         this.title = aiRecord.getTitle();
         this.detail = aiRecord.getDetail();
         this.category = aiRecord.getCategory();
         this.grade = aiRecord.getGrade();
+        this.created_at = aiRecord.getCreatedAt();
+        this.updated_at = aiRecord.getUpdatedAt();
     }
 }
