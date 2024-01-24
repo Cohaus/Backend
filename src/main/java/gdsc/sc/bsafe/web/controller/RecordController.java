@@ -12,6 +12,10 @@ import gdsc.sc.bsafe.service.RecordService;
 import gdsc.sc.bsafe.web.dto.request.SaveRecordRequest;
 import gdsc.sc.bsafe.web.dto.request.UpdateSavedRecordRequest;
 import gdsc.sc.bsafe.web.dto.response.SavedRecordResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +29,15 @@ public class RecordController {
     /*
         기록 저장하기
      */
+    @Operation(summary = "기록 저장 API", description = "요청 성공 시 기록의 pk 값을 반환합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
+    })
     @PostMapping
     //@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<SuccessResponse<?>> createSaveRecord(@RequestBody SaveRecordRequest saveRecordRequest,
                                                                //@ModelAttribute MultipartFile file,//
-                                                               @AuthenticationUser User user){
+                                                               @Valid @AuthenticationUser User user){
         Long recordId = recordService.createSaveRecord(saveRecordRequest, user);
         return SuccessResponse.created(recordId);
     }
@@ -37,6 +45,10 @@ public class RecordController {
     /*
         저장된 기록 조회하기
      */
+    @Operation(summary = "저장된 1개의 기록 조회 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
+    })
     @GetMapping(value = "/{recordId}")
     public ResponseEntity<SuccessResponse<?>> getSavedRecord(@PathVariable Long recordId,
                                                              @AuthenticationUser User user){
@@ -45,11 +57,12 @@ public class RecordController {
         return SuccessResponse.ok(savedRecordResponse);
     }
     /*
-        기록 수정하기
+        저장 기록 수정하기
      */
+    @Operation(summary = "저장 기록 수정 API", description = "요청 성공 시 수정된 결과를 반환합니다.")
     @PatchMapping(value = "/{recordId}")
     public ResponseEntity<?> updateSavedRecord(@PathVariable Long recordId,
-                                               @RequestBody UpdateSavedRecordRequest updateSavedRecordRequest,
+                                               @Valid @RequestBody UpdateSavedRecordRequest updateSavedRecordRequest,
                                                @AuthenticationUser User user){
         AIRecord aiRecord = (AIRecord) recordService.findById(recordId);
         if (aiRecord.getUser() == user) {
@@ -60,8 +73,9 @@ public class RecordController {
     }
 
     /*
-        저장 및 수리 신청된 기록 삭제하기
+        저장/수리신청 기록 삭제하기
      */
+    @Operation(summary = "저장 기록 수정 API", description = "요청 성공 시 삭제된 기록의 pk 값을 반환합니다.")
     @DeleteMapping(value = "/{recordId}")
     public ResponseEntity<?> deleteRecord(@PathVariable Long recordId,
                                           @AuthenticationUser User user){
