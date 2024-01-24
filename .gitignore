@@ -38,6 +38,7 @@ out/
 
 ### Config ###
 src/main/resources/secret.yml
+src/main/resources/gcp-credentials.json
 
 ### IDE or Dev Environment Specific ###
 .DS_Store
