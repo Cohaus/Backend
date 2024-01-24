@@ -26,6 +26,13 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Copy secret
+        env:
+          GCP_SECRET: ${{ secrets.GCP_CREDENTIALS }}
+          GCP_SECRET_DIR: src/main/resources
+          GCP_SECRET_DIR_FILE_NAME: gcp-credentials.json
+        run: echo $GCP_SECRET | base64 --decode > $GCP_SECRET_DIR/$GCP_SECRET_DIR_FILE_NAME
+
       - name: Set environment properties
         run: |
           cd ./src/main/resources
