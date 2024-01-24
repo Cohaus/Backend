@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum Authority {
 
     USER ("ROLE_USER"),
-    HELPER ("ROLE_HELPER"),
+    VOLUNTEER ("ROLE_VOLUNTEER"),
     ADMIN("ROLE_ADMIN")
     ;
 

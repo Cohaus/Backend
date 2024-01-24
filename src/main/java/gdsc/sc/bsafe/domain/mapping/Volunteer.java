@@ -1,9 +1,9 @@
 package gdsc.sc.bsafe.domain.mapping;
 
-import gdsc.sc.bsafe.domain.HelperGroup;
+import gdsc.sc.bsafe.domain.Organization;
 import gdsc.sc.bsafe.domain.User;
 import gdsc.sc.bsafe.domain.common.BaseTimeEntity;
-import gdsc.sc.bsafe.domain.enums.HelperType;
+import gdsc.sc.bsafe.domain.enums.VolunteerType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -12,22 +12,22 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "helper_user")
-public class HelperUser extends BaseTimeEntity {
+@Table(name = "volunteer")
+public class Volunteer extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "helper_user_id")
-    private Long helperId;
+    @Column(name = "volunteer_id")
+    private Long volunteerId;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(nullable = false)
-    private HelperType type;
+    private VolunteerType type;
 
     @ManyToOne
-    @JoinColumn(name = "group_id", nullable = false)
-    private HelperGroup helperGroup;
+    @JoinColumn(name = "organization_id", nullable = false)
+    private Organization organization;
 
 }

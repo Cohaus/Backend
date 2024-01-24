@@ -2,7 +2,7 @@ package gdsc.sc.bsafe.domain;
 
 import gdsc.sc.bsafe.domain.common.BaseTimeEntity;
 import gdsc.sc.bsafe.domain.enums.Authority;
-import gdsc.sc.bsafe.domain.mapping.HelpRecord;
+import gdsc.sc.bsafe.domain.mapping.Repair;
 import gdsc.sc.bsafe.global.security.Password;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -42,8 +42,8 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Authority authority = Authority.USER;
 
-    @OneToMany(mappedBy = "helper")
-    private List<HelpRecord> helpedRecords = new ArrayList<>();
+    @OneToMany(mappedBy = "volunteer")
+    private List<Repair> repairList = new ArrayList<>();
 
     @Builder
     public User(String id, Password password, String email, String tel, String name) {

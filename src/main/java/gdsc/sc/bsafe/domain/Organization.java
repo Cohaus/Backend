@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name= "helper_group")
-public class HelperGroup {
+@Table(name= "organization")
+public class Organization {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "helper_group_id")
-    private Long recordId;
+    @Column(name = "organization_id")
+    private Long organizationId;
 
     @Column(nullable = false)
     private String name;
