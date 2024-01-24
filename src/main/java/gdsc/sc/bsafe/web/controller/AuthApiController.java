@@ -14,10 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Auth API", description = "회원가입 / 로그인 / 로그아웃 API")
 @RestController
@@ -49,11 +46,11 @@ public class AuthApiController {
         return SuccessResponse.ok(loginResponse);
     }
 
-    @Operation(summary = "로그아웃 API", description = "요청 성공 시 token이 폐기됩니다.")
+    @Operation(summary = "로그아웃 API", description = "요청 성공 시 token을 폐기해주세요.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
     })
-    @PostMapping("/logout")
+    @DeleteMapping("/logout")
     public ResponseEntity<SuccessResponse<?>> logout(@AuthenticationUser User user) {
         authService.logout(user.getUserId());
 
