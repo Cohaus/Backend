@@ -31,6 +31,7 @@ public class Repair extends BaseTimeEntity {
     @JoinColumn(name = "volunteer_id", nullable = false)
     private User volunteer;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RepairStatus status;
 

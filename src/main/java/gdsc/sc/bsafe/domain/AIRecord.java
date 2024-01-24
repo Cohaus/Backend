@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue("AI")
 public class AIRecord extends Record {
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Integer grade;
 
     @Builder
