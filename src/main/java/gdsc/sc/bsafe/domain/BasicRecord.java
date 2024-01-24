@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 public class BasicRecord extends Record {
 
     @Builder
-    public BasicRecord(User user, String image, String title, String detail){
-        super(user, image, title, detail);
+    public BasicRecord(User user, String image, String title, String detail, String category){
+        super(user, image, title, detail,category);
     }
 
 }
