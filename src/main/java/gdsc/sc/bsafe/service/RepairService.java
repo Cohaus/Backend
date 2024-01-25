@@ -1,5 +1,6 @@
 package gdsc.sc.bsafe.service;
 
+import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.enums.RepairStatus;
 import gdsc.sc.bsafe.domain.mapping.Repair;
 import gdsc.sc.bsafe.global.exception.CustomException;
@@ -23,10 +24,10 @@ public class RepairService {
     }
 
     @Transactional
-    public Repair createRepair(RepairRequest repairRequest) {
+    public Repair createRepair(Record record, RepairRequest repairRequest) {
 
         Repair repair = Repair.builder()
-                .record(repairRequest.getRecord())
+                .record(record)
                 .date(repairRequest.getDate())
                 .address(repairRequest.getAddress())
                 .district(repairRequest.getDistrict())
