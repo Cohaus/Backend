@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -57,4 +56,13 @@ public class Repair extends BaseTimeEntity {
         this.district = district;
         this.address = address;
     }
+
+    public void updateRepairStatus(RepairStatus status) {
+        this.status = status;
+    }
+
+    public void updateVolunteer(User user) {
+        this.volunteer = user;
+    }
+
 }

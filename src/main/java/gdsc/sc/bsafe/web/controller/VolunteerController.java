@@ -11,10 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,4 +32,18 @@ public class VolunteerController {
                                                             @Valid @RequestBody VolunteerUserRequest volunteerUserRequest) {
         return SuccessResponse.created(volunteerService.saveVolunteer(user, volunteerUserRequest));
     }
+
+    /*
+        수리 요청 자원봉사 신청 API
+     */
+    @Operation(summary = "수리 자원봉사 신청 API", description = "요청 성공 시 repair(수리 요청)의 pk를 반환합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
+    })
+    @PatchMapping("/repairs/{repairId}")
+    public ResponseEntity<SuccessResponse<?>> volunteerRepair(@AuthenticationUser User user,
+                                                              @PathVariable(name = "repairId") Long repairId) {
+        return SuccessResponse.created(volunteerService.volunteerRepair(user, repairId));
+    }
+
 }

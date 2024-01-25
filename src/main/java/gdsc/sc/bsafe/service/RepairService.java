@@ -2,6 +2,8 @@ package gdsc.sc.bsafe.service;
 
 import gdsc.sc.bsafe.domain.enums.RepairStatus;
 import gdsc.sc.bsafe.domain.mapping.Repair;
+import gdsc.sc.bsafe.global.exception.CustomException;
+import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
 import gdsc.sc.bsafe.repository.RepairRepository;
 import gdsc.sc.bsafe.web.dto.request.RepairRequest;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class RepairService {
 
     private final RepairRepository repairRepository;
+
+    public Repair findRepairByRepairId(Long repairId) {
+        return repairRepository.findById(repairId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REPAIR));
+    }
 
     @Transactional
     public Repair createRepair(RepairRequest repairRequest) {
@@ -30,4 +37,9 @@ public class RepairService {
         return repairRepository.save(repair);
     }
 
+    @Transactional
+    public void updateRepairStatus(Long repairId, RepairStatus status) {
+        Repair repair = findRepairByRepairId(repairId);
+        repair.updateRepairStatus(status);
+    }
 }
