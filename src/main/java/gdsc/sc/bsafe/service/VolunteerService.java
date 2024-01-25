@@ -47,7 +47,7 @@ public class VolunteerService {
 
     @Transactional
     public Long volunteerRepair(User user, Long repairId) {
-        Repair repair = repairService.findRepairByRepairId(repairId);
+        Repair repair = repairService.findByRepairId(repairId);
 
         updateVolunteer(user, repair);
         repairService.updateRepairStatus(repairId, RepairStatus.PROCEEDING);

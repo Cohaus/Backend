@@ -23,7 +23,7 @@ public class VolunteerController {
     /*
         봉사자 신청 API
      */
-    @Operation(summary = "봉사자 신청 API", description = "유저에게 봉사자 역할을 부여합니다. 요청 성공 시 user의 pk를 반환합니다.")
+    @Operation(summary = "설정 - 봉사자 신청 API", description = "유저에게 봉사자 역할을 부여합니다. 요청 성공 시 user의 pk를 반환합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "요청에 성공했습니다.")
     })
@@ -36,7 +36,7 @@ public class VolunteerController {
     /*
         수리 요청 자원봉사 신청 API
      */
-    @Operation(summary = "수리 자원봉사 신청 API", description = "요청 성공 시 repair(수리 요청)의 pk를 반환합니다.")
+    @Operation(summary = "상세 정보 - 수리 자원봉사 신청 API", description = "요청 성공 시 repair(수리 요청)의 pk를 반환합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
     })

@@ -1,5 +1,6 @@
 package gdsc.sc.bsafe.service;
 
+import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.enums.RepairStatus;
 import gdsc.sc.bsafe.domain.mapping.Repair;
 import gdsc.sc.bsafe.global.exception.CustomException;
@@ -17,20 +18,24 @@ public class RepairService {
 
     private final RepairRepository repairRepository;
 
-    public Repair findRepairByRepairId(Long repairId) {
+    public Repair findByRepairId(Long repairId) {
         return repairRepository.findById(repairId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REPAIR));
     }
 
+
     @Transactional
-    public Repair createRepair(RepairRequest repairRequest) {
+    public Repair createRepair(Record record, RepairRequest repairRequest) {
+        repairRepository.findByRecord(record).ifPresent(repair-> {
+            throw new CustomException(ErrorCode.DUPLICATED_REPAIR);
+        });
 
         Repair repair = Repair.builder()
-                .record(repairRequest.getRecord())
+                .record(record)
                 .date(repairRequest.getDate())
                 .address(repairRequest.getAddress())
                 .district(repairRequest.getDistrict())
-                .placeId(repairRequest.getPlaceId())
+                .placeId(repairRequest.getPlace_id())
                 .status(RepairStatus.REQUEST)
                 .build();
 
@@ -39,7 +44,7 @@ public class RepairService {
 
     @Transactional
     public void updateRepairStatus(Long repairId, RepairStatus status) {
-        Repair repair = findRepairByRepairId(repairId);
+        Repair repair = findByRepairId(repairId);
         repair.updateRepairStatus(status);
     }
 }
