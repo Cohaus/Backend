@@ -28,9 +28,10 @@ public class Repair extends BaseTimeEntity {
     private Record record;
 
     @ManyToOne
-    @JoinColumn(name = "volunteer_id", nullable = false)
+    @JoinColumn(name = "volunteer_id", nullable = true)
     private User volunteer;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RepairStatus status;
 

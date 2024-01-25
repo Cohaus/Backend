@@ -14,12 +14,12 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue("AI")
 public class AIRecord extends Record {
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Integer grade;
 
     @Builder
-    public AIRecord(User user, String image, String title, String detail,String category, Integer grade){
-        super(user, image, title, detail,category);
+    public AIRecord(User user, String image, String title, String detail, String category, Integer grade){
+        super(user, image, title, detail, category);
         this.grade = grade;
     }
 
