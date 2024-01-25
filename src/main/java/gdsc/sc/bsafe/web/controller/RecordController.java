@@ -21,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/records")
@@ -38,7 +40,7 @@ public class RecordController {
     //@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<SuccessResponse<?>> createSaveRecord(@Valid @RequestBody AIRecordRequest AIRecordRequest,
                                                                //@ModelAttribute MultipartFile file,//
-                                                               @AuthenticationUser User user){
+                                                               @AuthenticationUser User user) throws IOException {
         Long recordId = recordService.createAIRecord(AIRecordRequest, user).getRecordId();
         return SuccessResponse.created(recordId);
     }
