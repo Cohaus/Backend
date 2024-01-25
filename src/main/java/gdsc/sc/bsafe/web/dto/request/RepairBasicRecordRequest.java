@@ -14,9 +14,11 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RepairBasicRecordRequest {
+
     @Schema(description = "제목", example = "제목")
     @NotBlank
     String title;
+
     @Schema(description = "내용", example = "내용")
     @NotBlank
     String detail;
