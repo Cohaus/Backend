@@ -48,8 +48,8 @@ public class User extends BaseTimeEntity {
         this.authority = Authority.USER;
     }
 
-    public void updateUserAuthority() {
-        this.authority = Authority.VOLUNTEER;
+    public void updateUserAuthority(Authority authority) {
+        this.authority = authority;
     }
 
 }

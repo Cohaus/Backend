@@ -26,10 +26,7 @@ public class VolunteerService {
 
     @Transactional
     public Long saveVolunteer(User user, VolunteerUserRequest request) {
-        Volunteer volunteer = Volunteer.builder()
-                .user(user)
-                .type(VolunteerType.valueOf(request.getType()))
-                .build();
+        Volunteer volunteer = createVolunteer(user, VolunteerType.valueOf(request.getType()));
 
         String organizationName = request.getOrganization_name();
         if (organizationName != null && !organizationName.isEmpty()) {
@@ -38,7 +35,6 @@ public class VolunteerService {
         }
 
         Volunteer savedVolunteer = volunteerRepository.save(volunteer);
-        user.updateUserAuthority();
 
         return savedVolunteer.getUser().getUserId();
     }
@@ -51,6 +47,15 @@ public class VolunteerService {
         repairService.updateRepairStatus(repairId, RepairStatus.PROCEEDING);
 
         return repair.getRepairId();
+    }
+
+    private Volunteer createVolunteer(User user, VolunteerType type) {
+        user.updateUserAuthority(Authority.VOLUNTEER);
+
+        return Volunteer.builder()
+                .user(user)
+                .type(type)
+                .build();
     }
 
     private void updateVolunteer(User user, Repair repair) {
