@@ -7,7 +7,10 @@ import gdsc.sc.bsafe.domain.User;
 import gdsc.sc.bsafe.domain.mapping.Repair;
 import gdsc.sc.bsafe.global.exception.CustomException;
 import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
-import gdsc.sc.bsafe.repository.*;
+import gdsc.sc.bsafe.repository.AIRecordRepository;
+import gdsc.sc.bsafe.repository.BasicRecordRepository;
+import gdsc.sc.bsafe.repository.RecordRepository;
+import gdsc.sc.bsafe.repository.RepairRepository;
 import gdsc.sc.bsafe.web.dto.common.SliceResponse;
 import gdsc.sc.bsafe.web.dto.request.AIRecordRequest;
 import gdsc.sc.bsafe.web.dto.request.BasicRecordRequest;
@@ -20,54 +23,58 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class RecordService {
-    private final UserRepository userRepository;
+
+    private static final String AI_IMAGE_PATH = "records/ai";
+    private static final String BASIC_IMAGE_PATH = "records/basic";
+
     private final RecordRepository recordRepository;
     private final BasicRecordRepository basicRecordRepository;
     private final AIRecordRepository aiRecordRepository;
     private final RepairRepository repairRepository;
+    private final CloudStorageService cloudStorageService;
+
     public Record findById(Long recordId){
         return recordRepository.findById(recordId).orElseThrow(()->new CustomException(ErrorCode.NOT_FOUND_RECORD));
     }
 
     @Transactional
-    public Record createAIRecord(AIRecordRequest request, User user){
-        //
-        // 이미지 업로드
-        //
-        String imgUrl = "imgUrl";
+    public Record createAIRecord(AIRecordRequest request, User user) throws IOException {
+        String imagePath = cloudStorageService.uploadImage(request.getImage(), AI_IMAGE_PATH);
+
         AIRecord aiRecord = AIRecord.builder()
                 .title(request.getTitle())
                 .detail(request.getDetail())
                 .user(user)
                 .category(request.getCategory())
-                .image(imgUrl)
+                .image(imagePath)
                 .grade(request.getGrade())
                 .build();
-        Record record = aiRecordRepository.save(aiRecord);
-        return record;
+
+        return aiRecordRepository.save(aiRecord);
     }
+
     @Transactional
-    public Record createBasicRecord(BasicRecordRequest request, User user){
-        //
-        // 이미지 업로드
-        //
-        String imgUrl = "imgUrl";
+    public Record createBasicRecord(BasicRecordRequest request, User user) throws IOException {
+        String imagePath = cloudStorageService.uploadImage(request.getImage(), BASIC_IMAGE_PATH);
+
         BasicRecord basicRecord = BasicRecord.builder()
                 .title(request.getTitle())
                 .detail(request.getDetail())
                 .user(user)
                 .category(request.getCategory())
-                .image(imgUrl)
+                .image(imagePath)
                 .build();
-        Record record = basicRecordRepository.save(basicRecord);
-        return record;
+
+        return basicRecordRepository.save(basicRecord);
     }
+
     public SavedRecordResponse getSavedRecord(AIRecord record){
         return new SavedRecordResponse(record);
     }
@@ -84,11 +91,15 @@ public class RecordService {
         response.setRepair_record(repairRecords);
         return response;
     }
+
+    @Transactional
     public SavedRecordResponse updateRecord(AIRecord aiRecord, UpdateSavedRecordRequest request){
         aiRecord.updateSavedRecord(request.getTitle(), request.getDetail(), request.getCategory());
         AIRecord updatedRecord = aiRecordRepository.save(aiRecord);
         return new SavedRecordResponse(updatedRecord);
     }
+
+    @Transactional
     public Long deleteRecord(Record record) {
             Optional<Repair> repair = repairRepository.findByRecord(record);
             // 수리 신청한 경우
@@ -98,5 +109,6 @@ public class RecordService {
             // 기록 저장만 한 경우
             recordRepository.delete(record);
             return record.getRecordId();
-        }
+    }
+
 }

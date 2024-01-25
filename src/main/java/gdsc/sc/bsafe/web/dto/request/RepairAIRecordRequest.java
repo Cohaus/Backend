@@ -9,16 +9,21 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class RepairAIRecordRequest {
+
     @Schema(description = "제목", example = "제목")
     @NotBlank
     String title;
+
     @Schema(description = "내용", example = "내용")
     @NotBlank
     String detail;
@@ -49,5 +54,9 @@ public class RepairAIRecordRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @NotNull
     LocalDate date;
+
+    @Schema(description = "사진", example = "MultipartFile")
+    @NotNull
+    MultipartFile image;
 
 }
