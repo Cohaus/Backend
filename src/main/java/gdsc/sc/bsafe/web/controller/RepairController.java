@@ -16,10 +16,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -31,7 +28,7 @@ public class RepairController {
     private final RecordService recordService;
     private final RepairService repairService;
 
-    @Operation(summary = "수리 신청 API - AI", description = "요청 성공 시 기록과 수리 신청 pk 값을 반환합니다.")
+    @Operation(summary = "홈 - 수리 신청 API( AI )", description = "요청 성공 시 기록과 수리 신청 pk 값을 반환합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "요청에 성공했습니다.")
     })
@@ -59,7 +56,7 @@ public class RepairController {
         return SuccessResponse.created(new RepairIDResponse(record.getRecordId(), repair.getRepairId()));
     }
 
-    @Operation(summary = "수리 신청 API - BASIC", description = "요청 성공 시 기록과 수리 신청 pk 값을 반환합니다.")
+    @Operation(summary = "홈 - 수리 신청 API( BASIC )", description = "요청 성공 시 기록과 수리 신청 pk 값을 반환합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "요청에 성공했습니다.")
     })
@@ -85,5 +82,6 @@ public class RepairController {
 
         return SuccessResponse.created(new RepairIDResponse(record.getRecordId(), repair.getRepairId()));
     }
+
 
 }
