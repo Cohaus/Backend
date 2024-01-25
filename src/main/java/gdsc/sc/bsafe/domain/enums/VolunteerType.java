@@ -11,5 +11,9 @@ public enum VolunteerType {
     ORGANIZATION("기관 봉사자");
 
     private String description;
-    VolunteerType(String description){this.description=description;}
+
+    VolunteerType(String description) {
+        this.description = description;
+    }
+
 }

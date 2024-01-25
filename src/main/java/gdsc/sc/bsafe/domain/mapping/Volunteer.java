@@ -6,6 +6,7 @@ import gdsc.sc.bsafe.domain.common.BaseTimeEntity;
 import gdsc.sc.bsafe.domain.enums.VolunteerType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "volunteer")
 public class Volunteer extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "volunteer_id")
@@ -27,7 +29,17 @@ public class Volunteer extends BaseTimeEntity {
     private VolunteerType type;
 
     @ManyToOne
-    @JoinColumn(name = "organization_id", nullable = false)
+    @JoinColumn(name = "organization_id")
     private Organization organization;
+
+    @Builder
+    public Volunteer(User user, VolunteerType type) {
+        this.user = user;
+        this.type = type;
+    }
+
+    public void updateOrganization(Organization organization) {
+        this.organization = organization;
+    }
 
 }

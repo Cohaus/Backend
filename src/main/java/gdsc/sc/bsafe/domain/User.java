@@ -2,16 +2,12 @@ package gdsc.sc.bsafe.domain;
 
 import gdsc.sc.bsafe.domain.common.BaseTimeEntity;
 import gdsc.sc.bsafe.domain.enums.Authority;
-import gdsc.sc.bsafe.domain.mapping.Repair;
 import gdsc.sc.bsafe.global.security.Password;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -51,4 +47,9 @@ public class User extends BaseTimeEntity {
         this.name = name;
         this.authority = Authority.USER;
     }
+
+    public void updateUserAuthority() {
+        this.authority = Authority.VOLUNTEER;
+    }
+
 }
