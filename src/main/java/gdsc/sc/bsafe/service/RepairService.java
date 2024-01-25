@@ -18,13 +18,18 @@ public class RepairService {
 
     private final RepairRepository repairRepository;
 
-    public Repair findRepairByRepairId(Long repairId) {
+    public Repair findByRepairId(Long repairId) {
         return repairRepository.findById(repairId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REPAIR));
     }
 
+
     @Transactional
     public Repair createRepair(Record record, RepairRequest repairRequest) {
+        repairRepository.findByRecord(record).ifPresent(repair-> {
+            throw new CustomException(ErrorCode.DUPLICATED_REPAIR);
+        });
+
         Repair repair = Repair.builder()
                 .record(record)
                 .date(repairRequest.getDate())
@@ -39,7 +44,7 @@ public class RepairService {
 
     @Transactional
     public void updateRepairStatus(Long repairId, RepairStatus status) {
-        Repair repair = findRepairByRepairId(repairId);
+        Repair repair = findByRepairId(repairId);
         repair.updateRepairStatus(status);
     }
 }
