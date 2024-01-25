@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecordItemResponse {
+
     private Long record_id;
 
     private String user_id;
