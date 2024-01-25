@@ -29,9 +29,13 @@ public class RepairBasicRecordRequest {
     @NotBlank
     String place_id;
 
-    @Schema(description = "상세 정보", example = "성남시 수정구 성남대로 1342")
+    @Schema(description = "상세 주소", example = "성남시 수정구 성남대로 1342")
     @NotBlank
     String address;
+
+    @Schema(description = "행정 구역", example = "성남시 수정구 성남대로")
+    @NotBlank
+    String district;
 
     @Schema(description = "방문 희망일", example = "2024-01-01")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")

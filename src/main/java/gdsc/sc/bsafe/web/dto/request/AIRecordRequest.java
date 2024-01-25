@@ -1,6 +1,5 @@
 package gdsc.sc.bsafe.web.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -13,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SaveRecordRequest {
+public class AIRecordRequest {
 
     @Schema(description = "제목", example = "제목")
     @NotBlank
