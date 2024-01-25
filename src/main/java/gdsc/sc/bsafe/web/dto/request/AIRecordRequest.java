@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @NoArgsConstructor
@@ -31,5 +32,8 @@ public class AIRecordRequest {
     @Schema(description = "카테고리", example = "카테고리")
     @NotBlank
     String category;
+
+    @NotNull
+    MultipartFile image;
 
 }

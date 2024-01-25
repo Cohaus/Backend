@@ -10,6 +10,7 @@ public enum ErrorCode {
 
     // User exception
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다."),
+    NOT_VOLUNTEER_USER(HttpStatus.BAD_REQUEST, "봉사자 권한이 없는 유저입니다."),
 
     // Auth exception
     UNAUTHORIZED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "Refresh Token이 유효하지 않습니다."),
@@ -21,6 +22,10 @@ public enum ErrorCode {
 
     // Record exception
     NOT_FOUND_RECORD(HttpStatus.NOT_FOUND, "해당 기록을 찾을 수 없습니다."),
+
+    // Repair exception
+    NOT_FOUND_REPAIR(HttpStatus.NOT_FOUND, "해당 수리 요청을 찾을 수 없습니다."),
+
     ;
 
     private final HttpStatus httpStatus;
