@@ -25,13 +25,12 @@ public class RepairService {
 
     @Transactional
     public Repair createRepair(Record record, RepairRequest repairRequest) {
-
         Repair repair = Repair.builder()
                 .record(record)
                 .date(repairRequest.getDate())
                 .address(repairRequest.getAddress())
                 .district(repairRequest.getDistrict())
-                .placeId(repairRequest.getPlaceId())
+                .placeId(repairRequest.getPlace_id())
                 .status(RepairStatus.REQUEST)
                 .build();
 

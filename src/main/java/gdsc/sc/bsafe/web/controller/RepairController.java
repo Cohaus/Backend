@@ -107,7 +107,7 @@ public class RepairController {
             recordService.updateRecord(aiRecord, updateSavedRecordRequest);
             RepairRequest request = new RepairRequest(
                     repairRequest.getDate(),
-                    repairRequest.getPlaceId(),
+                    repairRequest.getPlace_id(),
                     repairRequest.getAddress(),
                     repairRequest.getDistrict()
             );
