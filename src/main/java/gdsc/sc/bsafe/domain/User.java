@@ -42,9 +42,6 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Authority authority = Authority.USER;
 
-    @OneToMany(mappedBy = "volunteer")
-    private List<Repair> repairList = new ArrayList<>();
-
     @Builder
     public User(String id, Password password, String email, String tel, String name) {
         this.id = id;
