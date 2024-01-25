@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateSavedRecordRequest {
+
     @Schema(description = "제목", example = "제목")
     String title;
 

@@ -33,9 +33,9 @@ public class RepairAIRecordRequest {
     String category;
 
     @Schema(title = "등급", description = "1 이상 10 이하의 자연수만 입력 가능합니다.")
-    @NotNull(message = "1이상 10이하의 자연수로 입력해야 합니다.")
-    @Min(value = 1, message = "1이상 10이하의 자연수로 입력해야 합니다.")
-    @Max(value = 10, message = "1이상 10이하의 자연수로 입력해야 합니다.")
+    @NotNull(message = "1 이상 10 이하의 자연수로 입력해야 합니다.")
+    @Min(value = 1, message = "1 이상 10 이하의 자연수로 입력해야 합니다.")
+    @Max(value = 10, message = "1 이상 10 이하의 자연수로 입력해야 합니다.")
     Integer grade;
 
     @Schema(description = "place_id")

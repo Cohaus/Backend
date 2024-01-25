@@ -1,5 +1,6 @@
 package gdsc.sc.bsafe.global.exception.enums;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,9 @@ public enum ErrorCode {
 
     ;
 
+    @Schema(description = "HTTP 응답 상태코드 (HttpStatus Code)", example = "404")
     private final HttpStatus httpStatus;
+
+    @Schema(description = "응답 메세지", example = "리소스를 찾을 수 없습니다.")
     private final String message;
 }
