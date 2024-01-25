@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @RequestMapping("/api/records")
 public class RecordController {
+
     private final RecordService recordService;
 
     /*
@@ -36,12 +38,11 @@ public class RecordController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "요청에 성공했습니다.")
     })
-    @PostMapping
-    //@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<SuccessResponse<?>> createSaveRecord(@Valid @RequestBody AIRecordRequest AIRecordRequest,
-                                                               //@ModelAttribute MultipartFile file,//
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<SuccessResponse<?>> createSaveRecord(@Valid @ModelAttribute AIRecordRequest AIRecordRequest,
                                                                @AuthenticationUser User user) throws IOException {
         Long recordId = recordService.createAIRecord(AIRecordRequest, user).getRecordId();
+
         return SuccessResponse.created(recordId);
     }
 

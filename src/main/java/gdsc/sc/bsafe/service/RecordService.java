@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class RecordService {
 
@@ -91,11 +91,15 @@ public class RecordService {
         response.setRepair_record(repairRecords);
         return response;
     }
+
+    @Transactional
     public SavedRecordResponse updateRecord(AIRecord aiRecord, UpdateSavedRecordRequest request){
         aiRecord.updateSavedRecord(request.getTitle(), request.getDetail(), request.getCategory());
         AIRecord updatedRecord = aiRecordRepository.save(aiRecord);
         return new SavedRecordResponse(updatedRecord);
     }
+
+    @Transactional
     public Long deleteRecord(Record record) {
             Optional<Repair> repair = repairRepository.findByRecord(record);
             // 수리 신청한 경우
@@ -105,5 +109,6 @@ public class RecordService {
             // 기록 저장만 한 경우
             recordRepository.delete(record);
             return record.getRecordId();
-        }
+    }
+
 }
