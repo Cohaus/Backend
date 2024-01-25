@@ -55,7 +55,7 @@ public class RepairAIRecordRequest {
     @NotNull
     LocalDate date;
 
-    @Schema(description = "사진", example = "records/ai/...")
+    @Schema(description = "사진", example = "MultipartFile")
     @NotNull
     MultipartFile image;
 

@@ -2,6 +2,7 @@ package gdsc.sc.bsafe.repository;
 
 import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.User;
+import gdsc.sc.bsafe.domain.enums.RepairStatus;
 import gdsc.sc.bsafe.domain.mapping.Repair;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,7 @@ public interface RepairRepository extends JpaRepository<Repair, Long> {
     void delete(Repair repair);
 
     Slice<Repair> findAllByRecord_User(User user);
+
+    Slice<Repair> getByVolunteerAndStatus(User user, RepairStatus status);
+
 }

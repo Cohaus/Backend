@@ -9,9 +9,14 @@ import gdsc.sc.bsafe.domain.mapping.Repair;
 import gdsc.sc.bsafe.domain.mapping.Volunteer;
 import gdsc.sc.bsafe.global.exception.CustomException;
 import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
+import gdsc.sc.bsafe.repository.RepairRepository;
 import gdsc.sc.bsafe.repository.VolunteerRepository;
+import gdsc.sc.bsafe.web.dto.common.SliceResponse;
 import gdsc.sc.bsafe.web.dto.request.VolunteerUserRequest;
+import gdsc.sc.bsafe.web.dto.response.RepairItemResponse;
+import gdsc.sc.bsafe.web.dto.response.VolunteerRepairListResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class VolunteerService {
 
     private final VolunteerRepository volunteerRepository;
+    private final RepairRepository repairRepository;
     private final OrganizationService organizationService;
     private final RepairService repairService;
 
@@ -47,6 +53,20 @@ public class VolunteerService {
         repairService.updateRepairStatus(repairId, RepairStatus.PROCEEDING);
 
         return repair.getRepairId();
+    }
+
+    public VolunteerRepairListResponse getVolunteerRepairList(User user) {
+        Slice<Repair> proceedingRepairs = repairRepository.getByVolunteerAndStatus(user, RepairStatus.PROCEEDING);
+        SliceResponse<RepairItemResponse> proceedingRepairsList = new SliceResponse<>(proceedingRepairs.map(RepairItemResponse::new));
+
+        Slice<Repair> completeRepairs = repairRepository.getByVolunteerAndStatus(user, RepairStatus.COMPLETE);
+        SliceResponse<RepairItemResponse> completeRepairsList = new SliceResponse<>(completeRepairs.map(RepairItemResponse::new));
+
+        VolunteerRepairListResponse response= new VolunteerRepairListResponse();
+        response.setProceeding_repair(proceedingRepairsList);
+        response.setComplete_repair(completeRepairsList);
+
+        return response;
     }
 
     private Volunteer createVolunteer(User user, VolunteerType type) {

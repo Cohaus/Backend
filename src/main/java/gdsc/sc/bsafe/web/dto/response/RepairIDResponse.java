@@ -13,7 +13,7 @@ public class RepairIDResponse {
     @Schema(description = "저장 기록 pk", example = "1")
     private Long record_id;
 
-    @Schema(description = "수리 신청 pk", example = "1")
+    @Schema(description = "수리 기록 pk", example = "1")
     private Long repair_id;
 
 }

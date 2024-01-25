@@ -46,4 +46,16 @@ public class VolunteerController {
         return SuccessResponse.created(volunteerService.volunteerRepair(user, repairId));
     }
 
+    /*
+        봉사자 프로필 - 봉사 목록 조회하기
+     */
+    @Operation(summary = "프로필 - 봉사 목록 전체 조회 API", description = "봉사자 유저의 Profile 메뉴에서 전체 봉사 목록을 보여줍니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
+    })
+    @GetMapping("/repairs")
+    public ResponseEntity<SuccessResponse<?>> getVolunteerRepairList(@AuthenticationUser User user){
+        return SuccessResponse.ok(volunteerService.getVolunteerRepairList(user));
+    }
+
 }
