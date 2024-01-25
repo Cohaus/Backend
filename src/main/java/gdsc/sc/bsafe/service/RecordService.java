@@ -1,19 +1,18 @@
 package gdsc.sc.bsafe.service;
 
 import gdsc.sc.bsafe.domain.AIRecord;
+import gdsc.sc.bsafe.domain.BasicRecord;
 import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.User;
 import gdsc.sc.bsafe.domain.mapping.Repair;
 import gdsc.sc.bsafe.global.exception.CustomException;
 import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
-import gdsc.sc.bsafe.repository.AIRecordRepository;
-import gdsc.sc.bsafe.repository.RecordRepository;
-import gdsc.sc.bsafe.repository.RepairRepository;
-import gdsc.sc.bsafe.repository.UserRepository;
+import gdsc.sc.bsafe.repository.*;
 import gdsc.sc.bsafe.web.dto.common.SliceResponse;
-import gdsc.sc.bsafe.web.dto.request.SaveRecordRequest;
+import gdsc.sc.bsafe.web.dto.request.AIRecordRequest;
+import gdsc.sc.bsafe.web.dto.request.BasicRecordRequest;
 import gdsc.sc.bsafe.web.dto.request.UpdateSavedRecordRequest;
-import gdsc.sc.bsafe.web.dto.response.RecordResponse;
+import gdsc.sc.bsafe.web.dto.response.RecordItemResponse;
 import gdsc.sc.bsafe.web.dto.response.SavedRecordResponse;
 import gdsc.sc.bsafe.web.dto.response.UserRecordListResponse;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +28,7 @@ import java.util.Optional;
 public class RecordService {
     private final UserRepository userRepository;
     private final RecordRepository recordRepository;
+    private final BasicRecordRepository basicRecordRepository;
     private final AIRecordRepository aiRecordRepository;
     private final RepairRepository repairRepository;
     public Record findById(Long recordId){
@@ -36,7 +36,7 @@ public class RecordService {
     }
 
     @Transactional
-    public Long createSaveRecord(SaveRecordRequest request, User user){
+    public Record createAIRecord(AIRecordRequest request, User user){
         //
         // 이미지 업로드
         //
@@ -49,8 +49,24 @@ public class RecordService {
                 .image(imgUrl)
                 .grade(request.getGrade())
                 .build();
-        Long recordId = aiRecordRepository.save(aiRecord).getRecordId();
-        return recordId;
+        Record record = aiRecordRepository.save(aiRecord);
+        return record;
+    }
+    @Transactional
+    public Record createBasicRecord(BasicRecordRequest request, User user){
+        //
+        // 이미지 업로드
+        //
+        String imgUrl = "imgUrl";
+        BasicRecord basicRecord = BasicRecord.builder()
+                .title(request.getTitle())
+                .detail(request.getDetail())
+                .user(user)
+                .category(request.getCategory())
+                .image(imgUrl)
+                .build();
+        Record record = basicRecordRepository.save(basicRecord);
+        return record;
     }
     public SavedRecordResponse getSavedRecord(AIRecord record){
         return new SavedRecordResponse(record);
@@ -58,14 +74,14 @@ public class RecordService {
 
     public UserRecordListResponse getUserRecords(User user){
         Slice<AIRecord> savedRecordList = aiRecordRepository.getAIRecordsByUser(user);
-        SliceResponse<RecordResponse> savedRecords =  new SliceResponse<>(savedRecordList.map(RecordResponse::new));
+        SliceResponse<RecordItemResponse> savedRecords =  new SliceResponse<>(savedRecordList.map(RecordItemResponse::new));
 
         Slice<Record> repairRecordList = repairRepository.findAllByRecord_User(user).map(Repair::getRecord);
-        SliceResponse<RecordResponse> repairRecords = new SliceResponse<>(repairRecordList.map(RecordResponse::new));
+        SliceResponse<RecordItemResponse> repairRecords  = new SliceResponse<>(repairRecordList.map(RecordItemResponse::new)) ;
 
         UserRecordListResponse response= new UserRecordListResponse();
-        response.setSavedRecord(savedRecords);
-        response.setRepairRecord(repairRecords);
+        response.setSaved_record(savedRecords);
+        response.setRepair_record(repairRecords);
         return response;
     }
     public SavedRecordResponse updateRecord(AIRecord aiRecord, UpdateSavedRecordRequest request){

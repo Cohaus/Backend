@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 public class RepairResponse {
     private Long record_id;
 
+    private Long repair_id;
+
     private String user_id;
 
     private String image;
@@ -33,17 +35,4 @@ public class RepairResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime updated_at;
 
-    public RepairResponse(Record record) {
-        this.record_id = record.getRecordId();
-        this.user_id = record.getUser().getId();
-        this.image = record.getImage();
-        this.title = record.getTitle();
-        this.detail = record.getDetail();
-        this.category = record.getCategory();
-        if(record instanceof AIRecord){
-            this.grade = ((AIRecord) record).getGrade();
-        }
-        this.created_at = record.getCreatedAt();
-        this.updated_at = record.getUpdatedAt();
-    }
 }

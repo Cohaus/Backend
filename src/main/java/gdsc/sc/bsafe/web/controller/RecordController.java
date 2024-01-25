@@ -9,7 +9,7 @@ import gdsc.sc.bsafe.global.exception.CustomException;
 import gdsc.sc.bsafe.global.exception.ErrorResponse;
 import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
 import gdsc.sc.bsafe.service.RecordService;
-import gdsc.sc.bsafe.web.dto.request.SaveRecordRequest;
+import gdsc.sc.bsafe.web.dto.request.AIRecordRequest;
 import gdsc.sc.bsafe.web.dto.request.UpdateSavedRecordRequest;
 import gdsc.sc.bsafe.web.dto.response.SavedRecordResponse;
 import gdsc.sc.bsafe.web.dto.response.UserRecordListResponse;
@@ -32,14 +32,14 @@ public class RecordController {
      */
     @Operation(summary = "기록 저장 API", description = "요청 성공 시 기록의 pk 값을 반환합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
+            @ApiResponse(responseCode = "201", description = "요청에 성공했습니다.")
     })
     @PostMapping
     //@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<SuccessResponse<?>> createSaveRecord(@RequestBody SaveRecordRequest saveRecordRequest,
+    public ResponseEntity<SuccessResponse<?>> createSaveRecord(@Valid @RequestBody AIRecordRequest AIRecordRequest,
                                                                //@ModelAttribute MultipartFile file,//
-                                                               @Valid @AuthenticationUser User user){
-        Long recordId = recordService.createSaveRecord(saveRecordRequest, user);
+                                                               @AuthenticationUser User user){
+        Long recordId = recordService.createAIRecord(AIRecordRequest, user).getRecordId();
         return SuccessResponse.created(recordId);
     }
 
@@ -88,7 +88,7 @@ public class RecordController {
     /*
         저장/수리신청 기록 삭제하기
      */
-    @Operation(summary = "저장 기록 수정 API", description = "요청 성공 시 삭제된 기록의 pk 값을 반환합니다.")
+    @Operation(summary = "저장/수리신청 기록 삭제 API", description = "요청 성공 시 삭제된 기록의 pk 값을 반환합니다.")
     @DeleteMapping(value = "/{recordId}")
     public ResponseEntity<?> deleteRecord(@PathVariable Long recordId,
                                           @AuthenticationUser User user){

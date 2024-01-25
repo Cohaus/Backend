@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecordResponse {
+public class RecordItemResponse {
     private Long record_id;
 
     private String user_id;
@@ -33,7 +33,7 @@ public class RecordResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime updated_at;
 
-    public RecordResponse(Record record) {
+    public RecordItemResponse(Record record) {
         this.record_id = record.getRecordId();
         this.user_id = record.getUser().getId();
         this.image = record.getImage();

@@ -12,9 +12,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserRecordListResponse {
 
-    private SliceResponse<RecordResponse> repair_record ;
+    private SliceResponse<RecordItemResponse> repair_record ;
 
-    private SliceResponse<RecordResponse> saved_record ;
+    private SliceResponse<RecordItemResponse> saved_record ;
 
 }
 
