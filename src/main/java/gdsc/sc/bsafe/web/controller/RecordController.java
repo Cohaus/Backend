@@ -48,7 +48,7 @@ public class RecordController {
     /*
         저장된 기록 1개 조회하기
      */
-    @Operation(summary = "프로필 - 저장된 1개의 기록 조회 API")
+    @Operation(summary = "마이페이지 - 저장된 1개의 기록 조회 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
     })
