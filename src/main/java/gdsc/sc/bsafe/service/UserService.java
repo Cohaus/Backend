@@ -17,4 +17,9 @@ public class UserService {
     public User findById(Long userId){
         return userRepository.findById(userId).orElseThrow(()->new CustomException(ErrorCode.NOT_FOUND_USER));
     }
+
+    @Transactional
+    public void withdrawUser(Long userId) {
+        userRepository.deleteById(userId);
+    }
 }
