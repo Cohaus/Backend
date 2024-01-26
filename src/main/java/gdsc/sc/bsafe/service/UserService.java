@@ -34,36 +34,25 @@ public class UserService {
     public UpdateUserInfoResponse updateUserInfo(User user, UpdateUserInfoRequest request) {
         User requestUser = findById(user.getUserId());
         String userAuthority = request.getUser_authority();
+        String userVolunteerType = request.getVolunteer_type();
+
         String volunteerType = null;
         String organizationName = null;
 
         switch (Authority.valueOf(userAuthority)) {
             case USER:
-                requestUser.updateUserInfo(request.getName(), request.getId(), request.getEmail(), request.getTel(), Authority.USER);
+                handleUserUpdate(requestUser, request);
                 break;
             case VOLUNTEER:
-                if (VolunteerType.SINGLE.toString().equals(request.getVolunteer_type())) {
-                    requestUser.updateUserInfo(request.getName(), request.getId(), request.getEmail(), request.getTel(), Authority.VOLUNTEER);
-                    Optional<Volunteer> volunteer = volunteerRepository.findByUser(requestUser);
-                    volunteer.ifPresentOrElse(
-                            volunteerUser -> volunteerUser.updateVolunteerType(VolunteerType.SINGLE),
-                            () -> volunteerRepository.save(Volunteer.builder().user(requestUser).type(VolunteerType.SINGLE).build())
-                    );
+                if (VolunteerType.SINGLE.toString().equals(userVolunteerType)) {
+                    handleSingleVolunteerUpdate(requestUser, request);
                     volunteerType = VolunteerType.SINGLE.toString();
-                } else if (VolunteerType.ORGANIZATION.toString().equals(request.getVolunteer_type())) {
-                    requestUser.updateUserInfo(request.getName(), request.getId(), request.getEmail(), request.getTel(), Authority.VOLUNTEER);
-                    Optional<Volunteer> volunteer = volunteerRepository.findByUser(requestUser);
-                    volunteer.ifPresentOrElse(
-                            volunteerUser -> volunteerUser.updateVolunteerType(VolunteerType.ORGANIZATION),
-                            () -> volunteerRepository.save(Volunteer.builder().user(requestUser).type(VolunteerType.ORGANIZATION).build())
-                    );
-                    volunteer.ifPresent(vol -> volunteerService.updateVolunteerOrganization(vol, request.getOrganization_name()));
+                } else if (VolunteerType.ORGANIZATION.toString().equals(userVolunteerType)) {
+                    handleOrganizationVolunteerUpdate(requestUser, request);
                     volunteerType = VolunteerType.ORGANIZATION.toString();
                     organizationName = request.getOrganization_name();
                 }
                 break;
-            default:
-                throw new IllegalArgumentException("Invalid user authority: " + userAuthority);
         }
 
         return new UpdateUserInfoResponse(
@@ -81,4 +70,35 @@ public class UserService {
     public void withdrawUser(Long userId) {
         userRepository.deleteById(userId);
     }
+
+    private void handleUserUpdate(User user, UpdateUserInfoRequest request) {
+        user.updateUserInfo(request.getName(), request.getId(), request.getEmail(), request.getTel(), Authority.USER);
+    }
+
+    private void handleSingleVolunteerUpdate(User user, UpdateUserInfoRequest request) {
+        user.updateUserInfo(request.getName(), request.getId(), request.getEmail(), request.getTel(), Authority.VOLUNTEER);
+
+        Optional<Volunteer> volunteer = volunteerRepository.findByUser(user);
+        volunteer.ifPresentOrElse(
+                volunteerUser -> volunteerUser.updateVolunteerType(VolunteerType.SINGLE),
+                () -> volunteerRepository.save(Volunteer.builder().user(user).type(VolunteerType.SINGLE).build())
+        );
+    }
+
+    private void handleOrganizationVolunteerUpdate(User user, UpdateUserInfoRequest request) {
+        user.updateUserInfo(request.getName(), request.getId(), request.getEmail(), request.getTel(), Authority.VOLUNTEER);
+
+        Optional<Volunteer> volunteer = volunteerRepository.findByUser(user);
+        volunteer.ifPresentOrElse(
+                volunteerUser -> volunteerUser.updateVolunteerType(VolunteerType.ORGANIZATION),
+                () -> volunteerRepository.save(
+                        Volunteer.builder()
+                                .user(user)
+                                .type(VolunteerType.ORGANIZATION)
+                                .build()
+                )
+        );
+        volunteer.ifPresent(vol -> volunteerService.updateVolunteerOrganization(vol, request.getOrganization_name()));
+    }
+
 }
