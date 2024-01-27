@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/my-page")
+@RequestMapping("")
 public class UserController {
     private final RecordService recordService;
     private final UserService userService;
@@ -28,7 +28,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
     })
-    @GetMapping()
+    @GetMapping("/my-page")
     public ResponseEntity<SuccessResponse<?>> getUserInfo(@AuthenticationUser User user){
         return SuccessResponse.ok(userService.getUserInfo(user));
     }
@@ -40,7 +40,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
     })
-    @GetMapping("/records")
+    @GetMapping("/my-page/records")
     public ResponseEntity<SuccessResponse<?>> getMyRecordList(@AuthenticationUser User user){
         UserRecordListResponse userRecordListResponse = recordService.getUserRecords(user);
         return SuccessResponse.ok(userRecordListResponse);
