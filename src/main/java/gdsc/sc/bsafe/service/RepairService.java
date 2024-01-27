@@ -1,5 +1,6 @@
 package gdsc.sc.bsafe.service;
 
+import gdsc.sc.bsafe.domain.District;
 import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.enums.RepairStatus;
 import gdsc.sc.bsafe.domain.mapping.Repair;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RepairService {
 
     private final RepairRepository repairRepository;
+    private final DistrictService districtService;
 
     public Repair findByRepairId(Long repairId) {
         return repairRepository.findById(repairId)
@@ -30,6 +32,9 @@ public class RepairService {
             throw new CustomException(ErrorCode.DUPLICATED_REPAIR);
         });
 
+        String[] district = repairRequest.getDistrict().split(" ");
+        District legalDistrict = districtService.findDistrictByGuAndDong(district);
+
         Repair repair = Repair.builder()
                 .record(record)
                 .date(repairRequest.getDate())
@@ -37,6 +42,7 @@ public class RepairService {
                 .district(repairRequest.getDistrict())
                 .placeId(repairRequest.getPlace_id())
                 .status(RepairStatus.REQUEST)
+                .legalDistrict(legalDistrict)
                 .build();
 
         return repairRepository.save(repair);

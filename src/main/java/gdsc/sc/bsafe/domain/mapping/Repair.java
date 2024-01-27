@@ -1,5 +1,6 @@
 package gdsc.sc.bsafe.domain.mapping;
 
+import gdsc.sc.bsafe.domain.District;
 import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.User;
 import gdsc.sc.bsafe.domain.common.BaseTimeEntity;
@@ -46,8 +47,12 @@ public class Repair extends BaseTimeEntity {
     @Column(nullable = false)
     private String address;
 
+    @ManyToOne
+    @JoinColumn(name = "district_id")
+    private District legalDistrict;
+
     @Builder
-    public Repair(Record record, User volunteer, RepairStatus status, LocalDate date, String placeId, String district, String address) {
+    public Repair(Record record, User volunteer, RepairStatus status, LocalDate date, String placeId, String district, String address, District legalDistrict) {
         this.record = record;
         this.volunteer = volunteer;
         this.status = status;
@@ -55,6 +60,7 @@ public class Repair extends BaseTimeEntity {
         this.placeId = placeId;
         this.district = district;
         this.address = address;
+        this.legalDistrict = legalDistrict;
     }
 
     public void updateRepairStatus(RepairStatus status) {
