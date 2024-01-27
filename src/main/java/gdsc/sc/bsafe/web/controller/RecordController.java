@@ -12,7 +12,6 @@ import gdsc.sc.bsafe.service.RecordService;
 import gdsc.sc.bsafe.web.dto.request.AIRecordRequest;
 import gdsc.sc.bsafe.web.dto.request.UpdateSavedRecordRequest;
 import gdsc.sc.bsafe.web.dto.response.SavedRecordResponse;
-import gdsc.sc.bsafe.web.dto.response.UserRecordListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -49,7 +48,7 @@ public class RecordController {
     /*
         저장된 기록 1개 조회하기
      */
-    @Operation(summary = "프로필 - 저장된 1개의 기록 조회 API")
+    @Operation(summary = "마이페이지 - 저장된 1개의 기록 조회 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
     })
@@ -60,18 +59,7 @@ public class RecordController {
         SavedRecordResponse savedRecordResponse = recordService.getSavedRecord(aiRecord);
         return SuccessResponse.ok(savedRecordResponse);
     }
-    /*
-        프로필 기록 목록 조회하기
-     */
-    @Operation(summary = "프로필 - 기록 목록 조회 API", description = "마이페이지의 기록 목록들을 보여줍니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
-    })
-    @GetMapping
-    public ResponseEntity<SuccessResponse<?>> getMyRecordList(@AuthenticationUser User user){
-        UserRecordListResponse userRecordListResponse = recordService.getUserRecords(user);
-        return SuccessResponse.ok(userRecordListResponse);
-    }
+
     /*
         저장 기록 수정하기
      */

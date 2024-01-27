@@ -10,6 +10,7 @@ import gdsc.sc.bsafe.repository.UserRepository;
 import gdsc.sc.bsafe.repository.VolunteerRepository;
 import gdsc.sc.bsafe.web.dto.request.UpdateUserInfoRequest;
 import gdsc.sc.bsafe.web.dto.response.UpdateUserInfoResponse;
+import gdsc.sc.bsafe.web.dto.response.UserInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,10 @@ public class UserService {
     public User findById(Long userId){
         return userRepository.findByUserId(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+    }
+
+    public UserInfoResponse getUserInfo(User user){
+        return new UserInfoResponse(user);
     }
 
     @Transactional
