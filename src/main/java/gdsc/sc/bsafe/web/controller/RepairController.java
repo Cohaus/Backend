@@ -135,7 +135,7 @@ public class RepairController {
     /*
         수리 신청 정보 조회
      */
-    @Operation(summary = "수리 신청 정보 화면 - 수리 신청 정보 조회 API(봉사자 화면)", description = "수리 신청된 기록의 수리 신청 정보를 조회합니다.")
+    @Operation(summary = "수리 신청 정보 화면 - 수리 신청 정보 조회 API ", description = "수리 신청된 기록의 신청 정보를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
     })
