@@ -13,6 +13,8 @@ import gdsc.sc.bsafe.service.RecordService;
 import gdsc.sc.bsafe.service.RepairService;
 import gdsc.sc.bsafe.web.dto.request.*;
 import gdsc.sc.bsafe.web.dto.response.RepairIDResponse;
+import gdsc.sc.bsafe.web.dto.response.RepairInfoResponse;
+import gdsc.sc.bsafe.web.dto.response.RepairRecordResponse;
 import gdsc.sc.bsafe.web.dto.response.SavedRecordResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -95,7 +97,7 @@ public class RepairController {
     /*
         저장된 기록을 수리 신청하기
      */
-    @Operation(summary = "상세 정보 - 수리 신청 API( AI )", description = "저장된 기록을 수리 신청합니다. 요청 성공 시 기록과 수리 신청 pk 값을 반환합니다.")
+    @Operation(summary = "상세 화면 - 수리 신청 API( AI )", description = "저장된 기록을 수리 신청합니다. 요청 성공 시 기록과 수리 신청 pk 값을 반환합니다.")
     @PutMapping(value ="/ai")
     public ResponseEntity<?> createRepair(@RequestParam(value = "id") Long recordId,
                                                            @Valid @RequestBody RepairRequest repairRequest,
@@ -116,6 +118,32 @@ public class RepairController {
         }
         else return ErrorResponse.toResponseEntity(new CustomException(ErrorCode.INVALID_PERMISSION));
     }
-
-
+    /*
+        수리 신청 기록 1개 조회
+     */
+    @Operation(summary = "상세 화면 - 수리 신청 기록 1개 조회 API", description = "수리 신청된 기록 1개를 조회합니다. BASIC 기록일 경우 grade 값을 null로 반환합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
+    })
+    @GetMapping(value = "/{repairId}")
+    public ResponseEntity<SuccessResponse<?>> getRepairRecord(@PathVariable Long repairId,
+                                                              @AuthenticationUser User user){
+        Repair repair = repairService.findByRepairId(repairId);
+        RepairRecordResponse repairRecordResponse = repairService.getRepairRecord(repair);
+        return SuccessResponse.ok(repairRecordResponse);
+    }
+    /*
+        수리 신청 정보 조회
+     */
+    @Operation(summary = "수리 신청 정보 화면 - 수리 신청 정보 조회 API(봉사자 화면)", description = "수리 신청된 기록의 수리 신청 정보를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
+    })
+    @GetMapping(value = "/{repairId}/info")
+    public ResponseEntity<SuccessResponse<?>> getRepairInfo(@PathVariable Long repairId,
+                                                            @AuthenticationUser User user){
+        Repair repair = repairService.findByRepairId(repairId);
+        RepairInfoResponse repairInfoResponse = repairService.getRepairInfo(repair);
+        return SuccessResponse.ok(repairInfoResponse);
+    }
 }
