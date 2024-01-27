@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/images")
+@RequestMapping("/images")
 public class CloudStorageApiController {
 
     private final CloudStorageService cloudStorageService;

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/volunteers")
+@RequestMapping("/volunteers")
 public class VolunteerController {
 
     private final VolunteerService volunteerService;

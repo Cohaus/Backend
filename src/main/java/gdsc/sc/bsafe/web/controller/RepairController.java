@@ -31,7 +31,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/repairs")
+@RequestMapping("/repairs")
 public class RepairController {
 
     private final RecordService recordService;

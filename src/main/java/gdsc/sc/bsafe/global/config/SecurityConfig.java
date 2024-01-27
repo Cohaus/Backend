@@ -23,9 +23,9 @@ public class SecurityConfig {
 
     private static final String[] WHITE_LIST_URL = {
             // application
-            "/api/auth/sign-up",
-            "/api/auth/login",
-            "/api/images",
+            "/auth/sign-up",
+            "/auth/login",
+            "/images",
             "/", "/error",
 
             // gcs
