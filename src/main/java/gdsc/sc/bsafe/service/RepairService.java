@@ -2,12 +2,15 @@ package gdsc.sc.bsafe.service;
 
 import gdsc.sc.bsafe.domain.District;
 import gdsc.sc.bsafe.domain.Record;
+import gdsc.sc.bsafe.domain.User;
 import gdsc.sc.bsafe.domain.enums.RepairStatus;
 import gdsc.sc.bsafe.domain.mapping.Repair;
 import gdsc.sc.bsafe.global.exception.CustomException;
 import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
 import gdsc.sc.bsafe.repository.RepairRepository;
 import gdsc.sc.bsafe.web.dto.request.RepairRequest;
+import gdsc.sc.bsafe.web.dto.response.RepairInfoResponse;
+import gdsc.sc.bsafe.web.dto.response.RepairRecordResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +27,6 @@ public class RepairService {
         return repairRepository.findById(repairId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REPAIR));
     }
-
 
     @Transactional
     public Repair createRepair(Record record, RepairRequest repairRequest) {
@@ -53,4 +55,26 @@ public class RepairService {
         Repair repair = findByRepairId(repairId);
         repair.updateRepairStatus(status);
     }
+
+    public RepairRecordResponse getRepairRecord(Repair repair){
+        String district = repair.getDistrict();
+        RepairRecordResponse repairRecordResponse = new RepairRecordResponse(repair.getRecord(), district);
+        return repairRecordResponse;
+    }
+
+    public RepairInfoResponse getRepairInfo(Repair repair){
+        String category = repair.getRecord().getCategory();
+        User user = repair.getRecord().getUser();
+        User volunteer = repair.getVolunteer();
+        Long volunteerId = null;
+        String volunteerName = null;
+        String volunteerTel = null;
+        if(volunteer != null){
+            volunteerId = volunteer.getUserId();
+            volunteerName = volunteer.getName();
+            volunteerTel = volunteer.getTel();
+        }
+        return new RepairInfoResponse(repair,category,user,volunteerId,volunteerName,volunteerTel);
+    }
+
 }
