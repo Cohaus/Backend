@@ -48,7 +48,7 @@ public class RecordController {
     /*
         저장된 기록 1개 조회하기
      */
-    @Operation(summary = "마이페이지 - 저장된 1개의 기록 조회 API")
+    @Operation(summary = "저장된 1개의 기록 조회 API", description = "저장된 1개의 기록을 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
     })
@@ -63,7 +63,7 @@ public class RecordController {
     /*
         저장 기록 수정하기
      */
-    @Operation(summary = "상세화면 - 저장 기록 수정 API", description = "요청 성공 시 수정된 결과를 반환합니다.")
+    @Operation(summary = "상세 화면 - 저장 기록 수정 API", description = "요청 성공 시 수정된 결과를 반환합니다.")
     @PatchMapping(value = "/{recordId}")
     public ResponseEntity<?> updateSavedRecord(@PathVariable Long recordId,
                                                @Valid @RequestBody UpdateSavedRecordRequest updateSavedRecordRequest,
@@ -79,7 +79,7 @@ public class RecordController {
     /*
         저장/수리신청 기록 삭제하기
      */
-    @Operation(summary = "상세화면 - 저장/수리신청 기록 삭제 API", description = "요청 성공 시 삭제된 기록의 pk 값을 반환합니다.")
+    @Operation(summary = "상세 화면 - 저장/ 수리신청 기록 삭제 API", description = "요청 성공 시 삭제된 기록의 pk 값을 반환합니다.")
     @DeleteMapping(value = "/{recordId}")
     public ResponseEntity<?> deleteRecord(@PathVariable Long recordId,
                                           @AuthenticationUser User user){

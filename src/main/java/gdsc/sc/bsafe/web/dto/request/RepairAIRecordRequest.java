@@ -46,7 +46,7 @@ public class RepairAIRecordRequest {
     @NotBlank
     String address;
 
-    @Schema(description = "상세 정보", example = "성남시 수정구 성남대로")
+    @Schema(description = "상세 화면", example = "성남시 수정구 성남대로")
     @NotBlank
     String district;
 
