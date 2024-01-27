@@ -1,5 +1,6 @@
 package gdsc.sc.bsafe.web.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import gdsc.sc.bsafe.domain.mapping.Repair;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -27,6 +29,12 @@ public class RepairItemResponse {
 
     @Schema(description = "방문 희망일", example = "2024-01-25")
     private LocalDate date;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime created_at;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime updated_at;
 
     public RepairItemResponse(Repair repair) {
         this.repair_id = repair.getRepairId();
