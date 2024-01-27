@@ -35,10 +35,7 @@ public class VolunteerService {
         Volunteer volunteer = createVolunteer(user, VolunteerType.valueOf(request.getType()));
 
         String organizationName = request.getOrganization_name();
-        if (organizationName != null && !organizationName.isEmpty()) {
-            Organization organization = organizationService.findOrCreateOrganization(organizationName);
-            volunteer.updateOrganization(organization);
-        }
+        updateVolunteerOrganization(volunteer, organizationName);
 
         Volunteer savedVolunteer = volunteerRepository.save(volunteer);
 
@@ -67,6 +64,14 @@ public class VolunteerService {
         response.setComplete_repair(completeRepairsList);
 
         return response;
+    }
+
+    @Transactional
+    public void updateVolunteerOrganization(Volunteer volunteer, String organizationName) {
+        if (organizationName != null && !organizationName.isEmpty()) {
+            Organization organization = organizationService.findOrCreateOrganization(organizationName);
+            volunteer.updateOrganization(organization);
+        }
     }
 
     private Volunteer createVolunteer(User user, VolunteerType type) {

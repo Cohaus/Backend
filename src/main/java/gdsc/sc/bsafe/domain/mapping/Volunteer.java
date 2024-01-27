@@ -42,4 +42,8 @@ public class Volunteer extends BaseTimeEntity {
         this.organization = organization;
     }
 
+    public void updateVolunteerType(VolunteerType type) {
+        this.type = type;
+    }
+
 }
