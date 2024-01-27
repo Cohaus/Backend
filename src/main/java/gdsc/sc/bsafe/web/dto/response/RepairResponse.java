@@ -3,12 +3,14 @@ package gdsc.sc.bsafe.web.dto.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import gdsc.sc.bsafe.domain.AIRecord;
 import gdsc.sc.bsafe.domain.Record;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Schema
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

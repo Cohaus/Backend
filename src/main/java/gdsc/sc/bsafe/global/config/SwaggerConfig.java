@@ -19,7 +19,7 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         Info info = new Info()
-                .title("API Document")
+                .title("Cohaus")
                 .version("v1.0")
                 .description("API 명세서입니다.");
 

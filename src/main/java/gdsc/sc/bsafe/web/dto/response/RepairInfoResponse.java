@@ -13,14 +13,17 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+@Schema
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class RepairInfoResponse {
 
+    @Schema(description = "수리 진행 상태", example = "REQUEST")
     @Enumerated(EnumType.STRING)
     private RepairStatus repair_status;
 
+    @Schema(description = "카테고리", example = "생활")
     private String category;
 
     @Schema(description = "수리 신청일", example = "24-01-25")

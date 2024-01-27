@@ -6,7 +6,12 @@ import gdsc.sc.bsafe.global.common.SuccessResponse;
 import gdsc.sc.bsafe.service.RecordService;
 import gdsc.sc.bsafe.service.UserService;
 import gdsc.sc.bsafe.web.dto.request.UpdateUserInfoRequest;
+import gdsc.sc.bsafe.web.dto.response.RepairIDResponse;
+import gdsc.sc.bsafe.web.dto.response.UpdateUserInfoResponse;
+import gdsc.sc.bsafe.web.dto.response.UserInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import gdsc.sc.bsafe.web.dto.response.UserRecordListResponse;
@@ -30,7 +35,8 @@ public class UserController {
      */
     @Operation(summary = "마이페이지 - 유저 정보 조회 API", description = "유저의 정보를 조회합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
+                    content = @Content(schema = @Schema(implementation = UserInfoResponse.class)))
     })
     @GetMapping("")
     public ResponseEntity<SuccessResponse<?>> getUserInfo(@AuthenticationUser User user){
@@ -42,7 +48,8 @@ public class UserController {
     */
     @Operation(summary = "마이페이지 - 기록 목록 조회 API", description = "유저의 지기록 목록들을 보여줍니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
+                    content = @Content(schema = @Schema (implementation = UserRecordListResponse.class)))
     })
     @GetMapping("/records")
     public ResponseEntity<SuccessResponse<?>> getMyRecordList(@AuthenticationUser User user){
@@ -55,7 +62,8 @@ public class UserController {
      */
     @Operation(summary = "회원정보 수정 API", description = "요청 성공 시 회원 정보를 반환합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
+                    content = @Content(schema = @Schema (implementation = UpdateUserInfoResponse.class)))
     })
     @PatchMapping("/info")
 
