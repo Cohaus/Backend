@@ -19,20 +19,27 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class RecordItemResponse {
 
+    @Schema(description = "기록 pk", example = "1")
     private Long record_id;
 
+    @Schema(description = "유저 pk", example = "1")
     private String user_id;
 
+    @Schema(description = "기록 유형", example = "AI")
     @Enumerated(EnumType.STRING)
     private RecordType type;
 
+    @Schema(description = "이미지 path", example = "records/...")
     private String image;
 
+    @Schema(description = "제목", example = "기록 제목")
     private String title;
 
+    @Schema(description = "생성일", example = "yyyy-MM-dd kk:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime created_at;
 
+    @Schema(description = "수정일", example = "yyyy-MM-dd kk:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime updated_at;
 
