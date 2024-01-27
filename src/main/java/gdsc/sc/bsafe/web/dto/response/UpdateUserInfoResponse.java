@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Schema
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor

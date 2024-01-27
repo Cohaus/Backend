@@ -2,6 +2,7 @@ package gdsc.sc.bsafe.web.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema
 public record LoginResponse(
 
         @Schema(description = "user의 pk", example = "1")

@@ -7,7 +7,10 @@ import gdsc.sc.bsafe.service.AuthService;
 import gdsc.sc.bsafe.web.dto.request.LoginRequest;
 import gdsc.sc.bsafe.web.dto.request.SignUpRequest;
 import gdsc.sc.bsafe.web.dto.response.LoginResponse;
+import gdsc.sc.bsafe.web.dto.response.SavedRecordResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Auth API", description = "회원가입 / 로그인 / 로그아웃 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthApiController {
 
     private final AuthService authService;
@@ -37,7 +40,8 @@ public class AuthApiController {
 
     @Operation(summary = "로그인 API", description = "로그인 필드 값을 받습니다. 요청 성공 시 user의 pk와 발급된 token을 반환합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
+                    content = @Content(schema = @Schema(implementation = LoginResponse.class)))
     })
     @PostMapping("/login")
     public ResponseEntity<SuccessResponse<?>> login(@Valid @RequestBody LoginRequest loginRequest) {

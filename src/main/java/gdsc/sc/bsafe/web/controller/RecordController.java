@@ -11,8 +11,12 @@ import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
 import gdsc.sc.bsafe.service.RecordService;
 import gdsc.sc.bsafe.web.dto.request.AIRecordRequest;
 import gdsc.sc.bsafe.web.dto.request.UpdateSavedRecordRequest;
+import gdsc.sc.bsafe.web.dto.response.RepairIDResponse;
 import gdsc.sc.bsafe.web.dto.response.SavedRecordResponse;
+import gdsc.sc.bsafe.web.dto.response.UpdateUserInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -25,7 +29,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/records")
+@RequestMapping("/records")
 public class RecordController {
 
     private final RecordService recordService;
@@ -50,7 +54,8 @@ public class RecordController {
      */
     @Operation(summary = "저장된 1개의 기록 조회 API", description = "저장된 1개의 기록을 조회합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
+                    content = @Content(schema = @Schema(implementation = SavedRecordResponse.class)))
     })
     @GetMapping(value = "/{recordId}")
     public ResponseEntity<SuccessResponse<?>> getSavedRecord(@PathVariable Long recordId,
@@ -64,6 +69,10 @@ public class RecordController {
         저장 기록 수정하기
      */
     @Operation(summary = "상세 화면 - 저장 기록 수정 API", description = "요청 성공 시 수정된 결과를 반환합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
+                    content = @Content(schema = @Schema(implementation = UpdateUserInfoResponse.class)))
+    })
     @PatchMapping(value = "/{recordId}")
     public ResponseEntity<?> updateSavedRecord(@PathVariable Long recordId,
                                                @Valid @RequestBody UpdateSavedRecordRequest updateSavedRecordRequest,

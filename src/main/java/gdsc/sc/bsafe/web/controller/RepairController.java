@@ -17,6 +17,8 @@ import gdsc.sc.bsafe.web.dto.response.RepairInfoResponse;
 import gdsc.sc.bsafe.web.dto.response.RepairRecordResponse;
 import gdsc.sc.bsafe.web.dto.response.SavedRecordResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -29,7 +31,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/repairs")
+@RequestMapping("/repairs")
 public class RepairController {
 
     private final RecordService recordService;
@@ -40,7 +42,8 @@ public class RepairController {
      */
     @Operation(summary = "홈 - 수리 신청 API( AI )", description = "요청 성공 시 기록과 수리 신청 pk 값을 반환합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "요청에 성공했습니다.")
+            @ApiResponse(responseCode = "201", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
+                    content = @Content(schema = @Schema (implementation = RepairIDResponse.class)))
     })
     @PostMapping(value = "/ai", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<SuccessResponse<?>> createAIRepair(@Valid @ModelAttribute RepairAIRecordRequest repairAIRecordRequest,
@@ -70,7 +73,8 @@ public class RepairController {
      */
     @Operation(summary = "홈 - 수리 신청 API( BASIC )", description = "요청 성공 시 기록과 수리 신청 pk 값을 반환합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "요청에 성공했습니다.")
+            @ApiResponse(responseCode = "201", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
+                    content = @Content(schema = @Schema (implementation = RepairIDResponse.class)))
     })
     @PostMapping(value = "/basic", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<SuccessResponse<?>> createBasicRepair(@Valid @ModelAttribute RepairBasicRecordRequest repairBasicRecordRequest,
@@ -99,6 +103,10 @@ public class RepairController {
      */
     @Operation(summary = "상세 화면 - 수리 신청 API( AI )", description = "저장된 기록을 수리 신청합니다. 요청 성공 시 기록과 수리 신청 pk 값을 반환합니다.")
     @PutMapping(value ="/ai")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
+                    content = @Content(schema = @Schema (implementation = RepairIDResponse.class)))
+    })
     public ResponseEntity<?> createRepair(@RequestParam(value = "id") Long recordId,
                                                            @Valid @RequestBody RepairRequest repairRequest,
                                                            @AuthenticationUser User user){
@@ -123,7 +131,8 @@ public class RepairController {
      */
     @Operation(summary = "상세 화면 - 수리 신청 기록 1개 조회 API", description = "수리 신청된 기록 1개를 조회합니다. BASIC 기록일 경우 grade 값을 null로 반환합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
+                    content = @Content(schema = @Schema (implementation = RepairRecordResponse.class)))
     })
     @GetMapping(value = "/{repairId}")
     public ResponseEntity<SuccessResponse<?>> getRepairRecord(@PathVariable Long repairId,
@@ -137,7 +146,8 @@ public class RepairController {
      */
     @Operation(summary = "수리 신청 정보 화면 - 수리 신청 정보 조회 API ", description = "수리 신청된 기록의 신청 정보를 조회합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
+            content = @Content(schema = @Schema (implementation = RepairInfoResponse.class)))
     })
     @GetMapping(value = "/{repairId}/info")
     public ResponseEntity<SuccessResponse<?>> getRepairInfo(@PathVariable Long repairId,

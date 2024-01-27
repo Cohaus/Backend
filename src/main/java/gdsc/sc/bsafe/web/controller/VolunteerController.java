@@ -5,7 +5,11 @@ import gdsc.sc.bsafe.global.annotation.AuthenticationUser;
 import gdsc.sc.bsafe.global.common.SuccessResponse;
 import gdsc.sc.bsafe.service.VolunteerService;
 import gdsc.sc.bsafe.web.dto.request.VolunteerUserRequest;
+import gdsc.sc.bsafe.web.dto.response.SavedRecordResponse;
+import gdsc.sc.bsafe.web.dto.response.VolunteerRepairListResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -15,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/volunteers")
+@RequestMapping("/volunteers")
 public class VolunteerController {
 
     private final VolunteerService volunteerService;
@@ -51,7 +55,8 @@ public class VolunteerController {
      */
     @Operation(summary = "프로필 - 봉사 목록 전체 조회 API", description = "봉사자 유저의 Profile 메뉴에서 전체 봉사 목록을 보여줍니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
+                    content = @Content(schema = @Schema(implementation = VolunteerRepairListResponse.class)))
     })
     @GetMapping("/repairs")
     public ResponseEntity<SuccessResponse<?>> getVolunteerRepairList(@AuthenticationUser User user){
