@@ -38,7 +38,7 @@ public class RepairRecordResponse {
     @Schema(description = "주소", example = "성남시 수정구")
     private String district;
 
-    @Schema(description = "등급", example = "1 이상 10 이하의 자연수")
+    @Schema(description = "등급, BASIC 기록일 시 null 값을 반환합니다.", example = "1 이상 10 이하의 자연수")
     private Integer grade;
 
     @Schema(description = "생성일", example = "2024-01-01 00:00:00")
