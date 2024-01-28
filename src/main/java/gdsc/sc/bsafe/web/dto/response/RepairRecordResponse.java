@@ -49,21 +49,15 @@ public class RepairRecordResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime updated_at;
 
-    public RepairRecordResponse(Record record, String district) {
+    public RepairRecordResponse(Record record, String district, Integer grade, RecordType type) {
         this.record_id = record.getRecordId();
         this.user_id = record.getUser().getId();
         this.image = record.getImage();
         this.title = record.getTitle();
         this.detail = record.getDetail();
         this.district = district;
-        if (record instanceof AIRecord){
-            this.type = RecordType.AI;
-            this.grade = ((AIRecord) record).getGrade();
-        }
-        else {
-            this.type = RecordType.BASIC;
-            this.grade = null;
-        }
+        this.grade = grade;
+        this.type = type;
         this.created_at = record.getCreatedAt();
         this.updated_at = record.getUpdatedAt();
     }

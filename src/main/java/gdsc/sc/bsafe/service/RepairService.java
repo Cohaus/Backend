@@ -1,8 +1,10 @@
 package gdsc.sc.bsafe.service;
 
+import gdsc.sc.bsafe.domain.AIRecord;
 import gdsc.sc.bsafe.domain.District;
 import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.User;
+import gdsc.sc.bsafe.domain.enums.RecordType;
 import gdsc.sc.bsafe.domain.enums.RepairStatus;
 import gdsc.sc.bsafe.domain.mapping.Repair;
 import gdsc.sc.bsafe.global.exception.CustomException;
@@ -58,7 +60,18 @@ public class RepairService {
 
     public RepairRecordResponse getRepairRecord(Repair repair){
         String district = repair.getDistrict();
-        RepairRecordResponse repairRecordResponse = new RepairRecordResponse(repair.getRecord(), district);
+        Record record = repair.getRecord();
+        RecordType type ;
+        Integer grade ;
+        if (record instanceof AIRecord){
+            type = RecordType.AI;
+            grade = ((AIRecord) record).getGrade();
+        }
+        else {
+            type = RecordType.BASIC;
+            grade = null;
+        }
+        RepairRecordResponse repairRecordResponse = new RepairRecordResponse(repair.getRecord(), district, grade, type);
         return repairRecordResponse;
     }
 
