@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -38,12 +40,13 @@ public class RepairService {
 
         String[] district = repairRequest.getDistrict().split(" ");
         District legalDistrict = districtService.findDistrictByGuAndDong(district);
+        String extractDistrict = String.join(" ", Arrays.copyOfRange(district, 1, district.length));
 
         Repair repair = Repair.builder()
                 .record(record)
                 .date(repairRequest.getDate())
                 .address(repairRequest.getAddress())
-                .district(repairRequest.getDistrict())
+                .district(extractDistrict)
                 .placeId(repairRequest.getPlace_id())
                 .status(RepairStatus.REQUEST)
                 .legalDistrict(legalDistrict)

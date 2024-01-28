@@ -2,6 +2,7 @@ package gdsc.sc.bsafe.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,7 +26,14 @@ public class District {
     @Column
     private String dong;
 
-    @Column(nullable = false, unique = true)
+    @Column
     private String code;
+
+    @Builder
+    public District(String sido, String gu, String dong) {
+        this.sido = sido;
+        this.gu = gu;
+        this.dong = dong;
+    }
 
 }
