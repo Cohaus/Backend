@@ -52,9 +52,8 @@ public class User extends BaseTimeEntity {
         this.authority = authority;
     }
 
-    public void updateUserInfo(String name, String id, String email, String tel, Authority authority) {
+    public void updateUserInfo(String name, String email, String tel, Authority authority) {
         this.name = name;
-        this.id = id;
         this.email = email;
         this.tel = tel;
         this.authority = authority;

@@ -77,11 +77,11 @@ public class UserService {
     }
 
     private void handleUserUpdate(User user, UpdateUserInfoRequest request) {
-        user.updateUserInfo(request.getName(), request.getId(), request.getEmail(), request.getTel(), Authority.USER);
+        user.updateUserInfo(request.getName(), request.getEmail(), request.getTel(), Authority.USER);
     }
 
     private void handleSingleVolunteerUpdate(User user, UpdateUserInfoRequest request) {
-        user.updateUserInfo(request.getName(), request.getId(), request.getEmail(), request.getTel(), Authority.VOLUNTEER);
+        user.updateUserInfo(request.getName(), request.getEmail(), request.getTel(), Authority.VOLUNTEER);
 
         Optional<Volunteer> volunteer = volunteerRepository.findByUser(user);
         volunteer.ifPresentOrElse(
@@ -91,7 +91,7 @@ public class UserService {
     }
 
     private void handleOrganizationVolunteerUpdate(User user, UpdateUserInfoRequest request) {
-        user.updateUserInfo(request.getName(), request.getId(), request.getEmail(), request.getTel(), Authority.VOLUNTEER);
+        user.updateUserInfo(request.getName(), request.getEmail(), request.getTel(), Authority.VOLUNTEER);
 
         Optional<Volunteer> volunteer = volunteerRepository.findByUser(user);
         volunteer.ifPresentOrElse(

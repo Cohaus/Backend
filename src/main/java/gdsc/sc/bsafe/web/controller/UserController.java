@@ -44,7 +44,7 @@ public class UserController {
     }
 
     /*
-    프로필 기록 목록 조회하기
+        프로필 기록 목록 조회하기
     */
     @Operation(summary = "마이페이지 - 기록 목록 조회 API", description = "유저의 지기록 목록들을 보여줍니다.")
     @ApiResponses(value = {
@@ -66,7 +66,6 @@ public class UserController {
                     content = @Content(schema = @Schema (implementation = UpdateUserInfoResponse.class)))
     })
     @PatchMapping("/info")
-
     public ResponseEntity<SuccessResponse<?>> updateUserInfo(@AuthenticationUser User user,
                                                              @Valid @RequestBody UpdateUserInfoRequest request) {
         return SuccessResponse.ok(userService.updateUserInfo(user, request));
