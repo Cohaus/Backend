@@ -32,11 +32,11 @@ public class RecordItemResponse {
     @Schema(description = "제목", example = "기록 제목")
     private String title;
 
-    @Schema(description = "생성일", example = "yyyy-MM-dd kk:mm:ss")
+    @Schema(description = "생성일", example = "2024-01-01 00:00:00")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime created_at;
 
-    @Schema(description = "수정일", example = "yyyy-MM-dd kk:mm:ss")
+    @Schema(description = "수정일", example = "2024-01-01 00:00:00")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime updated_at;
 
