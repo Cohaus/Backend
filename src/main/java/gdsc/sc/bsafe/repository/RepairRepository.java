@@ -21,7 +21,7 @@ public interface RepairRepository extends JpaRepository<Repair, Long> {
     @Override
     void delete(Repair repair);
 
-    Slice<Repair> findAllByRecord_User(User user);
+    Slice<Repair> findAllByRecord_UserOrderByCreatedAtDesc(User user);
 
     Slice<Repair> getByVolunteerAndStatus(User user, RepairStatus status);
 

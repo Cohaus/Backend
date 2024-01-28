@@ -38,32 +38,26 @@ public class RepairRecordResponse {
     @Schema(description = "주소", example = "성남시 수정구")
     private String district;
 
-    @Schema(description = "등급", example = "1 이상 10 이하의 자연수")
+    @Schema(description = "등급, BASIC 기록일 시 null 값을 반환합니다.", example = "1 이상 10 이하의 자연수")
     private Integer grade;
 
-    @Schema(description = "생성일", example = "yyyy-MM-dd kk:mm:ss")
+    @Schema(description = "생성일", example = "2024-01-01 00:00:00")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime created_at;
 
-    @Schema(description = "수정일", example = "yyyy-MM-dd kk:mm:ss")
+    @Schema(description = "수정일", example = "2024-01-01 00:00:00")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime updated_at;
 
-    public RepairRecordResponse(Record record, String district) {
+    public RepairRecordResponse(Record record, String district, Integer grade, RecordType type) {
         this.record_id = record.getRecordId();
         this.user_id = record.getUser().getId();
         this.image = record.getImage();
         this.title = record.getTitle();
         this.detail = record.getDetail();
         this.district = district;
-        if (record instanceof AIRecord){
-            this.type = RecordType.AI;
-            this.grade = ((AIRecord) record).getGrade();
-        }
-        else {
-            this.type = RecordType.BASIC;
-            this.grade = null;
-        }
+        this.grade = grade;
+        this.type = type;
         this.created_at = record.getCreatedAt();
         this.updated_at = record.getUpdatedAt();
     }

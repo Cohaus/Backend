@@ -24,12 +24,6 @@ public class UserInfoResponse {
     @Schema(description = "아이디", example = "id1234")
     private String id;
 
-    @Schema(description = "이메일", example = "user@gmail.com")
-    private String email;
-
-    @Schema(description = "전화번호", example = "01012345678")
-    private String tel;
-
     @Schema(description = "봉사자 유형 (일반 유저(USER)인 경우 null이 반환됩니다.)", example = "ORGANIZATION")
     private String volunteer_type;
 
@@ -41,8 +35,6 @@ public class UserInfoResponse {
         this.user_id = user.getUserId();
         this.id = user.getId();
         this.name = user.getName();
-        this.tel = user.getTel();
-        this.email = user.getEmail();
         this.volunteer_type = user.getAuthority().name();
     }
 }
