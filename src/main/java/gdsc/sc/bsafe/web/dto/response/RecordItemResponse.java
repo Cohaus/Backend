@@ -22,9 +22,6 @@ public class RecordItemResponse {
     @Schema(description = "기록 pk", example = "1")
     private Long record_id;
 
-    @Schema(description = "유저 pk", example = "1")
-    private String user_id;
-
     @Schema(description = "기록 유형", example = "AI")
     @Enumerated(EnumType.STRING)
     private RecordType type;
@@ -43,17 +40,13 @@ public class RecordItemResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime updated_at;
 
-    public RecordItemResponse(Record record) {
+    public RecordItemResponse(Record record, RecordType type) {
         this.record_id = record.getRecordId();
-        this.user_id = record.getUser().getId();
+        this.type = type;
         this.image = record.getImage();
         this.title = record.getTitle();
         this.created_at = record.getCreatedAt();
         this.updated_at = record.getUpdatedAt();
-        if (record instanceof AIRecord){
-            this.type = RecordType.AI;
-        }
-        else this.type = RecordType.BASIC;
     }
 
 }

@@ -4,6 +4,7 @@ import gdsc.sc.bsafe.domain.AIRecord;
 import gdsc.sc.bsafe.domain.BasicRecord;
 import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.User;
+import gdsc.sc.bsafe.domain.enums.RecordType;
 import gdsc.sc.bsafe.domain.mapping.Repair;
 import gdsc.sc.bsafe.global.exception.CustomException;
 import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
@@ -15,9 +16,7 @@ import gdsc.sc.bsafe.web.dto.common.SliceResponse;
 import gdsc.sc.bsafe.web.dto.request.AIRecordRequest;
 import gdsc.sc.bsafe.web.dto.request.BasicRecordRequest;
 import gdsc.sc.bsafe.web.dto.request.UpdateSavedRecordRequest;
-import gdsc.sc.bsafe.web.dto.response.RecordItemResponse;
-import gdsc.sc.bsafe.web.dto.response.SavedRecordResponse;
-import gdsc.sc.bsafe.web.dto.response.UserRecordListResponse;
+import gdsc.sc.bsafe.web.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -75,21 +74,39 @@ public class RecordService {
         return basicRecordRepository.save(basicRecord);
     }
 
+    @Transactional(readOnly = true)
     public SavedRecordResponse getSavedRecord(AIRecord record){
         return new SavedRecordResponse(record);
     }
 
+    @Transactional(readOnly = true)
     public UserRecordListResponse getUserRecords(User user){
-        Slice<AIRecord> savedRecordList = aiRecordRepository.getAIRecordsByUser(user);
-        SliceResponse<RecordItemResponse> savedRecords =  new SliceResponse<>(savedRecordList.map(RecordItemResponse::new));
+        Slice<Record> repairRecordList = repairRepository.findAllByRecord_UserOrderByCreatedAtDesc(user).map(Repair::getRecord);
+        Slice<AIRecord> savedRecordList = aiRecordRepository.queryFindSavedRecords(repairRecordList.getContent(), user);
 
-        Slice<Record> repairRecordList = repairRepository.findAllByRecord_User(user).map(Repair::getRecord);
-        SliceResponse<RecordItemResponse> repairRecords  = new SliceResponse<>(repairRecordList.map(RecordItemResponse::new)) ;
+        SliceResponse<RecordItemResponse> savedRecords =  new SliceResponse<>(savedRecordList.map(record -> {
+            RecordType type = getRecordType(record);
+            return new RecordItemResponse(record, type);
+        })) ;
+
+        SliceResponse<RecordItemResponse> repairRecords  = new SliceResponse<>(repairRecordList.map(record ->{
+            RecordType type = getRecordType(record);
+            return new RecordItemResponse(record, type);
+        })) ;
 
         UserRecordListResponse response= new UserRecordListResponse();
         response.setSaved_record(savedRecords);
         response.setRepair_record(repairRecords);
         return response;
+    }
+
+    private static RecordType getRecordType(Record record) {
+        RecordType type;
+        if (record instanceof AIRecord){
+            type = RecordType.AI;
+        }
+        else type = RecordType.BASIC;
+        return type;
     }
 
     @Transactional
