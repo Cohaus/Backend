@@ -78,10 +78,13 @@ public class RepairService {
         return repairRecordResponse;
     }
 
-    public RepairInfoResponse getRepairInfo(Repair repair){
-        String category = repair.getRecord().getCategory();
+    public RepairInfoResponse getRepairInfo(Repair repair, User currentUser){
         User user = repair.getRecord().getUser();
         User volunteer = repair.getVolunteer();
+        if(currentUser != user | currentUser != volunteer){
+            throw new CustomException(ErrorCode.INVALID_PERMISSION);
+        }
+        String category = repair.getRecord().getCategory();
         Long volunteerId = null;
         String volunteerName = null;
         String volunteerTel = null;
@@ -90,7 +93,12 @@ public class RepairService {
             volunteerName = volunteer.getName();
             volunteerTel = volunteer.getTel();
         }
-        return new RepairInfoResponse(repair,category,user,volunteerId,volunteerName,volunteerTel);
+        String address;
+        if(repair.getStatus() == RepairStatus.REQUEST){
+            address = repair.getDistrict();}
+        else {
+            address = repair.getDistrict() + ' ' + repair.getAddress();}
+        return new RepairInfoResponse(repair,category,user,volunteerId,volunteerName,volunteerTel,address);
     }
 
 }

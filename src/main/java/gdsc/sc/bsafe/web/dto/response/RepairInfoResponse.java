@@ -20,8 +20,7 @@ import java.time.LocalDate;
 public class RepairInfoResponse {
 
     @Schema(description = "수리 진행 상태", example = "REQUEST")
-    @Enumerated(EnumType.STRING)
-    private RepairStatus repair_status;
+    private String repair_status;
 
     @Schema(description = "카테고리", example = "생활")
     private String category;
@@ -55,8 +54,8 @@ public class RepairInfoResponse {
     @Schema(description = "상세 주소", example = "경기도 성남시 수정구 성남대로 1342")
     private String address;
 
-    public RepairInfoResponse(Repair repair, String category,User user, Long volunteer_id, String volunteer_name, String volunteer_tel) {
-        this.repair_status = repair.getStatus();
+    public RepairInfoResponse(Repair repair, String category,User user, Long volunteer_id, String volunteer_name, String volunteer_tel, String address) {
+        this.repair_status = repair.getStatus().name();
         this.category = category;
         this.request_date = LocalDate.from(repair.getCreatedAt());
         this.user_id = user.getUserId();
@@ -66,6 +65,6 @@ public class RepairInfoResponse {
         this.volunteer_name = volunteer_name;
         this.volunteer_tel = volunteer_tel;
         this.date = repair.getDate();
-        this.address = repair.getAddress();
+        this.address = address;
     }
 }
