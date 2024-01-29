@@ -92,9 +92,7 @@ public class RepairService {
         LocalDate proceedDate = null;
         LocalDate completeDate = null;
         String address = repair.getDistrict();
-        // 진행, 완료의 수리 기록이면서
-        // 접속한 유저가 작성자나 봉사자가 아니면
-        // 접근 권한 에러 반환
+
         if (repair.getStatus().equals(RepairStatus.REQUEST)){
             if (currentUser == user){
                 address += repair.getDistrict() + ' ' + repair.getAddress();
