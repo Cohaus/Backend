@@ -25,4 +25,6 @@ public interface RepairRepository extends JpaRepository<Repair, Long> {
 
     Slice<Repair> getByVolunteerAndStatus(User user, RepairStatus status);
 
+    Slice<Repair> getByStatusAndOrderByLegalDistrict(RepairStatus status);
+
 }
