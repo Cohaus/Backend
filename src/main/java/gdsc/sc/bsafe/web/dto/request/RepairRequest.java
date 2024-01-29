@@ -51,4 +51,5 @@ public class RepairRequest {
         this.address = address;
         this.district = district;
     }
+
 }
