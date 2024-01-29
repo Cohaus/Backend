@@ -95,7 +95,7 @@ public class RepairService {
     }
 
     public RequestRepairListResponse getRepairList(User user) {
-        Slice<Repair> requestRepairs = repairRepository.getByStatusAndOrderByLegalDistrict(RepairStatus.REQUEST);
+        Slice<Repair> requestRepairs = repairRepository.findRequestRepairsOrderByDistrict();
         SliceResponse<RequestRepairResponse> requestRepairsList = new SliceResponse<>(requestRepairs.map(RequestRepairResponse::new));
 
         RequestRepairListResponse response = new RequestRepairListResponse();
@@ -103,4 +103,5 @@ public class RepairService {
 
         return response;
     }
+
 }

@@ -6,6 +6,7 @@ import gdsc.sc.bsafe.domain.enums.RepairStatus;
 import gdsc.sc.bsafe.domain.mapping.Repair;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -25,6 +26,7 @@ public interface RepairRepository extends JpaRepository<Repair, Long> {
 
     Slice<Repair> getByVolunteerAndStatus(User user, RepairStatus status);
 
-    Slice<Repair> getByStatusAndOrderByLegalDistrict(RepairStatus status);
+    @Query(value = "SELECT r.* FROM repair r WHERE r.status = 'REQUEST' ORDER BY r.district_id", nativeQuery = true)
+    Slice<Repair> findRequestRepairsOrderByDistrict();
 
 }

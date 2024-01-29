@@ -25,6 +25,9 @@ public class RequestRepairResponse {
     @Schema(description = "제목", example = "수리 제목")
     private String title;
 
+    @Schema(description = "카테고리", example = "도배")
+    private String category;
+
     @Schema(description = "지역", example = "서울시 송파구 잠실동")
     private String district;
 
@@ -34,15 +37,14 @@ public class RequestRepairResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime created_at;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime updated_at;
-
     public RequestRepairResponse(Repair repair) {
         this.repair_id = repair.getRepairId();
         this.image = repair.getRecord().getImage();
         this.title = repair.getRecord().getTitle();
+        this.category = repair.getRecord().getCategory();
         this.district = repair.getDistrict();
         this.date = repair.getDate();
+        this.created_at = repair.getCreatedAt();
     }
 
 }
