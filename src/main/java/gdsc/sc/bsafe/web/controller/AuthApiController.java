@@ -29,7 +29,8 @@ public class AuthApiController {
 
     @Operation(summary = "회원가입 API", description = "회원가입 필드 값을 받습니다. 요청 성공 시 user의 pk를 반환합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
+                    content = @Content(schema = @Schema(implementation = Long.class)))
     })
     @PostMapping("/sign-up")
     public ResponseEntity<SuccessResponse<?>> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
