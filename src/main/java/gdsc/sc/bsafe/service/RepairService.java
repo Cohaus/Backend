@@ -4,6 +4,7 @@ import gdsc.sc.bsafe.domain.AIRecord;
 import gdsc.sc.bsafe.domain.District;
 import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.User;
+import gdsc.sc.bsafe.domain.enums.Authority;
 import gdsc.sc.bsafe.domain.enums.RecordType;
 import gdsc.sc.bsafe.domain.enums.RepairStatus;
 import gdsc.sc.bsafe.domain.mapping.Repair;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
 @Service
@@ -44,7 +46,7 @@ public class RepairService {
 
         Repair repair = Repair.builder()
                 .record(record)
-                .date(repairRequest.getDate())
+                .visitDate(repairRequest.getDate())
                 .address(repairRequest.getAddress())
                 .district(extractDistrict)
                 .placeId(repairRequest.getPlace_id())
@@ -81,28 +83,46 @@ public class RepairService {
     public RepairInfoResponse getRepairInfo(Repair repair, User currentUser){
         User user = repair.getRecord().getUser();
         User volunteer = repair.getVolunteer();
-        // 진행, 완료의 수리 기록이면서
-        // 접속한 유저가 작성자나 봉사자가 아니면
-        // 접근 권한 에러 반횐
-        if(repair.getStatus() != RepairStatus.REQUEST &&
-                (currentUser != user | currentUser != volunteer)){
-            throw new CustomException(ErrorCode.INVALID_PERMISSION);
-        }
         String category = repair.getRecord().getCategory();
         Long volunteerId = null;
+        String userName = null;
+        String userTel = null;
         String volunteerName = null;
         String volunteerTel = null;
-        if(volunteer != null){
-            volunteerId = volunteer.getUserId();
-            volunteerName = volunteer.getName();
-            volunteerTel = volunteer.getTel();
+        LocalDate proceedDate = null;
+        LocalDate completeDate = null;
+        String address = repair.getDistrict();
+        // 진행, 완료의 수리 기록이면서
+        // 접속한 유저가 작성자나 봉사자가 아니면
+        // 접근 권한 에러 반환
+        if (repair.getStatus().equals(RepairStatus.REQUEST)){
+            if (currentUser == user){
+                address += repair.getDistrict() + ' ' + repair.getAddress();
+                userName = user.getName();
+                userTel = user.getTel();
+            }
         }
-        String address;
-        if(repair.getStatus() == RepairStatus.REQUEST){
-            address = repair.getDistrict();}
         else {
-            address = repair.getDistrict() + ' ' + repair.getAddress();}
-        return new RepairInfoResponse(repair,category,user,volunteerId,volunteerName,volunteerTel,address);
+            if(currentUser.equals(user) || currentUser.equals(volunteer)) {
+                userName = user.getName();
+                userTel = user.getTel();
+
+                volunteerId = volunteer.getUserId();
+                volunteerName = volunteer.getName();
+                volunteerTel = volunteer.getTel();
+
+                address = repair.getDistrict() + ' ' + repair.getAddress();
+                proceedDate = repair.getProceedDate();
+                if (repair.getStatus().equals(RepairStatus.COMPLETE)){
+                    completeDate = repair.getCompleteDate();
+                }
+            }
+            else throw new CustomException(ErrorCode.INVALID_PERMISSION);
+        }
+        return new RepairInfoResponse(repair,category,user.getUserId(),userName,userTel,
+                volunteerId,volunteerName,volunteerTel,address);
+
+
     }
 
 }
