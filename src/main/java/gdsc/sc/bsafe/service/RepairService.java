@@ -81,7 +81,11 @@ public class RepairService {
     public RepairInfoResponse getRepairInfo(Repair repair, User currentUser){
         User user = repair.getRecord().getUser();
         User volunteer = repair.getVolunteer();
-        if(currentUser != user | currentUser != volunteer){
+        // 진행, 완료의 수리 기록이면서
+        // 접속한 유저가 작성자나 봉사자가 아니면
+        // 접근 권한 에러 반횐
+        if(repair.getStatus() != RepairStatus.REQUEST &&
+                (currentUser != user | currentUser != volunteer)){
             throw new CustomException(ErrorCode.INVALID_PERMISSION);
         }
         String category = repair.getRecord().getCategory();
