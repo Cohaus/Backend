@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Schema
 @Getter
@@ -28,11 +29,11 @@ public class RequestRepairResponse {
     @Schema(description = "카테고리", example = "도배")
     private String category;
 
-    @Schema(description = "지역", example = "서울시 송파구 잠실동")
+    @Schema(description = "지역", example = "서울시 광진구 군자동")
     private String district;
 
-    @Schema(description = "방문 희망일", example = "2024-01-25")
-    private LocalDate date;
+    @Schema(description = "방문 희망일", example = "2024년 1월 25일")
+    private String date;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime created_at;
@@ -42,9 +43,18 @@ public class RequestRepairResponse {
         this.image = repair.getRecord().getImage();
         this.title = repair.getRecord().getTitle();
         this.category = repair.getRecord().getCategory();
-        this.district = repair.getDistrict();
-        this.date = repair.getVisitDate();
+        this.district = createLegalDistrictString(repair);
+        this.date = formatVisitDate(repair.getVisitDate());
         this.created_at = repair.getCreatedAt();
+    }
+
+    private String createLegalDistrictString(Repair repair) {
+        return repair.getLegalDistrict().getSido() + " " + repair.getLegalDistrict().getGu() + " " + repair.getLegalDistrict().getDong();
+    }
+
+    private String formatVisitDate(LocalDate visitDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일");
+        return visitDate.format(formatter);
     }
 
 }
