@@ -47,10 +47,21 @@ public class VolunteerService {
     @Transactional
     public Long volunteerRepair(User user, Long repairId, LocalDate proceedDate) {
         Repair repair = repairService.findByRepairId(repairId);
-        validateRequestRepair(repair);
+        validateRepairStatus(repair, RepairStatus.REQUEST);
 
         updateVolunteer(user, repair);
         repairService.updateRequestRepairStatus(repairId, RepairStatus.PROCEEDING, proceedDate);
+
+        return repair.getRepairId();
+    }
+
+    @Transactional
+    public Long completeRepair(User user, Long repairId, LocalDate completeDate) {
+        Repair repair = repairService.findByRepairId(repairId);
+        validateRepairStatus(repair, RepairStatus.PROCEEDING);
+
+        validateIsSameVolunteer(user, repair);
+        repairService.updateCompleteRepairStatus(repairId, RepairStatus.COMPLETE, completeDate);
 
         return repair.getRepairId();
     }
@@ -97,9 +108,15 @@ public class VolunteerService {
         }
     }
 
-    private void validateRequestRepair(Repair repair) {
-        if (!repair.getStatus().equals(RepairStatus.REQUEST)) {
-            throw new CustomException(ErrorCode.NOT_REQUEST_REPAIR);
+    private void validateRepairStatus(Repair repair, RepairStatus status) {
+        if (!repair.getStatus().equals(status)) {
+            throw new CustomException(ErrorCode.INVALID_REPAIR_STATUS);
+        }
+    }
+
+    private void validateIsSameVolunteer(User user, Repair repair) {
+        if (!repair.getVolunteer().equals(user)) {
+            throw new CustomException(ErrorCode.INVALID_PERMISSION);
         }
     }
 

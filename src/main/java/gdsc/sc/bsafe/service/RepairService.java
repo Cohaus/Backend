@@ -67,6 +67,13 @@ public class RepairService {
         repair.updateProceedDate(proceedDate);
     }
 
+    @Transactional
+    public void updateCompleteRepairStatus(Long repairId, RepairStatus status, LocalDate completeDate) {
+        Repair repair = findByRepairId(repairId);
+        repair.updateRepairStatus(status);
+        repair.updateCompleteDate(completeDate);
+    }
+
     public RepairRecordResponse getRepairRecord(Repair repair){
         String district = repair.getDistrict();
         Record record = repair.getRecord();
