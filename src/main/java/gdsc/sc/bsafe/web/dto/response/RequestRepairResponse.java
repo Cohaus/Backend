@@ -43,7 +43,7 @@ public class RequestRepairResponse {
         this.title = repair.getRecord().getTitle();
         this.category = repair.getRecord().getCategory();
         this.district = repair.getDistrict();
-        this.date = repair.getDate();
+        this.date = repair.getVisitDate();
         this.created_at = repair.getCreatedAt();
     }
 

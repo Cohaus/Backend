@@ -32,4 +32,5 @@ public class MapController {
     public ResponseEntity<SuccessResponse<?>> getRepairList(@AuthenticationUser User user){
         return SuccessResponse.ok(repairService.getRepairList(user));
     }
+
 }
