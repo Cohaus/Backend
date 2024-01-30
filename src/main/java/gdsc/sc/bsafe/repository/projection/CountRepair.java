@@ -11,10 +11,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CountRepair {
 
+    private Long legalDistrict;
     private String district;
     private long count;
 
-    public CountRepair(String sido, String gu, String dong, long count) {
+    public CountRepair(Long legalDistrict, String sido, String gu, String dong, long count) {
+        this.legalDistrict = legalDistrict;
         this.district = sido + " " + gu + " " + dong;
         this.count = count;
     }

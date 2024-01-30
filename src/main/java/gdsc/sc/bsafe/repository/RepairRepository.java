@@ -33,7 +33,13 @@ public interface RepairRepository extends JpaRepository<Repair, Long> {
 
     @Query(value =
             "SELECT "+
-                    "new gdsc.sc.bsafe.repository.projection.CountRepair(r.legalDistrict.sido, r.legalDistrict.gu, r.legalDistrict.dong, count(r)) " +
+                    "new gdsc.sc.bsafe.repository.projection.CountRepair(" +
+                        "r.legalDistrict.districtId, " +
+                        "r.legalDistrict.sido, " +
+                        "r.legalDistrict.gu, " +
+                        "r.legalDistrict.dong, " +
+                        "count(r)" +
+                    ") " +
                     "FROM Repair r " +
                     "WHERE r.status = 'REQUEST' " +
                     "GROUP BY r.legalDistrict "
