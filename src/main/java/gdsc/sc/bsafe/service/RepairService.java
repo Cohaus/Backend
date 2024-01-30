@@ -4,7 +4,6 @@ import gdsc.sc.bsafe.domain.AIRecord;
 import gdsc.sc.bsafe.domain.District;
 import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.User;
-import gdsc.sc.bsafe.domain.enums.Authority;
 import gdsc.sc.bsafe.domain.enums.RecordType;
 import gdsc.sc.bsafe.domain.enums.RepairStatus;
 import gdsc.sc.bsafe.domain.mapping.Repair;
@@ -127,8 +126,9 @@ public class RepairService {
 
     }
 
-    public RequestRepairListResponse getRepairList(User user) {
-        Slice<Repair> requestRepairs = repairRepository.findRequestRepairsOrderByDistrict();
+    public RequestRepairListResponse getRepairList(User user, Long legalDistrictId) {
+        Slice<Repair> requestRepairs = repairRepository
+                .findAllByStatusAndLegalDistrictDistrictIdOrderByCreatedAt(RepairStatus.REQUEST, legalDistrictId);
         SliceResponse<RequestRepairResponse> requestRepairsList = new SliceResponse<>(requestRepairs.map(RequestRepairResponse::new));
 
         RequestRepairListResponse response = new RequestRepairListResponse();

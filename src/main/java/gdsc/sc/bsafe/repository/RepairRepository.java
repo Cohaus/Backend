@@ -28,8 +28,7 @@ public interface RepairRepository extends JpaRepository<Repair, Long> {
 
     Slice<Repair> getByVolunteerAndStatus(User user, RepairStatus status);
 
-    @Query(value = "SELECT r.* FROM repair r WHERE r.status = 'REQUEST' ORDER BY r.district_id", nativeQuery = true)
-    Slice<Repair> findRequestRepairsOrderByDistrict();
+    Slice<Repair> findAllByStatusAndLegalDistrictDistrictIdOrderByCreatedAt(RepairStatus status, Long legalDistrictId);
 
     @Query(value =
             "SELECT "+
