@@ -60,7 +60,7 @@ public class RepairInfoResponse {
     private String address;
 
     public RepairInfoResponse(Repair repair, String category,Long user_id, String user_name, String user_tel, Long volunteer_id, String volunteer_name, String volunteer_tel, String address) {
-        this.repair_status = repair.getStatus().name();
+        this.repair_status = repair.getStatus().getDescription();
         this.category = category;
         this.request_date = LocalDate.from(repair.getCreatedAt());
         this.proceed_date = repair.getProceedDate();
