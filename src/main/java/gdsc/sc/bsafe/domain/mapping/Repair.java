@@ -58,9 +58,8 @@ public class Repair extends BaseTimeEntity {
     private District legalDistrict;
 
     @Builder
-    public Repair(Record record, User volunteer, RepairStatus status, LocalDate visitDate, String placeId, String district, String address, District legalDistrict) {
+    public Repair(Record record, RepairStatus status, LocalDate visitDate, String placeId, String district, String address, District legalDistrict) {
         this.record = record;
-        this.volunteer = volunteer;
         this.status = status;
         this.visitDate = visitDate;
         this.placeId = placeId;
