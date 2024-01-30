@@ -20,6 +20,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -43,11 +45,12 @@ public class VolunteerService {
     }
 
     @Transactional
-    public Long volunteerRepair(User user, Long repairId) {
+    public Long volunteerRepair(User user, Long repairId, LocalDate proceedDate) {
         Repair repair = repairService.findByRepairId(repairId);
+        validateRequestRepair(repair);
 
         updateVolunteer(user, repair);
-        repairService.updateRepairStatus(repairId, RepairStatus.PROCEEDING);
+        repairService.updateRequestRepairStatus(repairId, RepairStatus.PROCEEDING, proceedDate);
 
         return repair.getRepairId();
     }
@@ -93,4 +96,11 @@ public class VolunteerService {
             throw new CustomException(ErrorCode.NOT_VOLUNTEER_USER);
         }
     }
+
+    private void validateRequestRepair(Repair repair) {
+        if (!repair.getStatus().equals(RepairStatus.REQUEST)) {
+            throw new CustomException(ErrorCode.NOT_REQUEST_REPAIR);
+        }
+    }
+
 }

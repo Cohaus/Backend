@@ -14,8 +14,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequiredArgsConstructor
@@ -46,8 +49,9 @@ public class VolunteerController {
     })
     @PatchMapping("/repairs/{repairId}")
     public ResponseEntity<SuccessResponse<?>> volunteerRepair(@AuthenticationUser User user,
+                                                              @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate proceedDate,
                                                               @PathVariable(name = "repairId") Long repairId) {
-        return SuccessResponse.created(volunteerService.volunteerRepair(user, repairId));
+        return SuccessResponse.ok(volunteerService.volunteerRepair(user, repairId, proceedDate));
     }
 
     /*

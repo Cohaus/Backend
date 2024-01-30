@@ -4,7 +4,6 @@ import gdsc.sc.bsafe.domain.AIRecord;
 import gdsc.sc.bsafe.domain.District;
 import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.User;
-import gdsc.sc.bsafe.domain.enums.Authority;
 import gdsc.sc.bsafe.domain.enums.RecordType;
 import gdsc.sc.bsafe.domain.enums.RepairStatus;
 import gdsc.sc.bsafe.domain.mapping.Repair;
@@ -62,9 +61,10 @@ public class RepairService {
     }
 
     @Transactional
-    public void updateRepairStatus(Long repairId, RepairStatus status) {
+    public void updateRequestRepairStatus(Long repairId, RepairStatus status, LocalDate proceedDate) {
         Repair repair = findByRepairId(repairId);
         repair.updateRepairStatus(status);
+        repair.updateProceedDate(proceedDate);
     }
 
     public RepairRecordResponse getRepairRecord(Repair repair){
