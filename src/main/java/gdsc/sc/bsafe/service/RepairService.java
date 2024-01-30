@@ -126,7 +126,7 @@ public class RepairService {
 
     }
 
-    public RequestRepairListResponse getRepairList(User user, Long legalDistrictId) {
+    public RequestRepairListResponse getRepairListByDistrict(User user, Long legalDistrictId) {
         Slice<Repair> requestRepairs = repairRepository
                 .findAllByStatusAndLegalDistrictDistrictIdOrderByCreatedAt(RepairStatus.REQUEST, legalDistrictId);
         SliceResponse<RequestRepairResponse> requestRepairsList = new SliceResponse<>(requestRepairs.map(RequestRepairResponse::new));

@@ -33,10 +33,10 @@ public class MapController {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
                     content = @Content(schema = @Schema(implementation = RequestRepairListResponse.class)))
     })
-    @GetMapping("/district/{districtId}")
-    public ResponseEntity<SuccessResponse<?>> getRepairList(@AuthenticationUser User user,
-                                                            @PathVariable(name = "districtId") Long legalDistrictId){
-        return SuccessResponse.ok(repairService.getRepairList(user, legalDistrictId));
+    @GetMapping("/districts/{districtId}")
+    public ResponseEntity<SuccessResponse<?>> getRepairListByDistrict(@AuthenticationUser User user,
+                                                                      @PathVariable(name = "districtId") Long legalDistrictId){
+        return SuccessResponse.ok(repairService.getRepairListByDistrict(user, legalDistrictId));
     }
 
     @Operation(summary = "Map - 전체 수리 요청 count & district 반환",
