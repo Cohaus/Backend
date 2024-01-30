@@ -5,7 +5,6 @@ import gdsc.sc.bsafe.global.annotation.AuthenticationUser;
 import gdsc.sc.bsafe.global.common.SuccessResponse;
 import gdsc.sc.bsafe.repository.projection.CountRepair;
 import gdsc.sc.bsafe.service.MapService;
-import gdsc.sc.bsafe.service.RepairService;
 import gdsc.sc.bsafe.web.dto.response.RequestRepairListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/map")
 public class MapController {
 
-    private final RepairService repairService;
     private final MapService mapService;
 
     @Operation(summary = "Map - 해당 지역의 전체 수리 요청 리스트 반환",
@@ -36,7 +34,7 @@ public class MapController {
     @GetMapping("/districts/{districtId}")
     public ResponseEntity<SuccessResponse<?>> getRepairListByDistrict(@AuthenticationUser User user,
                                                                       @PathVariable(name = "districtId") Long legalDistrictId){
-        return SuccessResponse.ok(repairService.getRepairListByDistrict(user, legalDistrictId));
+        return SuccessResponse.ok(mapService.getRepairListByDistrict(user, legalDistrictId));
     }
 
     @Operation(summary = "Map - 전체 수리 요청 count & district 반환",
