@@ -42,7 +42,7 @@ public class RepairItemResponse {
         this.image = repair.getRecord().getImage();
         this.title = repair.getRecord().getTitle();
         this.district = repair.getDistrict();
-        this.date = repair.getDate();
+        this.date = repair.getVisitDate();
     }
 
 }

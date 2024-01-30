@@ -1,10 +1,7 @@
 package gdsc.sc.bsafe.web.dto.response;
 
 import gdsc.sc.bsafe.domain.User;
-import gdsc.sc.bsafe.domain.enums.Authority;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -31,12 +31,18 @@ public class Repair extends BaseTimeEntity {
     @JoinColumn(name = "volunteer_id", nullable = true)
     private User volunteer;
 
+    @Column(name = "proceed_date",nullable = true)
+    private LocalDate proceedDate;
+
+    @Column(name = "complete_date",nullable = true)
+    private LocalDate completeDate;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RepairStatus status;
 
-    @Column(nullable = false)
-    private LocalDate date;
+    @Column(name = "visit_date", nullable = false)
+    private LocalDate visitDate;
 
     @Column(nullable = false)
     private String placeId;
@@ -52,11 +58,10 @@ public class Repair extends BaseTimeEntity {
     private District legalDistrict;
 
     @Builder
-    public Repair(Record record, User volunteer, RepairStatus status, LocalDate date, String placeId, String district, String address, District legalDistrict) {
+    public Repair(Record record, RepairStatus status, LocalDate visitDate, String placeId, String district, String address, District legalDistrict) {
         this.record = record;
-        this.volunteer = volunteer;
         this.status = status;
-        this.date = date;
+        this.visitDate = visitDate;
         this.placeId = placeId;
         this.district = district;
         this.address = address;
