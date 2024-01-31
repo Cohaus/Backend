@@ -28,13 +28,13 @@ public class Repair extends BaseTimeEntity {
     private Record record;
 
     @ManyToOne
-    @JoinColumn(name = "volunteer_id", nullable = true)
+    @JoinColumn(name = "volunteer_id")
     private User volunteer;
 
-    @Column(name = "proceed_date",nullable = true)
+    @Column(name = "proceed_date")
     private LocalDate proceedDate;
 
-    @Column(name = "complete_date",nullable = true)
+    @Column(name = "complete_date")
     private LocalDate completeDate;
 
     @Enumerated(EnumType.STRING)
@@ -74,6 +74,14 @@ public class Repair extends BaseTimeEntity {
 
     public void updateVolunteer(User user) {
         this.volunteer = user;
+    }
+
+    public void updateProceedDate(LocalDate proceedDate) {
+        this.proceedDate = proceedDate;
+    }
+
+    public void updateCompleteDate(LocalDate completeDate) {
+        this.completeDate = completeDate;
     }
 
 }

@@ -27,6 +27,7 @@ public enum ErrorCode {
     // Repair exception
     NOT_FOUND_REPAIR(HttpStatus.NOT_FOUND, "해당 수리 요청을 찾을 수 없습니다."),
     DUPLICATED_REPAIR(HttpStatus.CONFLICT, "이미 수리 요청한 기록입니다."),
+    INVALID_REPAIR_STATUS(HttpStatus.BAD_REQUEST, "수리 요청 상태가 유효하지 않습니다."),
 
     // District exception
     NOT_FOUND_DISTRICT(HttpStatus.NOT_FOUND, "해당 지역을 찾을 수 없습니다."),

@@ -20,6 +20,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -43,11 +45,23 @@ public class VolunteerService {
     }
 
     @Transactional
-    public Long volunteerRepair(User user, Long repairId) {
+    public Long volunteerRepair(User user, Long repairId, LocalDate proceedDate) {
         Repair repair = repairService.findByRepairId(repairId);
+        validateRepairStatus(repair, RepairStatus.REQUEST);
 
         updateVolunteer(user, repair);
-        repairService.updateRepairStatus(repairId, RepairStatus.PROCEEDING);
+        repairService.updateRequestRepairStatus(repairId, RepairStatus.PROCEEDING, proceedDate);
+
+        return repair.getRepairId();
+    }
+
+    @Transactional
+    public Long completeRepair(User user, Long repairId, LocalDate completeDate) {
+        Repair repair = repairService.findByRepairId(repairId);
+        validateRepairStatus(repair, RepairStatus.PROCEEDING);
+
+        validateIsSameVolunteer(user, repair);
+        repairService.updateCompleteRepairStatus(repairId, RepairStatus.COMPLETE, completeDate);
 
         return repair.getRepairId();
     }
@@ -93,4 +107,17 @@ public class VolunteerService {
             throw new CustomException(ErrorCode.NOT_VOLUNTEER_USER);
         }
     }
+
+    private void validateRepairStatus(Repair repair, RepairStatus status) {
+        if (!repair.getStatus().equals(status)) {
+            throw new CustomException(ErrorCode.INVALID_REPAIR_STATUS);
+        }
+    }
+
+    private void validateIsSameVolunteer(User user, Repair repair) {
+        if (!repair.getVolunteer().equals(user)) {
+            throw new CustomException(ErrorCode.INVALID_PERMISSION);
+        }
+    }
+
 }

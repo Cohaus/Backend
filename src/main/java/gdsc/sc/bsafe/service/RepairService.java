@@ -57,9 +57,17 @@ public class RepairService {
     }
 
     @Transactional
-    public void updateRepairStatus(Long repairId, RepairStatus status) {
+    public void updateRequestRepairStatus(Long repairId, RepairStatus status, LocalDate proceedDate) {
         Repair repair = findByRepairId(repairId);
         repair.updateRepairStatus(status);
+        repair.updateProceedDate(proceedDate);
+    }
+
+    @Transactional
+    public void updateCompleteRepairStatus(Long repairId, RepairStatus status, LocalDate completeDate) {
+        Repair repair = findByRepairId(repairId);
+        repair.updateRepairStatus(status);
+        repair.updateCompleteDate(completeDate);
     }
 
     public RepairRecordResponse getRepairRecord(Repair repair){
