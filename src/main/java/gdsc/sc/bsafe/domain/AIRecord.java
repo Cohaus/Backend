@@ -1,8 +1,7 @@
 package gdsc.sc.bsafe.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
+import gdsc.sc.bsafe.domain.enums.AIGrade;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,10 +14,11 @@ import lombok.NoArgsConstructor;
 public class AIRecord extends Record {
 
     @Column(nullable = true)
-    private Integer grade;
+    @Enumerated(value = EnumType.STRING)
+    private AIGrade grade;
 
     @Builder
-    public AIRecord(User user, String image, String title, String detail, String category, Integer grade){
+    public AIRecord(User user, String image, String title, String detail, String category, AIGrade grade){
         super(user, image, title, detail, category);
         this.grade = grade;
     }
