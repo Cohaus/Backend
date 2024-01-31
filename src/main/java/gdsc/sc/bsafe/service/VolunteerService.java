@@ -12,8 +12,10 @@ import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
 import gdsc.sc.bsafe.repository.RepairRepository;
 import gdsc.sc.bsafe.repository.VolunteerRepository;
 import gdsc.sc.bsafe.web.dto.common.SliceResponse;
+import gdsc.sc.bsafe.web.dto.request.UpdateUserInfoRequest;
 import gdsc.sc.bsafe.web.dto.request.VolunteerUserRequest;
 import gdsc.sc.bsafe.web.dto.response.RepairItemResponse;
+import gdsc.sc.bsafe.web.dto.response.VolunteerInfoResponse;
 import gdsc.sc.bsafe.web.dto.response.VolunteerRepairListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,17 +35,36 @@ public class VolunteerService {
     private final OrganizationService organizationService;
     private final RepairService repairService;
 
+    public Optional<Volunteer> findByUser(User user) {
+        return volunteerRepository.findByUser(user);
+    }
+
     @Transactional
-    public Long saveVolunteer(User user, VolunteerUserRequest request) {
+    public VolunteerInfoResponse saveVolunteer(User user, VolunteerUserRequest request) {
         Volunteer volunteer = createVolunteer(user, VolunteerType.valueOf(request.getType()));
 
         String organizationName = request.getOrganization_name();
         updateVolunteerOrganization(volunteer, organizationName);
+        volunteerRepository.save(volunteer);
 
-        Volunteer savedVolunteer = volunteerRepository.save(volunteer);
-
-        return savedVolunteer.getUser().getUserId();
+        return new VolunteerInfoResponse(request.getType(), request.getOrganization_name());
     }
+
+    @Transactional
+    public VolunteerInfoResponse updateVolunteerInfo(Volunteer volunteer, VolunteerUserRequest request) {
+        volunteer.updateVolunteerType(VolunteerType.valueOf(request.getType()));
+        String organizationName = request.getOrganization_name();
+        if (organizationName==null){
+            volunteer.updateOrganization(null);
+        }
+        else {
+            updateVolunteerOrganization(volunteer, organizationName);
+        }
+        volunteerRepository.save(volunteer);
+
+        return new VolunteerInfoResponse(request.getType(), request.getOrganization_name());
+    }
+
 
     @Transactional
     public Long volunteerRepair(User user, Long repairId, LocalDate proceedDate) {
@@ -90,7 +112,6 @@ public class VolunteerService {
 
     private Volunteer createVolunteer(User user, VolunteerType type) {
         user.updateUserAuthority(Authority.VOLUNTEER);
-
         return Volunteer.builder()
                 .user(user)
                 .type(type)
