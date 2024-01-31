@@ -32,7 +32,14 @@ public class UserService {
     }
 
     public UserInfoResponse getUserInfo(User user){
-        return new UserInfoResponse(user);
+        Optional<Volunteer> volunteer = volunteerRepository.findByUser(user);
+        String volunteer_type = null;
+        String organization_name = null ;
+        if(volunteer.isPresent()){
+            volunteer_type = volunteer.get().getType().getDescription();
+            organization_name = volunteer.get().getOrganization().getName();
+        }
+        return new UserInfoResponse(user, volunteer_type, organization_name);
     }
 
     @Transactional
