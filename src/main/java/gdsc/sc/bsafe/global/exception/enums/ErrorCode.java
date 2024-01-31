@@ -32,6 +32,9 @@ public enum ErrorCode {
     // District exception
     NOT_FOUND_DISTRICT(HttpStatus.NOT_FOUND, "해당 지역을 찾을 수 없습니다."),
 
+    // Enum exception
+    INVALID_ENUM_DESCRIPTION(HttpStatus.BAD_REQUEST, "유효하지 않은 Enum description입니다.")
+
     ;
 
     @Schema(description = "HTTP 응답 상태코드 (HttpStatus Code)", example = "404")
