@@ -4,6 +4,7 @@ import gdsc.sc.bsafe.domain.AIRecord;
 import gdsc.sc.bsafe.domain.BasicRecord;
 import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.User;
+import gdsc.sc.bsafe.domain.enums.AIGrade;
 import gdsc.sc.bsafe.domain.enums.RecordType;
 import gdsc.sc.bsafe.domain.mapping.Repair;
 import gdsc.sc.bsafe.global.exception.CustomException;
@@ -46,14 +47,13 @@ public class RecordService {
     @Transactional
     public Record createAIRecord(AIRecordRequest request, User user) throws IOException {
         String imagePath = cloudStorageService.uploadImage(request.getImage(), AI_IMAGE_PATH);
-
         AIRecord aiRecord = AIRecord.builder()
                 .title(request.getTitle())
                 .detail(request.getDetail())
                 .user(user)
                 .category(request.getCategory())
                 .image(imagePath)
-                .grade(request.getGrade())
+                .grade(AIGrade.convert(request.getGrade()))
                 .build();
 
         return aiRecordRepository.save(aiRecord);
