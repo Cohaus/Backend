@@ -46,6 +46,10 @@ public class RecordService {
 
     @Transactional
     public Record createAIRecord(AIRecordRequest request, User user) throws IOException {
+        if (!AIGrade.isValidDescription(request.getGrade())) {
+            throw new CustomException(ErrorCode.INVALID_ENUM_DESCRIPTION);
+        }
+
         String imagePath = cloudStorageService.uploadImage(request.getImage(), AI_IMAGE_PATH);
         AIRecord aiRecord = AIRecord.builder()
                 .title(request.getTitle())
