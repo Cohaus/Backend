@@ -66,10 +66,10 @@ public class RepairService {
         String district = repair.getDistrict();
         Record record = repair.getRecord();
         RecordType type ;
-        Integer grade ;
+        String grade ;
         if (record instanceof AIRecord){
             type = RecordType.AI;
-            grade = ((AIRecord) record).getGrade();
+            grade = ((AIRecord) record).getGrade().getDescription();
         }
         else {
             type = RecordType.BASIC;

@@ -3,6 +3,7 @@ package gdsc.sc.bsafe.web.controller;
 import gdsc.sc.bsafe.domain.AIRecord;
 import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.User;
+import gdsc.sc.bsafe.domain.enums.AIGrade;
 import gdsc.sc.bsafe.domain.mapping.Repair;
 import gdsc.sc.bsafe.global.annotation.AuthenticationUser;
 import gdsc.sc.bsafe.global.common.SuccessResponse;

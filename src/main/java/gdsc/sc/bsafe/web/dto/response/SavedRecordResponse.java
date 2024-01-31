@@ -33,8 +33,8 @@ public class SavedRecordResponse {
     @Schema(description = "카테고리", example = "도배")
     private String category;
 
-    @Schema(description = "등급", example = "1 이상 10 이하의 자연수")
-    private Integer grade;
+    @Schema(description = "등급", example = "우수/보통/불량")
+    private String grade;
 
     @Schema(description = "생성일", example = "2024-01-01 00:00:00")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
@@ -51,7 +51,7 @@ public class SavedRecordResponse {
         this.title = aiRecord.getTitle();
         this.detail = aiRecord.getDetail();
         this.category = aiRecord.getCategory();
-        this.grade = aiRecord.getGrade();
+        this.grade = aiRecord.getGrade().getDescription();
         this.created_at = aiRecord.getCreatedAt();
         this.updated_at = aiRecord.getUpdatedAt();
     }
