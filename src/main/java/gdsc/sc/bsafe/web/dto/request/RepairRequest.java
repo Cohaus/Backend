@@ -32,11 +32,11 @@ public class RepairRequest {
     @NotBlank
     String place_id;
 
-    @Schema(description = "상세 주소", example = "성남시 수정구 성남대로 1342")
+    @Schema(description = "상세 주소", example = "성남대로 1342")
     @NotBlank
     String address;
 
-    @Schema(description = "행정 구역", example = "성남시 수정구 성남대로")
+    @Schema(description = "구역, 대한민국 xx시 xx구 xx동", example = "대한민국 성남시 수정구 복정동")
     @NotBlank
     String district;
 

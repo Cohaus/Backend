@@ -108,7 +108,7 @@ public class RepairController {
             @ApiResponse(responseCode = "201", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
                     content = @Content(schema = @Schema (implementation = RepairIDResponse.class)))
     })
-    public ResponseEntity<?> createRepair(@RequestParam(value = "id") Long recordId,
+    public ResponseEntity<?> createRepair(@RequestParam(name = "record_id", value = "record_id" ) Long recordId,
                                                            @Valid @RequestBody RepairRequest repairRequest,
                                                            @AuthenticationUser User user){
         AIRecord aiRecord = (AIRecord) recordService.findById(recordId);
