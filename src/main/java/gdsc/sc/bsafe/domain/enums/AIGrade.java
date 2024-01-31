@@ -19,7 +19,7 @@ public enum AIGrade {
     public static AIGrade convert(String source)
     {
         for (AIGrade messageType : AIGrade.values()) {
-            if (messageType.name().equals(source.toUpperCase())) {
+            if (messageType.name().equals(source)) {
                 return messageType;
             }
         }
