@@ -26,6 +26,7 @@ public class Volunteer extends BaseTimeEntity {
     private User user;
 
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private VolunteerType type;
 
     @ManyToOne
