@@ -35,6 +35,7 @@ public class RepairAIRecordRequest {
     String category;
 
     @EnumValid(enumClass = AIGrade.class, ignoreCase = true, message = "우수 / 보통 / 불량 중 하나의 값을 입력해주세요.")
+    @Schema(description = "등급, 우수 / 보통 / 불량 중 하나의 값을 입력합니다.", example = "보통")
     @NotNull
     String grade;
 
