@@ -43,10 +43,10 @@ public class RepairRequest {
     @Schema(description = "방문 희망일", example = "2024-01-01")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @NotNull
-    LocalDate date;
+    LocalDate visit_date;
 
-    public RepairRequest(LocalDate date, String placeId, String address, String district) {
-        this.date = date;
+    public RepairRequest(LocalDate visitDate, String placeId, String address, String district) {
+        this.visit_date = visitDate;
         this.place_id = placeId;
         this.address = address;
         this.district = district;

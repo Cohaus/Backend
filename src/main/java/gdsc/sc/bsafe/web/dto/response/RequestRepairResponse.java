@@ -33,7 +33,7 @@ public class RequestRepairResponse {
     private String district;
 
     @Schema(description = "방문 희망일", example = "2024년 1월 25일")
-    private String date;
+    private String visit_date;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime created_at;
@@ -44,7 +44,7 @@ public class RequestRepairResponse {
         this.title = repair.getRecord().getTitle();
         this.category = repair.getRecord().getCategory();
         this.district = createLegalDistrictString(repair);
-        this.date = formatVisitDate(repair.getVisitDate());
+        this.visit_date = formatVisitDate(repair.getVisitDate());
         this.created_at = repair.getCreatedAt();
     }
 

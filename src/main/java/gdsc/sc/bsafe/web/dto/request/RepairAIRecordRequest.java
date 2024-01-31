@@ -34,7 +34,6 @@ public class RepairAIRecordRequest {
     @NotBlank
     String category;
 
-    @EnumValid(enumClass = AIGrade.class, ignoreCase = true, message = "우수 / 보통 / 불량 중 하나의 값을 입력해주세요.")
     @Schema(description = "등급, 우수 / 보통 / 불량 중 하나의 값을 입력합니다.", example = "보통")
     @NotNull
     String grade;
@@ -43,11 +42,11 @@ public class RepairAIRecordRequest {
     @NotBlank
     String place_id;
 
-    @Schema(description = "상세 주소", example = "성남시 수정구 성남대로 1342")
+    @Schema(description = "상세 주소", example = "성남대로 1342")
     @NotBlank
     String address;
 
-    @Schema(description = "상세 화면", example = "성남시 수정구 성남대로")
+    @Schema(description = "구역, 대한민국 xx시 xx구 xx동", example = "대한민국 성남시 수정구 복정동")
     @NotBlank
     String district;
 

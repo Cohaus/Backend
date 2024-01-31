@@ -45,7 +45,7 @@ public class RepairService {
 
         Repair repair = Repair.builder()
                 .record(record)
-                .visitDate(repairRequest.getDate())
+                .visitDate(repairRequest.getVisit_date())
                 .address(repairRequest.getAddress())
                 .district(extractDistrict)
                 .placeId(repairRequest.getPlace_id())
