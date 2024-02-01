@@ -32,42 +32,29 @@ public class UserService {
     }
 
     public UserInfoResponse getUserInfo(User user){
-        return new UserInfoResponse(user);
+        Optional<Volunteer> volunteer = volunteerRepository.findByUser(user);
+        String volunteer_type = null;
+        String organization_name = null ;
+        if(volunteer.isPresent()){
+            volunteer_type = volunteer.get().getType().getDescription();
+            if(volunteer.get().getType().equals(VolunteerType.ORGANIZATION)) {
+                organization_name = volunteer.get().getOrganization().getName();
+            }
+        }
+        return new UserInfoResponse(user, volunteer_type, organization_name);
     }
 
     @Transactional
     public UpdateUserInfoResponse updateUserInfo(User user, UpdateUserInfoRequest request) {
         User requestUser = findById(user.getUserId());
-        String userAuthority = request.getUser_authority();
-        String userVolunteerType = request.getVolunteer_type();
-
-        String volunteerType = null;
-        String organizationName = null;
-
-        switch (Authority.valueOf(userAuthority)) {
-            case USER:
-                handleUserUpdate(requestUser, request);
-                break;
-            case VOLUNTEER:
-                if (VolunteerType.SINGLE.toString().equals(userVolunteerType)) {
-                    handleSingleVolunteerUpdate(requestUser, request);
-                    volunteerType = VolunteerType.SINGLE.toString();
-                } else if (VolunteerType.ORGANIZATION.toString().equals(userVolunteerType)) {
-                    handleOrganizationVolunteerUpdate(requestUser, request);
-                    volunteerType = VolunteerType.ORGANIZATION.toString();
-                    organizationName = request.getOrganization_name();
-                }
-                break;
-        }
+        handleUserUpdate(requestUser, request);
 
         return new UpdateUserInfoResponse(
                 requestUser.getUserId(),
                 requestUser.getName(),
                 requestUser.getId(),
                 requestUser.getEmail(),
-                requestUser.getTel(),
-                volunteerType,
-                organizationName
+                requestUser.getTel()
         );
     }
 
@@ -78,32 +65,6 @@ public class UserService {
 
     private void handleUserUpdate(User user, UpdateUserInfoRequest request) {
         user.updateUserInfo(request.getName(), request.getEmail(), request.getTel(), Authority.USER);
-    }
-
-    private void handleSingleVolunteerUpdate(User user, UpdateUserInfoRequest request) {
-        user.updateUserInfo(request.getName(), request.getEmail(), request.getTel(), Authority.VOLUNTEER);
-
-        Optional<Volunteer> volunteer = volunteerRepository.findByUser(user);
-        volunteer.ifPresentOrElse(
-                volunteerUser -> volunteerUser.updateVolunteerType(VolunteerType.SINGLE),
-                () -> volunteerRepository.save(Volunteer.builder().user(user).type(VolunteerType.SINGLE).build())
-        );
-    }
-
-    private void handleOrganizationVolunteerUpdate(User user, UpdateUserInfoRequest request) {
-        user.updateUserInfo(request.getName(), request.getEmail(), request.getTel(), Authority.VOLUNTEER);
-
-        Optional<Volunteer> volunteer = volunteerRepository.findByUser(user);
-        volunteer.ifPresentOrElse(
-                volunteerUser -> volunteerUser.updateVolunteerType(VolunteerType.ORGANIZATION),
-                () -> volunteerRepository.save(
-                        Volunteer.builder()
-                                .user(user)
-                                .type(VolunteerType.ORGANIZATION)
-                                .build()
-                )
-        );
-        volunteer.ifPresent(vol -> volunteerService.updateVolunteerOrganization(vol, request.getOrganization_name()));
     }
 
 }

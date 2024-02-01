@@ -26,11 +26,4 @@ public class UpdateUserInfoResponse {
     @Schema(description = "전화번호", example = "01012345678")
     private String tel;
 
-    @Schema(description = "봉사자 유형 (일반 유저(USER)인 경우 null이 반환됩니다.)", example = "ORGANIZATION")
-    private String volunteer_type;
-
-    @Schema(description = "봉사 조직 이름 (일반 유저(USER)이거나 개인 봉사자(SINGLE)일 경우 null이 반환됩니다.)",
-            example = "1365 자원봉사")
-    private String organization_name;
-
 }

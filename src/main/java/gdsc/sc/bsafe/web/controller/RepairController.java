@@ -3,6 +3,7 @@ package gdsc.sc.bsafe.web.controller;
 import gdsc.sc.bsafe.domain.AIRecord;
 import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.User;
+import gdsc.sc.bsafe.domain.enums.AIGrade;
 import gdsc.sc.bsafe.domain.mapping.Repair;
 import gdsc.sc.bsafe.global.annotation.AuthenticationUser;
 import gdsc.sc.bsafe.global.common.SuccessResponse;
@@ -107,7 +108,7 @@ public class RepairController {
             @ApiResponse(responseCode = "201", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
                     content = @Content(schema = @Schema (implementation = RepairIDResponse.class)))
     })
-    public ResponseEntity<?> createRepair(@RequestParam(value = "id") Long recordId,
+    public ResponseEntity<?> createRepair(@RequestParam(name = "record_id", value = "record_id" ) Long recordId,
                                                            @Valid @RequestBody RepairRequest repairRequest,
                                                            @AuthenticationUser User user){
         AIRecord aiRecord = (AIRecord) recordService.findById(recordId);
@@ -116,7 +117,7 @@ public class RepairController {
                     repairRequest.getTitle(), repairRequest.getDetail(), repairRequest.getCategory());
             recordService.updateRecord(aiRecord, updateSavedRecordRequest);
             RepairRequest request = new RepairRequest(
-                    repairRequest.getDate(),
+                    repairRequest.getVisit_date(),
                     repairRequest.getPlace_id(),
                     repairRequest.getAddress(),
                     repairRequest.getDistrict()
@@ -153,7 +154,7 @@ public class RepairController {
     public ResponseEntity<SuccessResponse<?>> getRepairInfo(@PathVariable Long repairId,
                                                             @AuthenticationUser User user){
         Repair repair = repairService.findByRepairId(repairId);
-        RepairInfoResponse repairInfoResponse = repairService.getRepairInfo(repair);
+        RepairInfoResponse repairInfoResponse = repairService.getRepairInfo(repair,user);
         return SuccessResponse.ok(repairInfoResponse);
     }
 }

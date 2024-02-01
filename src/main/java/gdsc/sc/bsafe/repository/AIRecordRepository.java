@@ -3,10 +3,10 @@ package gdsc.sc.bsafe.repository;
 import gdsc.sc.bsafe.domain.AIRecord;
 import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.User;
-import gdsc.sc.bsafe.domain.mapping.Repair;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,6 +26,7 @@ public interface AIRecordRepository  extends JpaRepository<AIRecord, Long> {
             "where a.user = :user and " +
             "not a in :records " +
             "order by a.recordId desc ")
-    Slice<AIRecord> queryFindSavedRecords(List<Record> records, User user);
+    Slice<AIRecord> queryFindSavedRecords(@Param("records") List<Record> records,
+                                          @Param("user") User user);
 
 }

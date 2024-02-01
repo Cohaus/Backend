@@ -1,7 +1,10 @@
 package gdsc.sc.bsafe.domain.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum RepairStatus {
-    REQUEST("요청"),
+    REQUEST("신청"),
     PROCEEDING("진행"),
     COMPLETE("완료");
 

@@ -1,6 +1,8 @@
 package gdsc.sc.bsafe.web.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import gdsc.sc.bsafe.domain.enums.AIGrade;
+import gdsc.sc.bsafe.global.annotation.EnumValid;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -32,21 +34,19 @@ public class RepairAIRecordRequest {
     @NotBlank
     String category;
 
-    @Schema(title = "등급", description = "1 이상 10 이하의 자연수만 입력 가능합니다.")
-    @NotNull(message = "1 이상 10 이하의 자연수로 입력해야 합니다.")
-    @Min(value = 1, message = "1 이상 10 이하의 자연수로 입력해야 합니다.")
-    @Max(value = 10, message = "1 이상 10 이하의 자연수로 입력해야 합니다.")
-    Integer grade;
+    @Schema(description = "등급, 우수 / 보통 / 불량 중 하나의 값을 입력합니다.", example = "보통")
+    @NotNull
+    String grade;
 
     @Schema(description = "place_id")
     @NotBlank
     String place_id;
 
-    @Schema(description = "상세 주소", example = "성남시 수정구 성남대로 1342")
+    @Schema(description = "상세 주소", example = "성남대로 1342")
     @NotBlank
     String address;
 
-    @Schema(description = "상세 화면", example = "성남시 수정구 성남대로")
+    @Schema(description = "구역, 대한민국 xx시 xx구 xx동", example = "대한민국 성남시 수정구 복정동")
     @NotBlank
     String district;
 

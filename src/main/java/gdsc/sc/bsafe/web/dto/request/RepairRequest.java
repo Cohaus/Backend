@@ -32,23 +32,24 @@ public class RepairRequest {
     @NotBlank
     String place_id;
 
-    @Schema(description = "상세 주소", example = "성남시 수정구 성남대로 1342")
+    @Schema(description = "상세 주소", example = "성남대로 1342")
     @NotBlank
     String address;
 
-    @Schema(description = "행정 구역", example = "성남시 수정구 성남대로")
+    @Schema(description = "구역, 대한민국 xx시 xx구 xx동", example = "대한민국 성남시 수정구 복정동")
     @NotBlank
     String district;
 
     @Schema(description = "방문 희망일", example = "2024-01-01")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @NotNull
-    LocalDate date;
+    LocalDate visit_date;
 
-    public RepairRequest(LocalDate date, String placeId, String address, String district) {
-        this.date = date;
+    public RepairRequest(LocalDate visitDate, String placeId, String address, String district) {
+        this.visit_date = visitDate;
         this.place_id = placeId;
         this.address = address;
         this.district = district;
     }
+
 }

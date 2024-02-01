@@ -4,10 +4,13 @@ import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.User;
 import gdsc.sc.bsafe.domain.enums.RepairStatus;
 import gdsc.sc.bsafe.domain.mapping.Repair;
+import gdsc.sc.bsafe.repository.projection.CountRepair;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -24,5 +27,22 @@ public interface RepairRepository extends JpaRepository<Repair, Long> {
     Slice<Repair> findAllByRecord_UserOrderByCreatedAtDesc(User user);
 
     Slice<Repair> getByVolunteerAndStatus(User user, RepairStatus status);
+
+    Slice<Repair> findAllByStatusAndLegalDistrictDistrictIdOrderByCreatedAt(RepairStatus status, Long legalDistrictId);
+
+    @Query(value =
+            "SELECT "+
+                    "new gdsc.sc.bsafe.repository.projection.CountRepair(" +
+                        "r.legalDistrict.districtId, " +
+                        "r.legalDistrict.sido, " +
+                        "r.legalDistrict.gu, " +
+                        "r.legalDistrict.dong, " +
+                        "count(r)" +
+                    ") " +
+                    "FROM Repair r " +
+                    "WHERE r.status = 'REQUEST' " +
+                    "GROUP BY r.legalDistrict "
+    )
+    List<CountRepair> countRepairGroupByDistrict();
 
 }

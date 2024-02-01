@@ -17,6 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.Arrays;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -38,12 +41,13 @@ public class RepairService {
 
         String[] district = repairRequest.getDistrict().split(" ");
         District legalDistrict = districtService.findDistrictByGuAndDong(district);
+        String extractDistrict = String.join(" ", Arrays.copyOfRange(district, 1, district.length));
 
         Repair repair = Repair.builder()
                 .record(record)
-                .date(repairRequest.getDate())
+                .visitDate(repairRequest.getVisit_date())
                 .address(repairRequest.getAddress())
-                .district(repairRequest.getDistrict())
+                .district(extractDistrict)
                 .placeId(repairRequest.getPlace_id())
                 .status(RepairStatus.REQUEST)
                 .legalDistrict(legalDistrict)
@@ -53,19 +57,27 @@ public class RepairService {
     }
 
     @Transactional
-    public void updateRepairStatus(Long repairId, RepairStatus status) {
+    public void updateRequestRepairStatus(Long repairId, RepairStatus status, LocalDate proceedDate) {
         Repair repair = findByRepairId(repairId);
         repair.updateRepairStatus(status);
+        repair.updateProceedDate(proceedDate);
+    }
+
+    @Transactional
+    public void updateCompleteRepairStatus(Long repairId, RepairStatus status, LocalDate completeDate) {
+        Repair repair = findByRepairId(repairId);
+        repair.updateRepairStatus(status);
+        repair.updateCompleteDate(completeDate);
     }
 
     public RepairRecordResponse getRepairRecord(Repair repair){
         String district = repair.getDistrict();
         Record record = repair.getRecord();
         RecordType type ;
-        Integer grade ;
+        String grade ;
         if (record instanceof AIRecord){
             type = RecordType.AI;
-            grade = ((AIRecord) record).getGrade();
+            grade = ((AIRecord) record).getGrade().getDescription();
         }
         else {
             type = RecordType.BASIC;
@@ -75,19 +87,45 @@ public class RepairService {
         return repairRecordResponse;
     }
 
-    public RepairInfoResponse getRepairInfo(Repair repair){
-        String category = repair.getRecord().getCategory();
+    public RepairInfoResponse getRepairInfo(Repair repair, User currentUser){
         User user = repair.getRecord().getUser();
         User volunteer = repair.getVolunteer();
+        String category = repair.getRecord().getCategory();
         Long volunteerId = null;
+        String userName = null;
+        String userTel = null;
         String volunteerName = null;
         String volunteerTel = null;
-        if(volunteer != null){
-            volunteerId = volunteer.getUserId();
-            volunteerName = volunteer.getName();
-            volunteerTel = volunteer.getTel();
+        LocalDate proceedDate = null;
+        LocalDate completeDate = null;
+        String address = repair.getDistrict();
+
+        if (repair.getStatus().equals(RepairStatus.REQUEST)){
+            if (currentUser == user){
+                address += repair.getDistrict() + ' ' + repair.getAddress();
+                userName = user.getName();
+                userTel = user.getTel();
+            }
         }
-        return new RepairInfoResponse(repair,category,user,volunteerId,volunteerName,volunteerTel);
+        else {
+            if(currentUser.equals(user) || currentUser.equals(volunteer)) {
+                userName = user.getName();
+                userTel = user.getTel();
+
+                volunteerId = volunteer.getUserId();
+                volunteerName = volunteer.getName();
+                volunteerTel = volunteer.getTel();
+
+                address = repair.getDistrict() + ' ' + repair.getAddress();
+                proceedDate = repair.getProceedDate();
+                if (repair.getStatus().equals(RepairStatus.COMPLETE)){
+                    completeDate = repair.getCompleteDate();
+                }
+            }
+            else throw new CustomException(ErrorCode.INVALID_PERMISSION);
+        }
+        return new RepairInfoResponse(repair,category,user.getUserId(),userName,userTel,
+                volunteerId,volunteerName,volunteerTel,address);
     }
 
 }

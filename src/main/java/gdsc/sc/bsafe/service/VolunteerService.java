@@ -12,13 +12,18 @@ import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
 import gdsc.sc.bsafe.repository.RepairRepository;
 import gdsc.sc.bsafe.repository.VolunteerRepository;
 import gdsc.sc.bsafe.web.dto.common.SliceResponse;
+import gdsc.sc.bsafe.web.dto.request.UpdateUserInfoRequest;
 import gdsc.sc.bsafe.web.dto.request.VolunteerUserRequest;
 import gdsc.sc.bsafe.web.dto.response.RepairItemResponse;
+import gdsc.sc.bsafe.web.dto.response.VolunteerInfoResponse;
 import gdsc.sc.bsafe.web.dto.response.VolunteerRepairListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,24 +35,55 @@ public class VolunteerService {
     private final OrganizationService organizationService;
     private final RepairService repairService;
 
+    public Optional<Volunteer> findByUser(User user) {
+        return volunteerRepository.findByUser(user);
+    }
+
     @Transactional
-    public Long saveVolunteer(User user, VolunteerUserRequest request) {
+    public VolunteerInfoResponse saveVolunteer(User user, VolunteerUserRequest request) {
         Volunteer volunteer = createVolunteer(user, VolunteerType.valueOf(request.getType()));
 
         String organizationName = request.getOrganization_name();
         updateVolunteerOrganization(volunteer, organizationName);
+        volunteerRepository.save(volunteer);
 
-        Volunteer savedVolunteer = volunteerRepository.save(volunteer);
-
-        return savedVolunteer.getUser().getUserId();
+        return new VolunteerInfoResponse(request.getType(), request.getOrganization_name());
     }
 
     @Transactional
-    public Long volunteerRepair(User user, Long repairId) {
+    public VolunteerInfoResponse updateVolunteerInfo(Volunteer volunteer, VolunteerUserRequest request) {
+        volunteer.updateVolunteerType(VolunteerType.valueOf(request.getType()));
+        String organizationName = request.getOrganization_name();
+        if (organizationName==null){
+            volunteer.updateOrganization(null);
+        }
+        else {
+            updateVolunteerOrganization(volunteer, organizationName);
+        }
+        volunteerRepository.save(volunteer);
+
+        return new VolunteerInfoResponse(request.getType(), request.getOrganization_name());
+    }
+
+
+    @Transactional
+    public Long volunteerRepair(User user, Long repairId, LocalDate proceedDate) {
         Repair repair = repairService.findByRepairId(repairId);
+        validateRepairStatus(repair, RepairStatus.REQUEST);
 
         updateVolunteer(user, repair);
-        repairService.updateRepairStatus(repairId, RepairStatus.PROCEEDING);
+        repairService.updateRequestRepairStatus(repairId, RepairStatus.PROCEEDING, proceedDate);
+
+        return repair.getRepairId();
+    }
+
+    @Transactional
+    public Long completeRepair(User user, Long repairId, LocalDate completeDate) {
+        Repair repair = repairService.findByRepairId(repairId);
+        validateRepairStatus(repair, RepairStatus.PROCEEDING);
+
+        validateIsSameVolunteer(user, repair);
+        repairService.updateCompleteRepairStatus(repairId, RepairStatus.COMPLETE, completeDate);
 
         return repair.getRepairId();
     }
@@ -76,7 +112,6 @@ public class VolunteerService {
 
     private Volunteer createVolunteer(User user, VolunteerType type) {
         user.updateUserAuthority(Authority.VOLUNTEER);
-
         return Volunteer.builder()
                 .user(user)
                 .type(type)
@@ -93,4 +128,17 @@ public class VolunteerService {
             throw new CustomException(ErrorCode.NOT_VOLUNTEER_USER);
         }
     }
+
+    private void validateRepairStatus(Repair repair, RepairStatus status) {
+        if (!repair.getStatus().equals(status)) {
+            throw new CustomException(ErrorCode.INVALID_REPAIR_STATUS);
+        }
+    }
+
+    private void validateIsSameVolunteer(User user, Repair repair) {
+        if (!repair.getVolunteer().equals(user)) {
+            throw new CustomException(ErrorCode.INVALID_PERMISSION);
+        }
+    }
+
 }
