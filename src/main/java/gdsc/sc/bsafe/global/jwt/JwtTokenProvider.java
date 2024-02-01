@@ -17,6 +17,8 @@ import java.security.Key;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
+import static gdsc.sc.bsafe.global.exception.enums.ErrorCode.TOKEN_EXPIRED;
+
 @Component
 public class JwtTokenProvider {
 
@@ -66,7 +68,7 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException e) {
-            throw new CustomException(ErrorCode.TOKEN_EXPIRED);
+            throw new JwtException(TOKEN_EXPIRED.getMessage());
         }
     }
 
