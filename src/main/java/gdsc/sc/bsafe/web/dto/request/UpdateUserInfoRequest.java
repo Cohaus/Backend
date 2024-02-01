@@ -35,16 +35,5 @@ public class UpdateUserInfoRequest {
             message = "이메일 형식이 올바르지 않습니다.")
     String email;
 
-    @Schema(description = "사용자 유형 (일반 사용자 -> USER / 봉사자 -> VOLUNTEER)", example = "VOLUNTEER")
-    @EnumValid(enumClass = Authority.class, message = "유효하지 않은 권한(역할)입니다.")
-    @NotBlank(message = "사용자 유형은 필수입니다.")
-    String user_authority;
-
-    @Schema(description = "봉사자 유형 (1. 개인 -> SINGLE / 2. 조직 -> ORGANIZATION / 3. 일반 유저(USER)일 경우 -> null)", example = "ORGANIZATION")
-    @EnumValid(enumClass = VolunteerType.class, message = "유효하지 않은 봉사자 타입입니다.")
-    String volunteer_type;
-
-    @Schema(description = "봉사 조직 이름 (일반 유저(USER)이거나 개인 봉사자(SINGLE)일 경우 -> null", example = "GDSC CoHaus")
-    String organization_name;
 
 }

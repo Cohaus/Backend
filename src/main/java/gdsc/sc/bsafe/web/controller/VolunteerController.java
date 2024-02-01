@@ -5,7 +5,6 @@ import gdsc.sc.bsafe.global.annotation.AuthenticationUser;
 import gdsc.sc.bsafe.global.common.SuccessResponse;
 import gdsc.sc.bsafe.service.VolunteerService;
 import gdsc.sc.bsafe.web.dto.request.VolunteerUserRequest;
-import gdsc.sc.bsafe.web.dto.response.SavedRecordResponse;
 import gdsc.sc.bsafe.web.dto.response.VolunteerRepairListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,16 +27,20 @@ public class VolunteerController {
     private final VolunteerService volunteerService;
 
     /*
-        봉사자 신청 API
+        봉사자 등록 / 정보 수정 API
      */
-    @Operation(summary = "설정 - 봉사자 신청 API", description = "유저에게 봉사자 역할을 부여합니다. 요청 성공 시 user의 pk를 반환합니다.")
+    @Operation(summary = "설정 - 봉사자 등록 / 정보 수정 API", description = "유저에게 봉사자 역할을 부여 및 정보를 수정합니다. 요청 성공 시 user의 봉사자 정보를 반환합니다.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다."),
             @ApiResponse(responseCode = "201", description = "요청에 성공했습니다.")
     })
-    @PostMapping("/users")
+    @PutMapping("/users")
     public ResponseEntity<SuccessResponse<?>> saveVolunteer(@AuthenticationUser User user,
                                                             @Valid @RequestBody VolunteerUserRequest volunteerUserRequest) {
-        return SuccessResponse.created(volunteerService.saveVolunteer(user, volunteerUserRequest));
+        if(volunteerService.findByUser(user).isPresent()){
+            return SuccessResponse.ok(volunteerService.updateVolunteerInfo(volunteerService.findByUser(user).get(), volunteerUserRequest));
+        }
+        else return SuccessResponse.created(volunteerService.saveVolunteer(user, volunteerUserRequest));
     }
 
     /*
