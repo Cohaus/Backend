@@ -12,12 +12,6 @@ import lombok.Getter;
 @Getter
 public class UpdateUserInfoRequest {
 
-    @Schema(description = "아이디", example = "id1234")
-    @Size(min = 4, max = 12, message = "아이디는 4자 이상, 12자 이하여야 합니다.")
-    @NotBlank(message = "아이디는 필수입니다.")
-    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[0-9]).{4,12}$", message = "아이디는 최소 하나 이상의 영문자와 숫자가 포함되어야 합니다.")
-    String id;
-
     @Schema(description = "이름", example = "김지원")
     @Size(min = 2, message = "이름은 최소 2자 이상이어야 합니다.")
     @NotBlank(message = "이름은 필수입니다.")

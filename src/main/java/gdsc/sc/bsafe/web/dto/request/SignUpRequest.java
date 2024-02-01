@@ -45,9 +45,9 @@ public record SignUpRequest(
         return new User(
                 id,
                 Password.encrypt(password, ENCODER),
-                name,
+                email,
                 tel,
-                email
+                name
         );
     }
 }

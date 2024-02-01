@@ -64,8 +64,7 @@ public class UserService {
     }
 
     private void handleUserUpdate(User user, UpdateUserInfoRequest request) {
-        user.updateUserInfo(request.getName(), request.getId(), request.getEmail(), request.getTel(), Authority.USER);
+        user.updateUserInfo(request.getName(), request.getEmail(), request.getTel(), Authority.USER);
     }
-
 
 }
