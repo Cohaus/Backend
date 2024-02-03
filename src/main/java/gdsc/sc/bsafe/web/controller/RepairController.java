@@ -12,11 +12,10 @@ import gdsc.sc.bsafe.global.exception.ErrorResponse;
 import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
 import gdsc.sc.bsafe.service.RecordService;
 import gdsc.sc.bsafe.service.RepairService;
+import gdsc.sc.bsafe.service.WasteFacilityService;
+import gdsc.sc.bsafe.web.dto.common.SliceResponse;
 import gdsc.sc.bsafe.web.dto.request.*;
-import gdsc.sc.bsafe.web.dto.response.RepairIDResponse;
-import gdsc.sc.bsafe.web.dto.response.RepairInfoResponse;
-import gdsc.sc.bsafe.web.dto.response.RepairRecordResponse;
-import gdsc.sc.bsafe.web.dto.response.SavedRecordResponse;
+import gdsc.sc.bsafe.web.dto.response.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -37,6 +36,7 @@ public class RepairController {
 
     private final RecordService recordService;
     private final RepairService repairService;
+    private final WasteFacilityService wasteFacilityService;
 
     /*
         AI 수리 신청하기
@@ -156,5 +156,24 @@ public class RepairController {
         Repair repair = repairService.findByRepairId(repairId);
         RepairInfoResponse repairInfoResponse = repairService.getRepairInfo(repair,user);
         return SuccessResponse.ok(repairInfoResponse);
+    }
+
+    /*
+        근접한 폐기물 처리시설 정보 조회
+     */
+    @Operation(summary = "폐기물 처리시설 정보 화면 - 폐기물 처리시설 정보 조회 API ", description = "수리 신청 주소지 근처의 폐기물 처리시설을 리스트로 반환합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
+                    content = { @Content(schema = @Schema (implementation = SliceResponse.class)),
+                            @Content(schema = @Schema (implementation = WasteFacilityResponse.class))
+
+                    })
+    })
+    @GetMapping(value = "/{repairId}/waste-facility")
+    public ResponseEntity<SuccessResponse<?>> getNearWasteFacilityInfo(@PathVariable Long repairId,
+                                                                       @AuthenticationUser User user) {
+        Repair repair = repairService.findByRepairId(repairId);
+        DistrictRequest districtRequest = new DistrictRequest(repair.getLegalDistrict().getSido(), repair.getLegalDistrict().getGu());
+        return SuccessResponse.ok(wasteFacilityService.getNearWasteFacilityInfo(districtRequest));
     }
 }
