@@ -40,10 +40,6 @@ jobs:
           echo "${{ secrets.SECRET_ENV }}" >> ./application.yml
         shell: bash
 
-      - name: Clean up Docker images
-        run: |
-          docker image prune -af
-
       - name: Build with Gradle
         uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25
         with:
