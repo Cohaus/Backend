@@ -8,6 +8,7 @@ import gdsc.sc.bsafe.repository.UserRepository;
 import gdsc.sc.bsafe.service.AuthTokenService;
 import gdsc.sc.bsafe.web.dto.response.AccessTokenResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -17,8 +18,12 @@ import java.util.Date;
 public class AuthTokenGenerator {
 
     private static final String BEARER_TYPE = "Bearer";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;
-    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;
+
+    @Value("${application.jwt.access_token_expire}")
+    private static long ACCESS_TOKEN_EXPIRE_TIME;
+
+    @Value("${application.jwt.refresh_token_expire}")
+    private static long REFRESH_TOKEN_EXPIRE_TIME;
 
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthTokenService authTokenService;
