@@ -20,10 +20,10 @@ public class AuthTokenGenerator {
     private static final String BEARER_TYPE = "Bearer";
 
     @Value("${application.jwt.access_token_expire}")
-    private static long ACCESS_TOKEN_EXPIRE_TIME;
+    private long ACCESS_TOKEN_EXPIRE_TIME;
 
     @Value("${application.jwt.refresh_token_expire}")
-    private static long REFRESH_TOKEN_EXPIRE_TIME;
+    private long REFRESH_TOKEN_EXPIRE_TIME;
 
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthTokenService authTokenService;

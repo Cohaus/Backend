@@ -45,4 +45,8 @@ public interface RepairRepository extends JpaRepository<Repair, Long> {
     )
     List<CountRepair> countRepairGroupByDistrict();
 
+    void deleteAllByVolunteer(User volunteer);
+
+    void deleteAllByRecord(Record record);
+
 }

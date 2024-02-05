@@ -6,15 +6,14 @@ import gdsc.sc.bsafe.global.common.SuccessResponse;
 import gdsc.sc.bsafe.service.RecordService;
 import gdsc.sc.bsafe.service.UserService;
 import gdsc.sc.bsafe.web.dto.request.UpdateUserInfoRequest;
-import gdsc.sc.bsafe.web.dto.response.RepairIDResponse;
 import gdsc.sc.bsafe.web.dto.response.UpdateUserInfoResponse;
 import gdsc.sc.bsafe.web.dto.response.UserInfoResponse;
+import gdsc.sc.bsafe.web.dto.response.UserRecordListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import gdsc.sc.bsafe.web.dto.response.UserRecordListResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -80,7 +79,7 @@ public class UserController {
     })
     @DeleteMapping("/withdraw")
     public ResponseEntity<SuccessResponse<?>> withdrawUser(@AuthenticationUser User user) {
-        userService.withdrawUser(user.getUserId());
+        userService.withdrawUser(user);
 
         return SuccessResponse.ok(null);
     }
