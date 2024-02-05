@@ -21,9 +21,9 @@ public enum AIGrade {
     @JsonCreator
     public static AIGrade convert(String source)
     {
-        for (AIGrade messageType : AIGrade.values()) {
-            if (messageType.description.equals(source)) {
-                return messageType;
+        for (AIGrade grade : AIGrade.values()) {
+            if (grade.description.equals(source)) {
+                return grade;
             }
         }
         return null;

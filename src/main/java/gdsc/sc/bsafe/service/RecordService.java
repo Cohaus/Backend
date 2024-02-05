@@ -6,6 +6,7 @@ import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.User;
 import gdsc.sc.bsafe.domain.enums.AIGrade;
 import gdsc.sc.bsafe.domain.enums.RecordType;
+import gdsc.sc.bsafe.domain.enums.RepairCategory;
 import gdsc.sc.bsafe.domain.mapping.Repair;
 import gdsc.sc.bsafe.global.exception.CustomException;
 import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
@@ -49,7 +50,7 @@ public class RecordService {
         if (!AIGrade.isValidDescription(request.getGrade())) {
             throw new CustomException(ErrorCode.INVALID_ENUM_DESCRIPTION);
         }
-
+        isValidCategory(request.getCategory());
         String imagePath = cloudStorageService.uploadImage(request.getImage(), AI_IMAGE_PATH);
         AIRecord aiRecord = AIRecord.builder()
                 .title(request.getTitle())
@@ -65,6 +66,7 @@ public class RecordService {
 
     @Transactional
     public Record createBasicRecord(BasicRecordRequest request, User user) throws IOException {
+        isValidCategory(request.getCategory());
         String imagePath = cloudStorageService.uploadImage(request.getImage(), BASIC_IMAGE_PATH);
 
         BasicRecord basicRecord = BasicRecord.builder()
@@ -117,6 +119,7 @@ public class RecordService {
 
     @Transactional
     public SavedRecordResponse updateRecord(AIRecord aiRecord, UpdateSavedRecordRequest request){
+        isValidCategory(request.getCategory());
         aiRecord.updateSavedRecord(request.getTitle(), request.getDetail(), request.getCategory());
         AIRecord updatedRecord = aiRecordRepository.save(aiRecord);
         return new SavedRecordResponse(updatedRecord);
@@ -134,4 +137,9 @@ public class RecordService {
             return record.getRecordId();
     }
 
+    private static void isValidCategory(String category) {
+        if (!RepairCategory.isValidDescription(category)) {
+            throw new CustomException(ErrorCode.INVALID_ENUM_DESCRIPTION);
+        }
+    }
 }

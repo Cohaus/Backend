@@ -13,15 +13,12 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class BasicRecordRequest {
 
-    @Schema(description = "제목", example = "제목")
     @NotBlank
     String title;
 
-    @Schema(description = "내용", example = "내용")
     @NotBlank
     String detail;
 
-    @Schema(description = "카테고리", example = "카테고리")
     @NotBlank
     String category;
 
