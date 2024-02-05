@@ -75,7 +75,8 @@ public class UserController {
      */
     @Operation(summary = "회원 탈퇴 API", description = "요청 성공 시 DB에서 회원 데이터를 삭제합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.")
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
+                    content = @Content(schema = @Schema (implementation = Void.class)))
     })
     @DeleteMapping("/withdraw")
     public ResponseEntity<SuccessResponse<?>> withdrawUser(@AuthenticationUser User user) {
