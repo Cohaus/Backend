@@ -23,6 +23,8 @@ public class CloudStorageService {
 
     private final Storage storage;
 
+    private static final String PUBLIC_URL_PREFIX = "https://storage.googleapis.com/gces_bucket/";
+
     public String uploadImage(MultipartFile image, String directory) throws IOException {
         String originalName = image.getOriginalFilename();
 
@@ -40,6 +42,6 @@ public class CloudStorageService {
                 image.getInputStream()
         );
 
-        return blobInfo.getName();
+        return PUBLIC_URL_PREFIX + blobInfo.getName();
     }
 }
