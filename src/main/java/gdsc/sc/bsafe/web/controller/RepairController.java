@@ -139,7 +139,7 @@ public class RepairController {
     public ResponseEntity<SuccessResponse<?>> getRepairRecord(@PathVariable Long repairId,
                                                               @AuthenticationUser User user){
         Repair repair = repairService.findByRepairId(repairId);
-        RepairRecordResponse repairRecordResponse = repairService.getRepairRecord(repair);
+        RepairRecordResponse repairRecordResponse = repairService.getRepairRecord(repair, user);
         return SuccessResponse.ok(repairRecordResponse);
     }
     /*

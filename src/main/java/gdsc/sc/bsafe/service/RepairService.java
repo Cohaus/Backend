@@ -70,11 +70,19 @@ public class RepairService {
         repair.updateCompleteDate(completeDate);
     }
 
-    public RepairRecordResponse getRepairRecord(Repair repair){
+    public RepairRecordResponse getRepairRecord(Repair repair, User user){
         String district = repair.getDistrict();
         Record record = repair.getRecord();
+        User writer = record.getUser();
+        RepairStatus status ;
         RecordType type ;
         String grade ;
+
+        if (!user.equals(writer)) {
+            status = repair.getStatus() ;
+        }
+        else status = null;
+
         if (record instanceof AIRecord){
             type = RecordType.AI;
             grade = ((AIRecord) record).getGrade().getDescription();
@@ -83,8 +91,7 @@ public class RepairService {
             type = RecordType.BASIC;
             grade = null;
         }
-        RepairRecordResponse repairRecordResponse = new RepairRecordResponse(repair.getRecord(), district, grade, type);
-        return repairRecordResponse;
+        return new RepairRecordResponse(repair.getRecord(), status,district, grade, type);
     }
 
     public RepairInfoResponse getRepairInfo(Repair repair, User currentUser){

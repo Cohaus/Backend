@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import gdsc.sc.bsafe.domain.AIRecord;
 import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.enums.RecordType;
+import gdsc.sc.bsafe.domain.enums.RepairStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +25,10 @@ public class RepairRecordResponse {
 
     @Schema(description = "기록 유형", example = "1")
     private RecordType type;
+
+    @Schema(description = "수리 진행 상태, 기록 작성자일 경우 null 반환", example = "REQUEST")
+    @Enumerated(EnumType.STRING)
+    private RepairStatus status;
 
     @Schema(description = "유저 id", example = "id1234")
     private String user_id;
@@ -49,7 +56,7 @@ public class RepairRecordResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime updated_at;
 
-    public RepairRecordResponse(Record record, String district, String grade, RecordType type) {
+    public RepairRecordResponse(Record record, RepairStatus status, String district, String grade, RecordType type) {
         this.record_id = record.getRecordId();
         this.user_id = record.getUser().getId();
         this.image = record.getImage();
@@ -58,6 +65,7 @@ public class RepairRecordResponse {
         this.district = district;
         this.grade = grade;
         this.type = type;
+        this.status = status;
         this.created_at = record.getCreatedAt();
         this.updated_at = record.getUpdatedAt();
     }
