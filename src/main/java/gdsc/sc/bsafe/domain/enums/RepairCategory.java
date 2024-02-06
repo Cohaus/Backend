@@ -25,7 +25,7 @@ public enum RepairCategory {
     public static RepairCategory convert(String source)
     {
         for (RepairCategory category : RepairCategory.values()) {
-            if (category.description.equals(source)) {
+            if (category.name().equals(source)) {
                 return category;
             }
         }
@@ -34,6 +34,7 @@ public enum RepairCategory {
 
     public static boolean isValidDescription(String description) {
         for (RepairCategory category : RepairCategory.values()) {
+
             if (category.getDescription().equalsIgnoreCase(description)) {
                 return true;
             }
