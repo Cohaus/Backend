@@ -32,13 +32,4 @@ public enum RepairCategory {
         return null;
     }
 
-    public static boolean isValidDescription(String description) {
-        for (RepairCategory category : RepairCategory.values()) {
-
-            if (category.getDescription().equalsIgnoreCase(description)) {
-                return true;
-            }
-        }
-        return false;
-    }
 }
