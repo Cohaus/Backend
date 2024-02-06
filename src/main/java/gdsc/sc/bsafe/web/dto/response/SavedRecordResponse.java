@@ -30,7 +30,7 @@ public class SavedRecordResponse {
     @Schema(description = "내용", example = "저장 기록 내용")
     private String detail;
 
-    @Schema(description = "카테고리", example = "도배")
+    @Schema(description = "카테고리", example = "균열")
     private String category;
 
     @Schema(description = "등급", example = "우수/보통/불량")

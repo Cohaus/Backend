@@ -103,8 +103,6 @@ public class RepairService {
         String userTel = null;
         String volunteerName = null;
         String volunteerTel = null;
-        LocalDate proceedDate = null;
-        LocalDate completeDate = null;
         String address = repair.getDistrict();
 
         if (repair.getStatus().equals(RepairStatus.REQUEST)){
@@ -124,9 +122,7 @@ public class RepairService {
                 volunteerTel = volunteer.getTel();
 
                 address = repair.getDistrict() + ' ' + repair.getAddress();
-                proceedDate = repair.getProceedDate();
                 if (repair.getStatus().equals(RepairStatus.COMPLETE)){
-                    completeDate = repair.getCompleteDate();
                 }
             }
             else throw new CustomException(ErrorCode.INVALID_PERMISSION);
