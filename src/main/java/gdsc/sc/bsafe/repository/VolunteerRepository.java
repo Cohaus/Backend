@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
 
     Optional<Volunteer> findByUser(User user);
+
+    void deleteAllByUser(User user);
 }

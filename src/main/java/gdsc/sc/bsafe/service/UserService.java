@@ -1,13 +1,13 @@
 package gdsc.sc.bsafe.service;
 
+import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.User;
 import gdsc.sc.bsafe.domain.enums.Authority;
 import gdsc.sc.bsafe.domain.enums.VolunteerType;
 import gdsc.sc.bsafe.domain.mapping.Volunteer;
 import gdsc.sc.bsafe.global.exception.CustomException;
 import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
-import gdsc.sc.bsafe.repository.UserRepository;
-import gdsc.sc.bsafe.repository.VolunteerRepository;
+import gdsc.sc.bsafe.repository.*;
 import gdsc.sc.bsafe.web.dto.request.UpdateUserInfoRequest;
 import gdsc.sc.bsafe.web.dto.response.UpdateUserInfoResponse;
 import gdsc.sc.bsafe.web.dto.response.UserInfoResponse;
@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,7 +25,9 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final VolunteerRepository volunteerRepository;
-    private final VolunteerService volunteerService;
+    private final RepairRepository repairRepository;
+    private final RecordRepository recordRepository;
+    private final AuthTokenRepository authTokenRepository;
 
     public User findById(Long userId){
         return userRepository.findByUserId(userId)
@@ -59,8 +62,18 @@ public class UserService {
     }
 
     @Transactional
-    public void withdrawUser(Long userId) {
-        userRepository.deleteById(userId);
+    public void withdrawUser(User user) {
+        List<Record> records = recordRepository.findAllByUser(user);
+        for (Record record : records) {
+            repairRepository.deleteAllByRecord(record);
+        }
+        repairRepository.deleteAllByVolunteer(user);
+
+        recordRepository.deleteAllByUser(user);
+        volunteerRepository.deleteAllByUser(user);
+        authTokenRepository.deleteByUserId(user.getUserId());
+
+        userRepository.deleteById(user.getUserId());
     }
 
     private void handleUserUpdate(User user, UpdateUserInfoRequest request) {

@@ -2,14 +2,15 @@ package gdsc.sc.bsafe.service;
 
 import gdsc.sc.bsafe.domain.AuthToken;
 import gdsc.sc.bsafe.domain.User;
-import gdsc.sc.bsafe.web.dto.request.LoginRequest;
-import gdsc.sc.bsafe.web.dto.response.LoginResponse;
-import gdsc.sc.bsafe.global.jwt.AuthTokenGenerator;
-import gdsc.sc.bsafe.global.security.Password;
 import gdsc.sc.bsafe.global.exception.CustomException;
 import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
+import gdsc.sc.bsafe.global.jwt.AuthTokenGenerator;
+import gdsc.sc.bsafe.global.security.Password;
 import gdsc.sc.bsafe.repository.UserRepository;
+import gdsc.sc.bsafe.web.dto.request.LoginRequest;
 import gdsc.sc.bsafe.web.dto.request.SignUpRequest;
+import gdsc.sc.bsafe.web.dto.response.LoginResponse;
+import gdsc.sc.bsafe.web.dto.response.SignUpResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +27,10 @@ public class AuthService {
     private final AuthTokenService authTokenService;
 
     @Transactional
-    public Long signUp(SignUpRequest signUpRequest) {
+    public SignUpResponse signUp(SignUpRequest signUpRequest) {
         User user = userRepository.save(signUpRequest.toUser());
-        return user.getUserId();
+
+        return new SignUpResponse(user.getUserId(), user.getName());
     }
 
     @Transactional
