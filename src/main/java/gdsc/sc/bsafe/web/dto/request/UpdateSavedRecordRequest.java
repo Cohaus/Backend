@@ -20,7 +20,4 @@ public class UpdateSavedRecordRequest {
     @Schema(description = "내용", example = "내용")
     String detail;
 
-    @Schema(description = "카테고리", example = "카테고리")
-    String category;
-
 }
