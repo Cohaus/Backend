@@ -97,7 +97,7 @@ public class RepairService {
     public RepairInfoResponse getRepairInfo(Repair repair, User currentUser){
         User user = repair.getRecord().getUser();
         User volunteer = repair.getVolunteer();
-        String category = repair.getRecord().getCategory();
+        String category = repair.getRecord().getCategory().getDescription();
         Long volunteerId = null;
         String userName = null;
         String userTel = null;

@@ -26,7 +26,7 @@ public class RequestRepairResponse {
     @Schema(description = "제목", example = "수리 제목")
     private String title;
 
-    @Schema(description = "카테고리", example = "도배")
+    @Schema(description = "카테고리", example = "균열")
     private String category;
 
     @Schema(description = "지역", example = "서울시 광진구 군자동")
@@ -38,11 +38,11 @@ public class RequestRepairResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime created_at;
 
-    public RequestRepairResponse(Repair repair) {
+    public RequestRepairResponse(Repair repair, String category) {
         this.repair_id = repair.getRepairId();
         this.image = repair.getRecord().getImage();
         this.title = repair.getRecord().getTitle();
-        this.category = repair.getRecord().getCategory();
+        this.category = category;
         this.district = createLegalDistrictString(repair);
         this.visit_date = formatVisitDate(repair.getVisitDate());
         this.created_at = repair.getCreatedAt();

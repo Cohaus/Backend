@@ -50,7 +50,7 @@ public class SavedRecordResponse {
         this.image = aiRecord.getImage();
         this.title = aiRecord.getTitle();
         this.detail = aiRecord.getDetail();
-        this.category = aiRecord.getCategory();
+        this.category = aiRecord.getCategory().getDescription();
         this.grade = aiRecord.getGrade().getDescription();
         this.created_at = aiRecord.getCreatedAt();
         this.updated_at = aiRecord.getUpdatedAt();

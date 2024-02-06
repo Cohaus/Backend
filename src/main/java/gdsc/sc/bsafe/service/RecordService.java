@@ -20,6 +20,7 @@ import gdsc.sc.bsafe.web.dto.request.BasicRecordRequest;
 import gdsc.sc.bsafe.web.dto.request.UpdateSavedRecordRequest;
 import gdsc.sc.bsafe.web.dto.response.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -50,30 +52,26 @@ public class RecordService {
         if (!AIGrade.isValidDescription(request.getGrade())) {
             throw new CustomException(ErrorCode.INVALID_ENUM_DESCRIPTION);
         }
-        isValidCategory(request.getCategory());
         String imagePath = cloudStorageService.uploadImage(request.getImage(), AI_IMAGE_PATH);
         AIRecord aiRecord = AIRecord.builder()
                 .title(request.getTitle())
                 .detail(request.getDetail())
                 .user(user)
-                .category(request.getCategory())
+                .category(RepairCategory.convert(request.getCategory()))
                 .image(imagePath)
                 .grade(AIGrade.convert(request.getGrade()))
                 .build();
-
         return aiRecordRepository.save(aiRecord);
     }
 
     @Transactional
     public Record createBasicRecord(BasicRecordRequest request, User user) throws IOException {
-        isValidCategory(request.getCategory());
         String imagePath = cloudStorageService.uploadImage(request.getImage(), BASIC_IMAGE_PATH);
-
         BasicRecord basicRecord = BasicRecord.builder()
                 .title(request.getTitle())
                 .detail(request.getDetail())
                 .user(user)
-                .category(request.getCategory())
+                .category(RepairCategory.convert(request.getCategory()))
                 .image(imagePath)
                 .build();
 
@@ -119,8 +117,7 @@ public class RecordService {
 
     @Transactional
     public SavedRecordResponse updateRecord(AIRecord aiRecord, UpdateSavedRecordRequest request){
-        isValidCategory(request.getCategory());
-        aiRecord.updateSavedRecord(request.getTitle(), request.getDetail(), request.getCategory());
+        aiRecord.updateSavedRecord(request.getTitle(), request.getDetail());
         AIRecord updatedRecord = aiRecordRepository.save(aiRecord);
         return new SavedRecordResponse(updatedRecord);
     }
@@ -137,9 +134,4 @@ public class RecordService {
             return record.getRecordId();
     }
 
-    private static void isValidCategory(String category) {
-        if (!RepairCategory.isValidDescription(category)) {
-            throw new CustomException(ErrorCode.INVALID_ENUM_DESCRIPTION);
-        }
-    }
 }
