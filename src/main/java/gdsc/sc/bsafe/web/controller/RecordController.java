@@ -71,7 +71,7 @@ public class RecordController {
     @Operation(summary = "상세 화면 - 저장 기록 수정 API", description = "요청 성공 시 수정된 결과를 반환합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
-                    content = @Content(schema = @Schema(implementation = UpdateUserInfoResponse.class)))
+                    content = @Content(schema = @Schema(implementation = SavedRecordResponse.class)))
     })
     @PatchMapping(value = "/{recordId}")
     public ResponseEntity<?> updateSavedRecord(@PathVariable Long recordId,
