@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DistrictRequest {
+public class LegalDistrictRequest {
     private String sido;
     private String gu;
 }
