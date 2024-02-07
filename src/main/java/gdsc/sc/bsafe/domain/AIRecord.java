@@ -1,6 +1,7 @@
 package gdsc.sc.bsafe.domain;
 
 import gdsc.sc.bsafe.domain.enums.AIGrade;
+import gdsc.sc.bsafe.domain.enums.RepairCategory;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -18,7 +19,7 @@ public class AIRecord extends Record {
     private AIGrade grade;
 
     @Builder
-    public AIRecord(User user, String image, String title, String detail, String category, AIGrade grade){
+    public AIRecord(User user, String image, String title, String detail, RepairCategory category, AIGrade grade){
         super(user, image, title, detail, category);
         this.grade = grade;
     }

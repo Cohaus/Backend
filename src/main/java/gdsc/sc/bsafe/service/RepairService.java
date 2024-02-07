@@ -70,11 +70,19 @@ public class RepairService {
         repair.updateCompleteDate(completeDate);
     }
 
-    public RepairRecordResponse getRepairRecord(Repair repair){
+    public RepairRecordResponse getRepairRecord(Repair repair, User user){
         String district = repair.getDistrict();
         Record record = repair.getRecord();
+        User writer = record.getUser();
+        RepairStatus status ;
         RecordType type ;
         String grade ;
+
+        if (!user.equals(writer)) {
+            status = repair.getStatus() ;
+        }
+        else status = null;
+
         if (record instanceof AIRecord){
             type = RecordType.AI;
             grade = ((AIRecord) record).getGrade().getDescription();
@@ -83,21 +91,18 @@ public class RepairService {
             type = RecordType.BASIC;
             grade = null;
         }
-        RepairRecordResponse repairRecordResponse = new RepairRecordResponse(repair.getRecord(), district, grade, type);
-        return repairRecordResponse;
+        return new RepairRecordResponse(repair.getRecord(), status,district, grade, type);
     }
 
     public RepairInfoResponse getRepairInfo(Repair repair, User currentUser){
         User user = repair.getRecord().getUser();
         User volunteer = repair.getVolunteer();
-        String category = repair.getRecord().getCategory();
+        String category = repair.getRecord().getCategory().getDescription();
         Long volunteerId = null;
         String userName = null;
         String userTel = null;
         String volunteerName = null;
         String volunteerTel = null;
-        LocalDate proceedDate = null;
-        LocalDate completeDate = null;
         String address = repair.getDistrict();
 
         if (repair.getStatus().equals(RepairStatus.REQUEST)){
@@ -117,9 +122,7 @@ public class RepairService {
                 volunteerTel = volunteer.getTel();
 
                 address = repair.getDistrict() + ' ' + repair.getAddress();
-                proceedDate = repair.getProceedDate();
                 if (repair.getStatus().equals(RepairStatus.COMPLETE)){
-                    completeDate = repair.getCompleteDate();
                 }
             }
             else throw new CustomException(ErrorCode.INVALID_PERMISSION);

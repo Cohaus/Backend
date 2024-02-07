@@ -114,7 +114,7 @@ public class RepairController {
         AIRecord aiRecord = (AIRecord) recordService.findById(recordId);
         if (aiRecord.getUser() == user) {
             UpdateSavedRecordRequest updateSavedRecordRequest = new UpdateSavedRecordRequest(
-                    repairRequest.getTitle(), repairRequest.getDetail(), repairRequest.getCategory());
+                    repairRequest.getTitle(), repairRequest.getDetail());
             recordService.updateRecord(aiRecord, updateSavedRecordRequest);
             RepairRequest request = new RepairRequest(
                     repairRequest.getVisit_date(),
@@ -139,7 +139,7 @@ public class RepairController {
     public ResponseEntity<SuccessResponse<?>> getRepairRecord(@PathVariable Long repairId,
                                                               @AuthenticationUser User user){
         Repair repair = repairService.findByRepairId(repairId);
-        RepairRecordResponse repairRecordResponse = repairService.getRepairRecord(repair);
+        RepairRecordResponse repairRecordResponse = repairService.getRepairRecord(repair, user);
         return SuccessResponse.ok(repairRecordResponse);
     }
     /*

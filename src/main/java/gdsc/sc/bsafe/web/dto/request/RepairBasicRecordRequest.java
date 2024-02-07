@@ -1,6 +1,8 @@
 package gdsc.sc.bsafe.web.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import gdsc.sc.bsafe.domain.enums.RepairCategory;
+import gdsc.sc.bsafe.global.annotation.EnumValid;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,7 +28,8 @@ public class RepairBasicRecordRequest {
     @NotBlank
     String detail;
 
-    @Schema(description = "카테고리", example = "카테고리")
+    @Schema(description = "카테고리, CRACK / PEELING / EXPOSED / FINISHING / SITE / RESIDENTIAL / WINDOW", example = "CRACK")
+    @EnumValid(enumClass = RepairCategory.class)
     @NotBlank
     String category;
 

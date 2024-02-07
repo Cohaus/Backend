@@ -25,7 +25,11 @@ public class MapService {
     public RequestRepairListResponse getRepairListByDistrict(User user, Long legalDistrictId) {
         Slice<Repair> requestRepairs = repairRepository
                 .findAllByStatusAndLegalDistrictDistrictIdOrderByCreatedAt(RepairStatus.REQUEST, legalDistrictId);
-        SliceResponse<RequestRepairResponse> requestRepairsList = new SliceResponse<>(requestRepairs.map(RequestRepairResponse::new));
+        SliceResponse<RequestRepairResponse> requestRepairsList = new SliceResponse<>(
+                requestRepairs.map(repair -> {
+                    String category = repair.getRecord().getCategory().getDescription();
+                    return new RequestRepairResponse(repair, category);
+                }));
 
         RequestRepairListResponse response = new RequestRepairListResponse();
         response.setRequest_repairs(requestRepairsList);

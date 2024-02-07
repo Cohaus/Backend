@@ -1,6 +1,7 @@
 package gdsc.sc.bsafe.domain;
 
 import gdsc.sc.bsafe.domain.common.BaseTimeEntity;
+import gdsc.sc.bsafe.domain.enums.RepairCategory;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -34,12 +35,11 @@ public class Record extends BaseTimeEntity {
     @Column(nullable = false)
     private String detail;
 
-    /*
-    ENUM 타입으로 변경하기
-     */
-    private String category;
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private RepairCategory category;
 
-    public Record(User user, String image, String title, String detail, String category) {
+    public Record(User user, String image, String title, String detail, RepairCategory category) {
         this.user = user;
         this.image = image;
         this.title = title;
@@ -47,9 +47,8 @@ public class Record extends BaseTimeEntity {
         this.category = category;
     }
 
-    public void updateSavedRecord(String title, String detail, String category) {
+    public void updateSavedRecord(String title, String detail) {
         this.title = title;
         this.detail = detail;
-        this.category = category;
     }
 }
