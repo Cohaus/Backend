@@ -3,7 +3,6 @@ package gdsc.sc.bsafe.web.controller;
 import gdsc.sc.bsafe.domain.AIRecord;
 import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.User;
-import gdsc.sc.bsafe.domain.enums.AIGrade;
 import gdsc.sc.bsafe.domain.mapping.Repair;
 import gdsc.sc.bsafe.global.annotation.AuthenticationUser;
 import gdsc.sc.bsafe.global.common.SuccessResponse;
@@ -173,7 +172,7 @@ public class RepairController {
     public ResponseEntity<SuccessResponse<?>> getNearWasteFacilityInfo(@PathVariable Long repairId,
                                                                        @AuthenticationUser User user) {
         Repair repair = repairService.findByRepairId(repairId);
-        DistrictRequest districtRequest = new DistrictRequest(repair.getLegalDistrict().getSido(), repair.getLegalDistrict().getGu());
-        return SuccessResponse.ok(wasteFacilityService.getNearWasteFacilityInfo(districtRequest));
+        LegalDistrictRequest legalDistrictRequest = new LegalDistrictRequest(repair.getLegalDistrict().getSido(), repair.getLegalDistrict().getGu());
+        return SuccessResponse.ok(wasteFacilityService.getNearWasteFacilityInfo(legalDistrictRequest));
     }
 }

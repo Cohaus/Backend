@@ -10,4 +10,6 @@ public interface WasteFacilityRepository extends JpaRepository<WasteFacility, Lo
 
     Slice<WasteFacility> findWasteFacilitiesBySidoAndGu(String sido, String gu);
 
+    Slice<WasteFacility>findWasteFacilitiesByAddressContaining(String district);
+
 }
