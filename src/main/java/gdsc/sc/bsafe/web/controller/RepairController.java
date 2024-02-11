@@ -126,6 +126,7 @@ public class RepairController {
         }
         else return ErrorResponse.toResponseEntity(new CustomException(ErrorCode.INVALID_PERMISSION));
     }
+
     /*
         수리 신청 기록 1개 조회
      */

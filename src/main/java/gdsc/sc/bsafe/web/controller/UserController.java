@@ -45,7 +45,7 @@ public class UserController {
     /*
         프로필 기록 목록 조회하기
     */
-    @Operation(summary = "마이페이지 - 기록 목록 조회 API", description = "유저의 지기록 목록들을 보여줍니다.")
+    @Operation(summary = "마이페이지 - 기록 목록 조회 API", description = "유저의 기록 목록들을 보여줍니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다.", useReturnTypeSchema = true,
                     content = @Content(schema = @Schema (implementation = UserRecordListResponse.class)))
