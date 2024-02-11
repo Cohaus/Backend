@@ -23,7 +23,7 @@ public class RepairRecordResponse {
     @Schema(description = "수리 신청 기록 pk", example = "1")
     private Long record_id;
 
-    @Schema(description = "기록 유형", example = "1")
+    @Schema(description = "기록 유형", example = "AI")
     private RecordType type;
 
     @Schema(description = "수리 진행 상태, 기록 작성자일 경우 null 반환", example = "REQUEST")

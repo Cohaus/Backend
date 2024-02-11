@@ -85,19 +85,19 @@ public class RecordService {
 
     @Transactional(readOnly = true)
     public UserRecordListResponse getUserRecords(User user){
-        Slice<Record> repairRecordList = repairRepository.findAllByRecord_UserOrderByCreatedAtDesc(user).map(Repair::getRecord);
+        Slice<Repair> repairList = repairRepository.findAllByRecord_UserOrderByCreatedAtDesc(user);
+        Slice<Record> repairRecordList = repairList.map(Repair::getRecord);
         Slice<AIRecord> savedRecordList = (repairRecordList.getSize() == 0) ?
                 aiRecordRepository.getAIRecordsByUser(user) :
                 aiRecordRepository.queryFindSavedRecords(repairRecordList.getContent(), user);
 
-        SliceResponse<RecordItemResponse> savedRecords =  new SliceResponse<>(savedRecordList.map(record -> {
-            RecordType type = getRecordType(record);
-            return new RecordItemResponse(record, type);
-        })) ;
+        SliceResponse<RecordItemResponse> savedRecords =  new SliceResponse<>(savedRecordList.map(record -> new RecordItemResponse(record, RecordType.AI))) ;
 
-        SliceResponse<RecordItemResponse> repairRecords  = new SliceResponse<>(repairRecordList.map(record ->{
+        SliceResponse<RecordItemResponse> repairRecords  = new SliceResponse<>(repairList.map(repair ->{
+            Long id =  repair.getRepairId();
+            Record record  = repair.getRecord();
             RecordType type = getRecordType(record);
-            return new RecordItemResponse(record, type);
+            return new RecordItemResponse(id, record, type);
         })) ;
 
         UserRecordListResponse response= new UserRecordListResponse();

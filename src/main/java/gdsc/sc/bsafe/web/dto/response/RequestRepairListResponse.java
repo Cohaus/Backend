@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestRepairListResponse {
+public class  RequestRepairListResponse {
 
     @Schema(description = "전체 수리 요청 리스트")
     private SliceResponse<RequestRepairResponse> request_repairs;
