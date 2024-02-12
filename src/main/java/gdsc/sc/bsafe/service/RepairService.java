@@ -103,7 +103,7 @@ public class RepairService {
         String userTel = null;
         String volunteerName = null;
         String volunteerTel = null;
-        String address = repair.getDistrict();
+        String address = removeCountryPrefix(repair.getDistrict());
 
         if (repair.getStatus().equals(RepairStatus.REQUEST)){
             if (currentUser == user){
@@ -129,6 +129,13 @@ public class RepairService {
         }
         return new RepairInfoResponse(repair,category,user.getUserId(),userName,userTel,
                 volunteerId,volunteerName,volunteerTel,address);
+    }
+
+    private String removeCountryPrefix(String address) {
+        if (address.startsWith("대한민국 ")) {
+            return address.substring(6);
+        }
+        return address;
     }
 
 }
