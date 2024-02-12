@@ -107,7 +107,7 @@ public class RepairService {
 
         if (repair.getStatus().equals(RepairStatus.REQUEST)){
             if (currentUser == user){
-                address += repair.getDistrict() + ' ' + repair.getAddress();
+                address += ' ' + repair.getAddress();
                 userName = user.getName();
                 userTel = user.getTel();
             }
@@ -121,7 +121,7 @@ public class RepairService {
                 volunteerName = volunteer.getName();
                 volunteerTel = volunteer.getTel();
 
-                address = repair.getDistrict() + ' ' + repair.getAddress();
+                address = ' ' + repair.getAddress();
                 if (repair.getStatus().equals(RepairStatus.COMPLETE)){
                 }
             }
