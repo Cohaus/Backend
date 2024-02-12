@@ -103,11 +103,11 @@ public class RepairService {
         String userTel = null;
         String volunteerName = null;
         String volunteerTel = null;
-        String address = repair.getDistrict();
+        String address = removeCountryPrefix(repair.getDistrict());
 
         if (repair.getStatus().equals(RepairStatus.REQUEST)){
             if (currentUser == user){
-                address += repair.getDistrict() + ' ' + repair.getAddress();
+                address += ' ' + repair.getAddress();
                 userName = user.getName();
                 userTel = user.getTel();
             }
@@ -121,7 +121,7 @@ public class RepairService {
                 volunteerName = volunteer.getName();
                 volunteerTel = volunteer.getTel();
 
-                address = repair.getDistrict() + ' ' + repair.getAddress();
+                address = ' ' + repair.getAddress();
                 if (repair.getStatus().equals(RepairStatus.COMPLETE)){
                 }
             }
@@ -129,6 +129,13 @@ public class RepairService {
         }
         return new RepairInfoResponse(repair,category,user.getUserId(),userName,userTel,
                 volunteerId,volunteerName,volunteerTel,address);
+    }
+
+    private String removeCountryPrefix(String address) {
+        if (address.startsWith("대한민국 ")) {
+            return address.substring(6);
+        }
+        return address;
     }
 
 }
