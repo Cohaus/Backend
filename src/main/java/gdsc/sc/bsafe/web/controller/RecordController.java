@@ -77,9 +77,9 @@ public class RecordController {
     public ResponseEntity<?> updateSavedRecord(@PathVariable Long recordId,
                                                @Valid @RequestBody UpdateSavedRecordRequest updateSavedRecordRequest,
                                                @AuthenticationUser User user){
-        AIRecord aiRecord = (AIRecord) recordService.findById(recordId);
-        if (aiRecord.getUser() == user) {
-            SavedRecordResponse savedRecordResponse = recordService.updateRecord(aiRecord, updateSavedRecordRequest);
+        Record record = recordService.findById(recordId);
+        if (record.getUser() == user) {
+            SavedRecordResponse savedRecordResponse = recordService.updateRecord(record, updateSavedRecordRequest);
             return SuccessResponse.ok(savedRecordResponse);
         }
         else return ErrorResponse.toResponseEntity(new CustomException(ErrorCode.INVALID_PERMISSION));

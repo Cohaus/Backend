@@ -79,7 +79,7 @@ public class RecordService {
     }
 
     @Transactional(readOnly = true)
-    public SavedRecordResponse getSavedRecord(AIRecord record){
+    public SavedRecordResponse getSavedRecord(Record record){
         return new SavedRecordResponse(record);
     }
 
@@ -116,9 +116,9 @@ public class RecordService {
     }
 
     @Transactional
-    public SavedRecordResponse updateRecord(AIRecord aiRecord, UpdateSavedRecordRequest request){
-        aiRecord.updateSavedRecord(request.getTitle(), request.getDetail());
-        AIRecord updatedRecord = aiRecordRepository.save(aiRecord);
+    public SavedRecordResponse updateRecord(Record record, UpdateSavedRecordRequest request){
+        record.updateSavedRecord(request.getTitle(), request.getDetail());
+        Record updatedRecord = recordRepository.save(record);
         return new SavedRecordResponse(updatedRecord);
     }
 
