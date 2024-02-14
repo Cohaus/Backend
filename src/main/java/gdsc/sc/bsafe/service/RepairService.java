@@ -105,6 +105,7 @@ public class RepairService {
         String volunteerTel = null;
         String address = removeCountryPrefix(repair.getDistrict());
 
+        // 신청 상태인 경우
         if (repair.getStatus().equals(RepairStatus.REQUEST)){
             if (currentUser == user){
                 address += ' ' + repair.getAddress();
@@ -112,6 +113,7 @@ public class RepairService {
                 userTel = user.getTel();
             }
         }
+        // 진행 및 완료 상태인 경우
         else {
             if(currentUser.equals(user) || currentUser.equals(volunteer)) {
                 userName = user.getName();
@@ -121,9 +123,7 @@ public class RepairService {
                 volunteerName = volunteer.getName();
                 volunteerTel = volunteer.getTel();
 
-                address = ' ' + repair.getAddress();
-                if (repair.getStatus().equals(RepairStatus.COMPLETE)){
-                }
+                address += ' ' + repair.getAddress();
             }
             else throw new CustomException(ErrorCode.INVALID_PERMISSION);
         }
