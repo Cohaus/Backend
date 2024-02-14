@@ -2,6 +2,7 @@ package gdsc.sc.bsafe.web.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import gdsc.sc.bsafe.domain.AIRecord;
+import gdsc.sc.bsafe.domain.Record;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,15 +45,14 @@ public class SavedRecordResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime updated_at;
 
-    public SavedRecordResponse(AIRecord aiRecord) {
-        this.record_id = aiRecord.getRecordId();
-        this.user_id = aiRecord.getUser().getId();
-        this.image = aiRecord.getImage();
-        this.title = aiRecord.getTitle();
-        this.detail = aiRecord.getDetail();
-        this.category = aiRecord.getCategory().getDescription();
-        this.grade = aiRecord.getGrade().getDescription();
-        this.created_at = aiRecord.getCreatedAt();
-        this.updated_at = aiRecord.getUpdatedAt();
+    public SavedRecordResponse(Record record) {
+        this.record_id = record.getRecordId();
+        this.user_id = record.getUser().getId();
+        this.image = record.getImage();
+        this.title = record.getTitle();
+        this.detail = record.getDetail();
+        this.category = record.getCategory().getDescription();
+        this.created_at = record.getCreatedAt();
+        this.updated_at = record.getUpdatedAt();
     }
 }
