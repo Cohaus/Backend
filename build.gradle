@@ -1,7 +1,9 @@
 plugins {
+    id 'com.google.protobuf' version "0.8.17"
     id 'java'
     id 'org.springframework.boot' version '3.2.1'
     id 'io.spring.dependency-management' version '1.1.4'
+
 }
 
 group = 'gdsc.sc'
@@ -52,8 +54,33 @@ dependencies {
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+
+    //grpc
+    implementation 'net.devh:grpc-spring-boot-starter:2.5.1.RELEASE'
+    implementation 'io.grpc:grpc-netty-shaded:1.41.0'
+
 }
 
+
+protobuf {
+
+    protoc{
+        artifact = "com.google.protobuf:protoc:3.14.0"
+    }
+/*    protoc {
+        if (project.hasProperty('protoc_platform')) {
+            artifact = "com.google.protobuf:protoc:3.14.0:osx-x86_64"
+        } else {
+            artifact = "com.google.protobuf:protoc:3.14.0"
+        }
+    }*/
+
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}
 tasks.named('test') {
     useJUnitPlatform()
 }
