@@ -45,7 +45,7 @@ public class RepairController {
     @PostMapping(value = "/grade", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<SuccessResponse<?>> predictGrade(@Valid @ModelAttribute PredictGradeRequest predictGradeRequest,
                                                            @AuthenticationUser User user) throws IOException {
-        int gradeResult = gradePredictionService.getGradeResult(predictGradeRequest.getCategory(), predictGradeRequest.getImage());
+        int gradeResult = gradePredictionService.getGradeResult(predictGradeRequest);
 
         return SuccessResponse.ok(gradeResult);
     }
