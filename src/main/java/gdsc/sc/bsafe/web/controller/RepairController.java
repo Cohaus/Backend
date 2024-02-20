@@ -12,9 +12,13 @@ import gdsc.sc.bsafe.global.exception.enums.ErrorCode;
 import gdsc.sc.bsafe.service.RecordService;
 import gdsc.sc.bsafe.service.RepairService;
 import gdsc.sc.bsafe.service.WasteFacilityService;
+import gdsc.sc.bsafe.service.grpc.GradePredictionService;
 import gdsc.sc.bsafe.web.dto.common.SliceResponse;
 import gdsc.sc.bsafe.web.dto.request.*;
-import gdsc.sc.bsafe.web.dto.response.*;
+import gdsc.sc.bsafe.web.dto.response.RepairIDResponse;
+import gdsc.sc.bsafe.web.dto.response.RepairInfoResponse;
+import gdsc.sc.bsafe.web.dto.response.RepairRecordResponse;
+import gdsc.sc.bsafe.web.dto.response.WasteFacilityResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,6 +40,16 @@ public class RepairController {
     private final RecordService recordService;
     private final RepairService repairService;
     private final WasteFacilityService wasteFacilityService;
+    private final GradePredictionService gradePredictionService;
+
+    @Operation(summary = "AI 등급 반환 API (Tensorflow Serving)", hidden = true)
+    @PostMapping(value = "/grade", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<SuccessResponse<?>> predictGrade(@Valid @ModelAttribute PredictGradeRequest predictGradeRequest,
+                                                           @AuthenticationUser User user) throws IOException {
+        int gradeResult = gradePredictionService.getGradeResult(predictGradeRequest);
+
+        return SuccessResponse.ok(gradeResult);
+    }
 
     /*
         AI 수리 신청하기
