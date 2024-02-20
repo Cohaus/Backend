@@ -1,6 +1,7 @@
 package gdsc.sc.bsafe.service;
 
 import gdsc.sc.bsafe.domain.User;
+import gdsc.sc.bsafe.domain.enums.RepairCategory;
 import gdsc.sc.bsafe.domain.enums.RepairStatus;
 import gdsc.sc.bsafe.domain.mapping.Repair;
 import gdsc.sc.bsafe.repository.RepairRepository;
@@ -27,7 +28,8 @@ public class MapService {
                 .findAllByStatusAndLegalDistrictDistrictIdOrderByCreatedAt(RepairStatus.REQUEST, legalDistrictId);
         SliceResponse<RequestRepairResponse> requestRepairsList = new SliceResponse<>(
                 requestRepairs.map(repair -> {
-                    String category = repair.getRecord().getCategory().getDescription();
+                    RepairCategory repairCategory = repair.getRecord().getCategory();
+                    String category = (repairCategory==null)? null : repairCategory.getDescription();
                     return new RequestRepairResponse(repair, category);
                 }));
 

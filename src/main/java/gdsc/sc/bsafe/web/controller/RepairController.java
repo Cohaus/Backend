@@ -96,7 +96,6 @@ public class RepairController {
         BasicRecordRequest basicRecordRequest = new BasicRecordRequest(
                 repairBasicRecordRequest.getTitle(),
                 repairBasicRecordRequest.getDetail(),
-                repairBasicRecordRequest.getCategory(),
                 repairBasicRecordRequest.getImage()
         );
         Record record = recordService.createBasicRecord(basicRecordRequest, user);
