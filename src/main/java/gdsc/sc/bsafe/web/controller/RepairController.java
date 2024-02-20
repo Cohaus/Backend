@@ -42,6 +42,7 @@ public class RepairController {
     private final WasteFacilityService wasteFacilityService;
     private final GradePredictionService gradePredictionService;
 
+    @Operation(summary = "AI 등급 반환 API (Tensorflow Serving)", hidden = true)
     @PostMapping(value = "/grade", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<SuccessResponse<?>> predictGrade(@Valid @ModelAttribute PredictGradeRequest predictGradeRequest,
                                                            @AuthenticationUser User user) throws IOException {
