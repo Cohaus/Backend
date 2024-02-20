@@ -35,7 +35,7 @@ public class Record extends BaseTimeEntity {
     @Column(nullable = false)
     private String detail;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     @Enumerated(value = EnumType.STRING)
     private RepairCategory category;
 

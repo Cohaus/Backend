@@ -5,6 +5,7 @@ import gdsc.sc.bsafe.domain.District;
 import gdsc.sc.bsafe.domain.Record;
 import gdsc.sc.bsafe.domain.User;
 import gdsc.sc.bsafe.domain.enums.RecordType;
+import gdsc.sc.bsafe.domain.enums.RepairCategory;
 import gdsc.sc.bsafe.domain.enums.RepairStatus;
 import gdsc.sc.bsafe.domain.mapping.Repair;
 import gdsc.sc.bsafe.global.exception.CustomException;
@@ -97,7 +98,8 @@ public class RepairService {
     public RepairInfoResponse getRepairInfo(Repair repair, User currentUser){
         User user = repair.getRecord().getUser();
         User volunteer = repair.getVolunteer();
-        String category = repair.getRecord().getCategory().getDescription();
+        RepairCategory repairCategory = repair.getRecord().getCategory();
+        String category = (repairCategory==null)? null : repairCategory.getDescription();
         Long volunteerId = null;
         String userName = null;
         String userTel = null;

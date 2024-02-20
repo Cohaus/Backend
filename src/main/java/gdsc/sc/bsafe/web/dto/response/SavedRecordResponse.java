@@ -1,7 +1,6 @@
 package gdsc.sc.bsafe.web.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import gdsc.sc.bsafe.domain.AIRecord;
 import gdsc.sc.bsafe.domain.Record;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -31,7 +30,7 @@ public class SavedRecordResponse {
     @Schema(description = "내용", example = "저장 기록 내용")
     private String detail;
 
-    @Schema(description = "카테고리", example = "균열")
+    @Schema(description = "카테고리", example = "null 값을 반환합니다.")
     private String category;
 
     @Schema(description = "등급", example = "우수/보통/불량")
@@ -51,7 +50,7 @@ public class SavedRecordResponse {
         this.image = record.getImage();
         this.title = record.getTitle();
         this.detail = record.getDetail();
-        this.category = record.getCategory().getDescription();
+        this.category = null;
         this.created_at = record.getCreatedAt();
         this.updated_at = record.getUpdatedAt();
     }

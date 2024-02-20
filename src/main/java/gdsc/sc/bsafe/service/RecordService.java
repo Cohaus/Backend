@@ -71,7 +71,6 @@ public class RecordService {
                 .title(request.getTitle())
                 .detail(request.getDetail())
                 .user(user)
-                .category(RepairCategory.convert(request.getCategory()))
                 .image(imagePath)
                 .build();
 

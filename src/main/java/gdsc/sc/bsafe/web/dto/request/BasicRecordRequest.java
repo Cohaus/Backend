@@ -21,10 +21,6 @@ public class BasicRecordRequest {
     @NotBlank
     String detail;
 
-    @Schema(description = "카테고리, CRACK / PEELING / EXPOSED / FINISHING / SITE / RESIDENTIAL / WINDOW", example = "CRACK")
-    @EnumValid(enumClass = RepairCategory.class)
-    @NotBlank
-    String category;
 
     @NotNull
     MultipartFile image;
