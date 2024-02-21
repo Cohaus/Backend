@@ -121,9 +121,15 @@ public class RepairService {
                 userName = user.getName();
                 userTel = user.getTel();
 
-                volunteerId = volunteer.getUserId();
-                volunteerName = volunteer.getName();
-                volunteerTel = volunteer.getTel();
+                if (volunteer == null) {
+                    volunteerId = null;
+                    volunteerName = null;
+                    volunteerTel = null;
+                } else {
+                    volunteerId = volunteer.getUserId();
+                    volunteerName = volunteer.getName();
+                    volunteerTel = volunteer.getTel();
+                }
 
                 address += ' ' + repair.getAddress();
             }
