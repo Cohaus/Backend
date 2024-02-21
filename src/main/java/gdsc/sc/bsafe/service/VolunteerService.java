@@ -46,12 +46,14 @@ public class VolunteerService {
         String organizationName = request.getOrganization_name();
         updateVolunteerOrganization(volunteer, organizationName);
         volunteerRepository.save(volunteer);
+        user.updateUserAuthority(Authority.VOLUNTEER);
 
         return new VolunteerInfoResponse(request.getType(), request.getOrganization_name());
     }
 
     @Transactional
     public VolunteerInfoResponse updateVolunteerInfo(Volunteer volunteer, VolunteerUserRequest request) {
+
         volunteer.updateVolunteerType(VolunteerType.valueOf(request.getType()));
         String organizationName = request.getOrganization_name();
         if (organizationName==null){
